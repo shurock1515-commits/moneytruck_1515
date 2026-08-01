@@ -794,6 +794,62 @@ body.theme-day .canvas-wrap{
 .dev-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
 .dev-toolbar button{flex:1;min-width:110px}
 
+
+.analysis-tabs{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:4px;
+  margin-bottom:18px;
+  scrollbar-width:thin;
+}
+.analysis-tabs button{
+  flex:0 0 auto;
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.045);
+  color:var(--muted);
+  font-size:.8rem;
+}
+.analysis-tabs button.active{
+  color:var(--text);
+  background:linear-gradient(135deg,rgba(124,240,207,.14),rgba(106,167,255,.16));
+  border-color:rgba(106,167,255,.28);
+}
+.analysis-page{display:none}
+.analysis-page.active{display:block}
+.analysis-page h3:first-child{margin-top:0}
+.analysis-nav{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:18px;
+}
+.analysis-nav button{
+  padding:9px 13px;
+  border-radius:12px;
+  color:var(--text);
+  background:rgba(255,255,255,.055);
+  border:1px solid var(--line);
+}
+.analysis-nav button:disabled{opacity:.3;cursor:default}
+.long-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:12px 0;
+}
+.long-grid > div{
+  padding:13px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.035);
+}
+.long-grid span{display:block;color:var(--muted);font-size:.73rem;margin-bottom:5px}
+.long-grid strong{font-size:.94rem}
+@media(max-width:620px){.long-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -1109,8 +1165,8 @@ function analyze(records){
     const m=mean(a);
     return Math.sqrt(mean(a.map(v=>(v-m)**2)));
   };
-  const regression=(values)=>{
-    const xs=recent.map(r=>day(r.date));
+  const regression=(values,dataSet=recent)=>{
+    const xs=dataSet.map(r=>day(r.date));
     const x0=xs[0];
     const x=xs.map(v=>v-x0);
     const xm=mean(x), ym=mean(values);
@@ -1350,6 +1406,44 @@ function analyze(records){
     debtAction=`月${yen(suggestedMonthlyRepayment)}を返済目安にすると約${projectedMonths}か月です。支出後に残った額ではなく、先に返済分を分ける方法が適しています。`;
   }
 
+
+  const allRecords=records;
+  const allTotalSlope=regression(allRecords.map(r=>totals(r).total),allRecords);
+  const allLiquidSlope=regression(allRecords.map(r=>totals(r).liquid),allRecords);
+  const allSavingSlope=regression(allRecords.map(r=>totals(r).protected),allRecords);
+  const allInvestmentSlope=regression(allRecords.map(r=>r.investment),allRecords);
+  const allDebtSlope=regression(allRecords.map(r=>+r.debt||0),allRecords);
+
+  const monthlyMap=new Map();
+  allRecords.forEach(r=>{
+    const key=r.date.slice(0,7);
+    monthlyMap.set(key,r);
+  });
+  const monthlyRecords=[...monthlyMap.values()];
+  const monthlyChanges=[];
+  for(let i=1;i<monthlyRecords.length;i++){
+    monthlyChanges.push({
+      total:totals(monthlyRecords[i]).total-totals(monthlyRecords[i-1]).total,
+      liquid:totals(monthlyRecords[i]).liquid-totals(monthlyRecords[i-1]).liquid,
+      saving:totals(monthlyRecords[i]).protected-totals(monthlyRecords[i-1]).protected
+    });
+  }
+  const avgMonthlyTotal=monthlyChanges.length?mean(monthlyChanges.map(x=>x.total)):0;
+  const avgMonthlyLiquid=monthlyChanges.length?mean(monthlyChanges.map(x=>x.liquid)):0;
+  const avgMonthlySaving=monthlyChanges.length?mean(monthlyChanges.map(x=>x.saving)):0;
+
+  const recent3=records.slice(-3);
+  const recent3TotalDiff=recent3.length>1?totals(recent3.at(-1)).total-totals(recent3[0]).total:0;
+  const recent3LiquidDiff=recent3.length>1?totals(recent3.at(-1)).liquid-totals(recent3[0]).liquid:0;
+
+  const direction=v=>v>200?"増加":v<-200?"減少":"安定";
+  const longSummary=
+    allTotalSlope>200
+      ? "全期間では資産形成が進んでいます。"
+      : allTotalSlope<-200
+        ? "全期間では総資産が減少方向です。"
+        : "全期間では総資産は大きく変わっていません。";
+
   const recommendationItems=[];
   if(salaryRecord&&estimatedIncome>0){
     recommendationItems.push(`今回の収入増加は約${yen(estimatedIncome)}と推定`);
@@ -1380,24 +1474,118 @@ function analyze(records){
   detail.textContent=`信頼度 ${confidence}%（${confidenceLabel}）`;
   box.className="analysis "+cls;
   box.innerHTML=`
-    <h3>1. 資産形態ごとの変化</h3>
-    <div class="metric-grid">
-      ${[
-        ["現金",latestChanges.cash,scores.cash,prev.cash,latest.cash],
-        ["カード残高",latestChanges.card,scores.card,prev.card,latest.card],
-        ["貯金（現金）",latestChanges.savingsCash,scores.savingsCash,prev.savingsCash,latest.savingsCash],
-        ["貯金（銀行）",latestChanges.savingsBank,scores.savingsBank,prev.savingsBank,latest.savingsBank],
-        ["投資",latestChanges.investment,scores.investment,prev.investment,latest.investment]
-      ].map(([name,rate,score,before,after])=>`<div class="metric-card"><span>${name}</span><strong>${trendWord(rate,score)}（${rate>=0?"+":""}${rate.toFixed(1)}%）</strong><em>${importanceWord(score)}｜${yen(before)} → ${yen(after)}</em></div>`).join("")}
+    <div class="analysis-tabs" role="tablist">
+      <button type="button" class="active" data-page="0">要点</button>
+      <button type="button" data-page="1">資産別</button>
+      <button type="button" data-page="2">長期・月次</button>
+      <button type="button" data-page="3">具体策</button>
     </div>
-    <h3>2. 動的なお金と貯金</h3>
-    動的なお金は <strong>${yen(dynamicBalance)}</strong>（総資産の ${dynamicRate.toFixed(1)}%）、貯金は <strong>${yen(savingsBalance)}</strong>（${savingsRate.toFixed(1)}%）です。<br>
-    直近変化は、動的なお金 ${lastLiquidDiff>=0?"+":""}${yen(lastLiquidDiff)}、貯金 ${lastProtectedDiff>=0?"+":""}${yen(lastProtectedDiff)}です。
-    <br><br><h3>3. 借金と返済計画</h3><div class="debt-summary"><div><span>借金総額</span><strong>${yen(latestDebt)}</strong></div><div><span>前回から</span><strong>${debtDiff>=0?"+":""}${yen(debtDiff)}</strong></div><div><span>純資産</span><strong>${yen(netWorth)}</strong></div></div>借金は前回と比べて <strong>${debtTrend}</strong>、総資産に対する比率は <strong>${debtRatio.toFixed(1)}%</strong> です。<br><strong>${debtAssessment}</strong><br>${debtAction}
-    <br><br><h3>4. 総合判定</h3><strong>${headline}</strong><br>${reason}<br>信頼度は <strong>${confidence}%（${confidenceLabel}）</strong> です。
-    <br><br><h3>5. 細かいレコメンド</h3><ul style="margin:8px 0 0;padding-left:1.2em">${recommendationItems.map(item=>`<li>${item}</li>`).join("")}</ul>
-    <div class="foot">個別資産は自身に対する増減率を中心に判定します。保存キー：money-if-auto-records-v2（固定）</div>
+
+    <section class="analysis-page active" data-analysis-page="0">
+      <h3>総合判定</h3>
+      <strong>${headline}</strong><br>
+      ${reason}<br><br>
+      直近3件では総資産が <strong>${recent3TotalDiff>=0?"+":""}${yen(recent3TotalDiff)}</strong>、
+      動的なお金が <strong>${recent3LiquidDiff>=0?"+":""}${yen(recent3LiquidDiff)}</strong> 変化しています。<br>
+      ${longSummary}<br><br>
+      信頼度は <strong>${confidence}%（${confidenceLabel}）</strong> です。
+
+      <h3 style="margin-top:20px">借金と返済</h3>
+      <div class="debt-summary">
+        <div><span>借金総額</span><strong>${yen(latestDebt)}</strong></div>
+        <div><span>前回から</span><strong>${debtDiff>=0?"+":""}${yen(debtDiff)}</strong></div>
+        <div><span>純資産</span><strong>${yen(netWorth)}</strong></div>
+      </div>
+      <strong>${debtAssessment}</strong><br>${debtAction}
+    </section>
+
+    <section class="analysis-page" data-analysis-page="1">
+      <h3>資産形態ごとの直近変化</h3>
+      <div class="metric-grid">
+        ${[
+          ["現金",latestChanges.cash,scores.cash,prev.cash,latest.cash],
+          ["カード残高",latestChanges.card,scores.card,prev.card,latest.card],
+          ["貯金（現金）",latestChanges.savingsCash,scores.savingsCash,prev.savingsCash,latest.savingsCash],
+          ["貯金（銀行）",latestChanges.savingsBank,scores.savingsBank,prev.savingsBank,latest.savingsBank],
+          ["投資",latestChanges.investment,scores.investment,prev.investment,latest.investment]
+        ].map(([name,rate,score,before,after])=>`
+          <div class="metric-card">
+            <span>${name}</span>
+            <strong>${trendWord(rate,score)}（${rate>=0?"+":""}${rate.toFixed(1)}%）</strong>
+            <em>${importanceWord(score)}｜${yen(before)} → ${yen(after)}</em>
+          </div>
+        `).join("")}
+      </div>
+
+      <h3 style="margin-top:20px">動的なお金と貯金</h3>
+      動的なお金は <strong>${yen(dynamicBalance)}</strong>（総資産の ${dynamicRate.toFixed(1)}%）、
+      貯金は <strong>${yen(savingsBalance)}</strong>（${savingsRate.toFixed(1)}%）です。<br>
+      直近変化は、動的なお金 ${lastLiquidDiff>=0?"+":""}${yen(lastLiquidDiff)}、
+      貯金 ${lastProtectedDiff>=0?"+":""}${yen(lastProtectedDiff)}です。
+    </section>
+
+    <section class="analysis-page" data-analysis-page="2">
+      <h3>全期間の基準</h3>
+      <div class="long-grid">
+        <div><span>総資産</span><strong>${direction(allTotalSlope)}｜1日 ${allTotalSlope>=0?"+":""}${yen(allTotalSlope)}</strong></div>
+        <div><span>動的なお金</span><strong>${direction(allLiquidSlope)}｜1日 ${allLiquidSlope>=0?"+":""}${yen(allLiquidSlope)}</strong></div>
+        <div><span>貯金</span><strong>${direction(allSavingSlope)}｜1日 ${allSavingSlope>=0?"+":""}${yen(allSavingSlope)}</strong></div>
+        <div><span>投資</span><strong>${direction(allInvestmentSlope)}｜1日 ${allInvestmentSlope>=0?"+":""}${yen(allInvestmentSlope)}</strong></div>
+        <div><span>借金</span><strong>${direction(allDebtSlope)}｜1日 ${allDebtSlope>=0?"+":""}${yen(allDebtSlope)}</strong></div>
+        <div><span>分析件数</span><strong>${allRecords.length}件</strong></div>
+      </div>
+
+      <h3 style="margin-top:20px">月単位の平均変化</h3>
+      月末記録を基準に、
+      総資産は月平均 <strong>${avgMonthlyTotal>=0?"+":""}${yen(avgMonthlyTotal)}</strong>、
+      動的なお金は <strong>${avgMonthlyLiquid>=0?"+":""}${yen(avgMonthlyLiquid)}</strong>、
+      貯金は <strong>${avgMonthlySaving>=0?"+":""}${yen(avgMonthlySaving)}</strong> です。<br><br>
+      全期間は「本人にとって通常の状態」を作るために使い、
+      直近8件は現在の傾向、直近3件は急変検知に使っています。
+    </section>
+
+    <section class="analysis-page" data-analysis-page="3">
+      <h3>今回の具体策</h3>
+      <ul style="margin:8px 0 0;padding-left:1.2em">
+        ${recommendationItems.map(item=>`<li>${item}</li>`).join("")}
+      </ul>
+
+      ${salaryRecord&&estimatedIncome>0?`
+        <h3 style="margin-top:20px">給料日の配分案</h3>
+        推定収入増加は約 <strong>${yen(estimatedIncome)}</strong>。<br>
+        貯金目安は約 <strong>${yen(suggestedSaving)}</strong>、
+        動的なお金は最低 <strong>${yen(minimumDynamicBuffer)}</strong> 残す計算です。
+      `:""}
+
+      <div class="foot">
+        個別資産は自身に対する増減率、短期は直近3件、中期は直近8件、
+        長期は全履歴と月末記録を使っています。保存キー：money-if-auto-records-v2（固定）
+      </div>
+    </section>
+
+    <div class="analysis-nav">
+      <button type="button" data-analysis-prev disabled>← 前へ</button>
+      <button type="button" data-analysis-next>次へ →</button>
+    </div>
   `;
+
+  const tabs=[...box.querySelectorAll("[data-page]")];
+  const pages=[...box.querySelectorAll("[data-analysis-page]")];
+  const prevButton=box.querySelector("[data-analysis-prev]");
+  const nextButton=box.querySelector("[data-analysis-next]");
+  let currentPage=0;
+
+  const showPage=index=>{
+    currentPage=Math.max(0,Math.min(pages.length-1,index));
+    tabs.forEach((tab,i)=>tab.classList.toggle("active",i===currentPage));
+    pages.forEach((page,i)=>page.classList.toggle("active",i===currentPage));
+    prevButton.disabled=currentPage===0;
+    nextButton.disabled=currentPage===pages.length-1;
+  };
+
+  tabs.forEach((tab,i)=>tab.addEventListener("click",()=>showPage(i)));
+  prevButton.addEventListener("click",()=>showPage(currentPage-1));
+  nextButton.addEventListener("click",()=>showPage(currentPage+1));
 }
 
 function renderStats(records){

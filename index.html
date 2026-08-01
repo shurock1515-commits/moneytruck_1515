@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Money IF Auto — Styled Edition</title>
+<title>Money IF Auto</title>
 <style>
 :root{
   --bg:#07111f;
@@ -930,6 +930,35 @@ body.theme-day .salary-badge{
   }
 }
 
+
+.allocation-alerts{
+  display:grid;
+  gap:10px;
+  margin:14px 0 4px;
+}
+.allocation-alert{
+  border:1px solid rgba(255,197,107,.28);
+  background:linear-gradient(135deg,rgba(255,197,107,.12),rgba(255,127,159,.07));
+  border-radius:16px;
+  padding:14px 16px;
+}
+.allocation-alert.high{
+  border-color:rgba(255,127,159,.38);
+  background:linear-gradient(135deg,rgba(255,127,159,.15),rgba(255,197,107,.07));
+}
+.allocation-alert strong{
+  display:block;
+  margin-bottom:5px;
+  color:#ffe2a8;
+}
+.allocation-alert.high strong{color:#ffb4c7}
+.allocation-alert p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.65;
+  font-size:.9rem;
+}
+
 </style>
 </head>
 <body>
@@ -940,7 +969,7 @@ body.theme-day .salary-badge{
         <div class="eyebrow">Money Signal Dashboard</div>
         <h1 id="devTrigger" aria-label="Money IF Auto">Money IF Auto</h1>
         <p class="lead">
-          残高を記録すると、直近最大8件の推移から資金移動・投資変動・使いすぎ・貯めすぎなどを自動で読み取る、
+          残高を記録すると、直近3件・直近8件・全履歴・月次推移を組み合わせ、資金移動や資産悪化まで自動で読み取る、
           自分専用のお金ダッシュボード。
         </p>
         <div id="themeIndicator" class="theme-indicator">時間帯テーマを読み込み中</div>
@@ -1073,18 +1102,18 @@ body.theme-day .salary-badge{
             <h2 class="section-title">今日のIFルール</h2>
             <span class="badge">Behavior Guide</span>
           </div>
-          <div class="rule-grid">
+          <div class="rule-grid" id="ifRuleGrid">
             <div class="rule">
-              <small>IF 使いすぎ傾向</small>
-              <strong>予定外の3,000円以上は24時間待つ</strong>
+              <small id="ifRule1Label">IF データ不足</small>
+              <strong id="ifRule1Text">記録を3件以上ためる</strong>
             </div>
             <div class="rule">
-              <small>IF 貯めすぎ傾向</small>
-              <strong>追加貯金せず、自由費を1回使ってよい</strong>
+              <small id="ifRule2Label">IF 次の記録まで</small>
+              <strong id="ifRule2Text">大きな判断は保留する</strong>
             </div>
             <div class="rule">
-              <small>IF 安定傾向</small>
-              <strong>欲しい物が具体的なら普通に買ってよい</strong>
+              <small id="ifRule3Label">IF 確認すること</small>
+              <strong id="ifRule3Text">資産の置き場所と残高を確認する</strong>
             </div>
           </div>
         </div>
@@ -1215,6 +1244,92 @@ function totals(r){
 }
 function pct(a,b){return b===0?0:(a-b)/b*100}
 
+function updateIfRules(mode, context={}){
+  const rules={
+    "資産悪化が進行中":[
+      ["IF 純資産の減少が継続","予定外の消費を止め、次の給料日まで生活費以外を抑える"],
+      ["IF 借金も増加中","給料日に返済枠を先取りし、新しい借入を増やさない"],
+      ["IF 次回記録でも減少","月の支出上限を具体的な金額で設定する"]
+    ],
+    "下降傾向":[
+      ["IF 資産が下向き","大きな買い物は次回記録まで保留する"],
+      ["IF 動的なお金も減少","追加貯金・追加投資より手元資金を優先する"],
+      ["IF 2回連続で続く","消費額を一段下げる"]
+    ],
+    "継続的な使いすぎ":[
+      ["IF 減少が3区間以上続く","予定外の買い物を止める"],
+      ["IF 3,000円以上の支出","48時間待ってから判断する"],
+      ["IF 次回も減少","自由費の上限を下げる"]
+    ],
+    "単発の大きな支出":[
+      ["IF 大きな支出の直後","同規模の支出を続けて重ねない"],
+      ["IF 次回記録で戻らない","単発ではなく継続支出として扱う"],
+      ["IF 給料日前","手元資金を優先する"]
+    ],
+    "資金移動を検出":[
+      ["IF 資産間で同額が移動","支出として扱わない"],
+      ["IF 移動先の残高が一致","記録だけ確認して通常運用を続ける"],
+      ["IF 総額が減っている","差額だけを支出として確認する"]
+    ],
+    "相場変動の可能性":[
+      ["IF 投資だけが動く","生活費の判断には反映しない"],
+      ["IF 現金と貯金が維持","通常の支出ルールを続ける"],
+      ["IF 投資下落が続く","追加投資は別判断にする"]
+    ],
+    "貯めすぎ傾向":[
+      ["IF 最低貯金額を達成","追加貯金を止める"],
+      ["IF 手元資金が減少","500〜1,500円の自由費を許可する"],
+      ["IF 給料日","貯金後の動的資金を先に確保する"]
+    ],
+    "資産配分に偏り":[
+      ["IF カード残高が増え続ける","生活費として残す上限を決め、超過分を貯金か投資へ移す"],
+      ["IF 投資が2か月以上ほぼ停止","投資を増やすか、増やさない理由を明確にして配分を固定する"],
+      ["IF 貯金だけが増え続ける","追加貯金を止め、自由費と投資の配分を先に確保する"]
+    ],
+    "手元資金が少なめ":[
+      ["IF 動的資金が少ない","追加貯金・追加投資を止める"],
+      ["IF 給料日","生活費の残高を最初に確保する"],
+      ["IF 借金返済中","返済後も最低残高を残す"]
+    ],
+    "余裕が拡大":[
+      ["IF 貯金ルールを維持できる","予定していた支出に使ってよい"],
+      ["IF 欲しい物が具体的","自由費内で購入してよい"],
+      ["IF 給料日","余剰分だけ貯金へ回す"]
+    ],
+    "投資主導の増加":[
+      ["IF 増加の主因が投資","含み益を自由費に含めない"],
+      ["IF 現金が増えていない","支出上限は変えない"],
+      ["IF 利確した","現金化後に配分を再判定する"]
+    ],
+    "変動が大きい":[
+      ["IF 上下が交互に発生","1回の変化だけでルールを変えない"],
+      ["IF 大きな資金移動がある","移動と支出を分けて確認する"],
+      ["IF 傾きが弱い","あと2回記録して方向を確認する"]
+    ],
+    "安定":[
+      ["IF 現在の配分が維持","今のルールを続ける"],
+      ["IF 欲しい物が具体的","自由費内で普通に使ってよい"],
+      ["IF 給料日","通常の貯金額だけ移す"]
+    ],
+    "様子見":[
+      ["IF 複数要因が混在","大きな買い物を次回まで保留する"],
+      ["IF 次回も同方向","その傾向を本判定に切り替える"],
+      ["IF 資金移動がある","移動元と移動先を確認する"]
+    ]
+  };
+  const selected=rules[mode]||[
+    ["IF データ不足","記録を3件以上ためる"],
+    ["IF 次の記録まで","大きな判断は保留する"],
+    ["IF 確認すること","残高を同じ間隔で記録する"]
+  ];
+  selected.forEach((rule,i)=>{
+    const label=document.getElementById(`ifRule${i+1}Label`);
+    const body=document.getElementById(`ifRule${i+1}Text`);
+    if(label)label.textContent=rule[0];
+    if(body)body.textContent=rule[1];
+  });
+}
+
 function analyze(records){
   const box=$("analysis"), title=$("modeTitle"), detail=$("modeDetail");
   box.className="analysis";
@@ -1222,6 +1337,7 @@ function analyze(records){
   if(records.length<3){
     title.textContent="データ蓄積中";
     detail.textContent="3件から仮判定、5件以上で精度が上がります。";
+    updateIfRules("データ不足");
     box.innerHTML=`
       <h3>まだ判断材料が少なめです</h3>
       現在 ${records.length} 件。最低3件、できれば5〜8件あると、
@@ -1276,6 +1392,22 @@ function analyze(records){
   const protectedSlope=regression(recent.map(r=>totals(r).protected));
   const nonInvestSlope=regression(recent.map(nonInvest));
   const investmentSlope=regression(recent.map(r=>r.investment));
+  const netSlope=regression(recent.map(r=>totals(r).net));
+  const recentNetValues=recent.map(r=>totals(r).net);
+  const recentNetPeak=Math.max(...recentNetValues);
+  const recentNetStart=recentNetValues[0]||1;
+  const recentNetDrawdown=recentNetPeak>0?(latestT.net-recentNetPeak)/recentNetPeak*100:0;
+  const recentNetChangeRate=recentNetStart!==0?(latestT.net-recentNetStart)/Math.abs(recentNetStart)*100:0;
+  const netIntervals=[];
+  for(let i=1;i<recent.length;i++){
+    const days=Math.max(1,day(recent[i].date)-day(recent[i-1].date));
+    netIntervals.push((totals(recent[i]).net-totals(recent[i-1]).net)/days);
+  }
+  const negativeNetCount=netIntervals.filter(v=>v<0).length;
+  const positiveNetCount=netIntervals.filter(v=>v>0).length;
+  const declineConsistency=netIntervals.length?negativeNetCount/netIntervals.length:0;
+  const directionChanges=netIntervals.slice(1).filter((v,i)=>Math.sign(v)!==Math.sign(netIntervals[i])&&v!==0&&netIntervals[i]!==0).length;
+  const latestDebtIncrease=(+latest.debt||0)-(+prev.debt||0);
 
   const totalDailyChanges=intervals.map(x=>x.totalDaily);
   const liquidDailyChanges=intervals.map(x=>x.liquidDaily);
@@ -1315,6 +1447,88 @@ function analyze(records){
   const shockStrength=Math.abs(lastLiquidDiff/lastDays)/typicalLiquidMove;
   const largeNegativeShock=lastLiquidDiff<0 && shockStrength>2.2 && lastLiquidDiff<-3000;
 
+  // 総資産とは別に、資産配分の偏りを複数同時に判定する
+  const firstRecent=recent[0];
+  const firstRecentT=totals(firstRecent);
+  const recentSpanDays=Math.max(1,day(latest.date)-day(firstRecent.date));
+  const recentTotalGrowth=latestT.total-firstRecentT.total;
+  const recentSavingGrowth=latestT.protected-firstRecentT.protected;
+  const recentCardGrowth=latest.card-firstRecent.card;
+  const recentInvestmentGrowth=latest.investment-firstRecent.investment;
+  const cardShare=latestT.total>0?latest.card/latestT.total*100:0;
+  const pureSavingShare=latestT.total>0?latestT.protected/latestT.total*100:0;
+  const investmentShare=latestT.total>0?latest.investment/latestT.total*100:0;
+  const nonSalaryIntervals=[];
+  for(let i=1;i<recent.length;i++){
+    if(recent[i].salaryDay===true) continue;
+    const days=Math.max(1,day(recent[i].date)-day(recent[i-1].date));
+    nonSalaryIntervals.push((totals(recent[i]).liquid-totals(recent[i-1]).liquid)/days);
+  }
+  const typicalNonSalaryUse=nonSalaryIntervals.length
+    ? mean(nonSalaryIntervals.map(v=>Math.max(0,-v)))
+    : 0;
+
+  const allocationAlerts=[];
+
+  const cardHoarding=
+    latest.card>=50000 &&
+    (cardShare>=35 ||
+     (recentCardGrowth>=30000 && recentCardGrowth>Math.max(10000,recentSavingGrowth*1.25)));
+  if(cardHoarding){
+    allocationAlerts.push({
+      id:"card",
+      level:cardShare>=50?"high":"warn",
+      title:"カード残高への集中",
+      detail:`カード残高が総資産の${cardShare.toFixed(1)}%を占めています。生活費として残す上限を決め、超過分を貯金または投資へ移す余地があります。`,
+      action:"カードに残す生活費上限を決め、超過分を別口へ移す"
+    });
+  }
+
+  const investmentStalled=
+    recentSpanDays>=45 &&
+    recentTotalGrowth>=30000 &&
+    recentInvestmentGrowth<=Math.max(1500,recentTotalGrowth*.04) &&
+    investmentShare<15;
+  if(investmentStalled){
+    allocationAlerts.push({
+      id:"investment",
+      level:"warn",
+      title:"投資への配分が停滞",
+      detail:`直近${recentSpanDays}日で総資産は${yen(recentTotalGrowth)}増えていますが、投資は${yen(recentInvestmentGrowth)}の増加にとどまっています。投資を増やすか、増やさない方針を明確にする段階です。`,
+      action:"次回給料日に投資額を固定するか、投資しない理由を決める"
+    });
+  }
+
+  const overSaving=
+    recentSavingGrowth>=20000 &&
+    (pureSavingShare>=65 ||
+     (recentTotalGrowth>0 && recentSavingGrowth/recentTotalGrowth>=.72)) &&
+    latestT.liquid<Math.max(30000,latestT.total*.16);
+  if(overSaving){
+    allocationAlerts.push({
+      id:"saving",
+      level:pureSavingShare>=78?"high":"warn",
+      title:"貯金への配分が強すぎる",
+      detail:`貯金が総資産の${pureSavingShare.toFixed(1)}%を占め、直近では${yen(recentSavingGrowth)}増えています。手元資金を圧迫してまで追加貯金する必要はありません。`,
+      action:"最低貯金額を超えた分は、自由費か投資へ振り分ける"
+    });
+  }
+
+  const ultraLowSpending=
+    recentSpanDays>=35 &&
+    recentTotalGrowth>=50000 &&
+    typicalNonSalaryUse<150 &&
+    latestT.debt===0;
+  if(ultraLowSpending){
+    allocationAlerts.push({
+      id:"spending",
+      level:"warn",
+      title:"消費が極端に少ない",
+      detail:`給料日以外の動的資金の減少は平均で1日${yen(typicalNonSalaryUse)}程度です。資産形成は強い一方、必要な経験・外出・買い替えまで先送りしていないか確認が必要です。`,
+      action:"月の自由費を先に確保し、使わなかった分だけ翌月へ回す"
+    });
+  }
+
   let mode="安定";
   let cls="";
   let headline="大きな乱れはありません";
@@ -1322,7 +1536,31 @@ function analyze(records){
   let reason="複数回の推移が安定しています。";
   let strength=45;
 
-  if(likelyTransfer){
+  const severeDecline=
+    (recentNetChangeRate<=-20 && declineConsistency>=.55) ||
+    (recentNetDrawdown<=-25 && netSlope<-200) ||
+    (netSlope<-700 && declineConsistency>=.60) ||
+    (latestDebtIncrease>5000 && netSlope<-250);
+  const sustainedDecline=
+    !severeDecline &&
+    ((recentNetChangeRate<=-8 && declineConsistency>=.55) ||
+     (netSlope<-300 && declineConsistency>=.60));
+
+  if(severeDecline){
+    mode="資産悪化が進行中";
+    cls="stop";
+    headline="純資産の減少が継続し、改善より悪化が優勢です";
+    advice="予定外の消費を止め、次の給料日に返済・生活費・貯金の順で配分を組み直します。";
+    reason=`直近${recent.length}件で純資産が${recentNetChangeRate.toFixed(1)}%変化し、${negativeNetCount}/${netIntervals.length}区間で減少しています。${latestDebtIncrease>0?`借金も前回から${yen(latestDebtIncrease)}増えています。`:""}`;
+    strength=96;
+  }else if(sustainedDecline){
+    mode="下降傾向";
+    cls="stop";
+    headline="純資産が継続的に下向いています";
+    advice="大きな支出を保留し、次回記録まで動的なお金と借金の改善を優先します。";
+    reason=`直近${recent.length}件の純資産は${recentNetChangeRate.toFixed(1)}%変化し、減少区間が${negativeNetCount}/${netIntervals.length}あります。日々の上下より下降方向の傾きが強い状態です。`;
+    strength=91;
+  }else if(likelyTransfer){
     mode="資金移動を検出";
     headline="支出より、口座間の移動に見えます";
     advice="使いすぎとは判定しません。移動先の残高が正しいかだけ確認すれば大丈夫です。";
@@ -1375,12 +1613,12 @@ function analyze(records){
     advice="含み益を自由費として扱わず、普段の現金ルールは維持します。";
     reason="総資産は上向きですが、現金・貯金の増加より投資額の伸びが中心です。";
     strength=80;
-  }else if(volatilityRate>1.4){
+  }else if(volatilityRate>1.4 && directionChanges>=2 && Math.abs(netSlope)<Math.max(250,volatility*.45)){
     mode="変動が大きい";
     cls="warn";
     headline="残高の上下が大きく、方向が定まりません";
     advice="1回の増減でルールを変えず、あと2回ほど記録してから判断します。";
-    reason="期間中の1日あたり変化にばらつきが大きく、継続傾向より単発要因が強そうです。";
+    reason=`増減方向が${directionChanges}回切り替わり、純資産の傾きより日々の上下のほうが強く出ています。`;
     strength=68;
   }else if(Math.abs(totalSlope)<180 && Math.abs(liquidSlope)<180){
     mode="安定";
@@ -1397,6 +1635,16 @@ function analyze(records){
     strength=58;
   }
 
+  const seriousModes=new Set(["資産悪化が進行中","下降傾向","継続的な使いすぎ","単発の大きな支出"]);
+  if(allocationAlerts.length && !seriousModes.has(mode)){
+    mode="資産配分に偏り";
+    cls="warn";
+    headline=`資産は維持・増加していますが、配分上の警告が${allocationAlerts.length}件あります`;
+    advice="総資産だけで良好と判断せず、カード・貯金・投資・自由費の配分を調整します。";
+    reason=allocationAlerts.map(a=>a.title).join("、")+"が検出されています。";
+    strength=Math.max(strength,84);
+  }
+
   const dataScore=clamp((recent.length-2)*9,10,54);
   const regularityDays=intervals.map(x=>x.days);
   const regularity=regularityDays.length>1
@@ -1405,6 +1653,7 @@ function analyze(records){
   const confidence=Math.round(clamp(dataScore+regularity+strength*.22,35,96));
   const confidenceLabel=confidence>=80?"高め":confidence>=65?"中程度":"低め";
 
+  updateIfRules(mode,{recentNetChangeRate,declineConsistency,latestDebtIncrease});
   title.textContent=mode;
   detail.textContent=`信頼度 ${confidence}%（${confidenceLabel}）`;
   box.className="analysis "+cls;
@@ -1541,13 +1790,24 @@ function analyze(records){
     if(debtDiff>500) recommendationItems.push("借金残高が増えているため、次回記録までは新しい借入と予定外消費を抑える");
     if(debtRatio>=55) recommendationItems.push("追加投資より返済を優先し、借金比率を50%未満へ下げる");
   }
-  if(mode==="継続的な使いすぎ") recommendationItems.push("予定外の買い物を止め、3,000円以上は48時間保留する");
+  allocationAlerts.forEach(alert=>recommendationItems.push(alert.action));
+  if(mode==="資産悪化が進行中"){
+    recommendationItems.push("次の給料日まで生活必需品以外の支出を止める");
+    recommendationItems.push("給料日は生活費・借金返済・最低貯金の順で配分する");
+    recommendationItems.push("次回記録で純資産が改善しなければ自由費上限を引き下げる");
+  }
+  else if(mode==="下降傾向"){
+    recommendationItems.push("予定外の大型支出を次回記録まで保留する");
+    recommendationItems.push("動的なお金と借金残高のどちらかを改善させる");
+  }
+  else if(mode==="継続的な使いすぎ") recommendationItems.push("予定外の買い物を止め、3,000円以上は48時間保留する");
   else if(mode==="単発の大きな支出") recommendationItems.push("同規模の支出を続けて重ねず、次回記録で戻りを見る");
   else if(mode==="貯めすぎ傾向") recommendationItems.push("最低貯金額を達成済みなら追加貯金を止め、少額の自由費を許可する");
   else if(mode==="手元資金が少なめ") recommendationItems.push("追加投資・追加貯金より日常支出用の残高を優先する");
   else if(mode==="資金移動を検出") recommendationItems.push("使いすぎとは扱わず、移動先残高だけ確認する");
   else if(mode==="相場変動の可能性"||mode==="投資主導の増加") recommendationItems.push("投資の増減を自由費の判断材料にしない");
   else if(mode==="余裕が拡大") recommendationItems.push("予定していた買い物や外出には使ってよい");
+  else if(mode==="資産配分に偏り") recommendationItems.push("総資産の増加だけで良好とせず、検出された偏りを1つずつ解消する");
   else if(mode==="安定") recommendationItems.push("現在の配分を維持し、具体的に欲しい物なら普通に使ってよい");
   else recommendationItems.push("大きな買い物や追加貯金は次回記録まで保留する");
 
@@ -1570,6 +1830,26 @@ function analyze(records){
       動的なお金が <strong>${recent3LiquidDiff>=0?"+":""}${yen(recent3LiquidDiff)}</strong> 変化しています。<br>
       ${longSummary}<br><br>
       信頼度は <strong>${confidence}%（${confidenceLabel}）</strong> です。
+
+      ${allocationAlerts.length?`
+        <h3 style="margin-top:20px">資産配分の警告</h3>
+        <div class="allocation-alerts">
+          ${allocationAlerts.map(alert=>`
+            <div class="allocation-alert ${alert.level}">
+              <strong>${alert.title}</strong>
+              <p>${alert.detail}</p>
+            </div>
+          `).join("")}
+        </div>
+      `:`
+        <h3 style="margin-top:20px">資産配分</h3>
+        <div class="allocation-alerts">
+          <div class="allocation-alert">
+            <strong>大きな偏りは検出されていません</strong>
+            <p>カード・貯金・投資・手元資金の構成に、現在のルール上の強い警告はありません。</p>
+          </div>
+        </div>
+      `}
 
       <h3 style="margin-top:20px">借金と返済</h3>
       <div class="debt-summary">
@@ -1602,7 +1882,10 @@ function analyze(records){
       動的なお金は <strong>${yen(dynamicBalance)}</strong>（総資産の ${dynamicRate.toFixed(1)}%）、
       貯金は <strong>${yen(savingsBalance)}</strong>（${savingsRate.toFixed(1)}%）です。<br>
       直近変化は、動的なお金 ${lastLiquidDiff>=0?"+":""}${yen(lastLiquidDiff)}、
-      貯金 ${lastProtectedDiff>=0?"+":""}${yen(lastProtectedDiff)}です。
+      貯金 ${lastProtectedDiff>=0?"+":""}${yen(lastProtectedDiff)}です。<br><br>
+      カード残高比率は <strong>${cardShare.toFixed(1)}%</strong>、
+      純粋な貯金比率は <strong>${pureSavingShare.toFixed(1)}%</strong>、
+      投資比率は <strong>${investmentShare.toFixed(1)}%</strong> です。
     </section>
 
     <section class="analysis-page" data-analysis-page="2">

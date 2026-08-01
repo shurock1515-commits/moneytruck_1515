@@ -850,6 +850,86 @@ body.theme-day .canvas-wrap{
 .long-grid strong{font-size:.94rem}
 @media(max-width:620px){.long-grid{grid-template-columns:1fr}}
 
+
+.history-row.salary-day{
+  position:relative;
+  border-top-color:rgba(255,166,77,.22);
+  background:linear-gradient(90deg,rgba(255,153,64,.13),rgba(255,153,64,.045) 55%,transparent);
+  box-shadow:inset 4px 0 0 rgba(255,164,73,.88);
+  border-radius:14px;
+  padding-left:12px;
+  padding-right:10px;
+}
+.salary-badge{
+  display:inline-flex;
+  align-items:center;
+  margin-left:8px;
+  padding:3px 7px;
+  border-radius:999px;
+  color:#ffd4a8;
+  background:rgba(255,153,64,.14);
+  border:1px solid rgba(255,169,84,.28);
+  font-size:.68rem;
+  font-weight:800;
+  vertical-align:middle;
+}
+body.theme-morning .history-row.salary-day,
+body.theme-day .history-row.salary-day{
+  background:linear-gradient(90deg,rgba(234,132,36,.15),rgba(255,174,82,.05) 55%,transparent);
+  box-shadow:inset 4px 0 0 rgba(222,123,25,.9);
+}
+body.theme-morning .salary-badge,
+body.theme-day .salary-badge{
+  color:#9b4d06;
+  background:rgba(236,139,43,.13);
+  border-color:rgba(211,115,22,.24);
+}
+
+
+.dev-modal{
+  overflow-y:auto;
+  align-items:flex-start;
+}
+.dev-dialog{
+  max-height:calc(100vh - 40px);
+  overflow-y:auto;
+  margin:auto;
+  overscroll-behavior:contain;
+}
+.dev-dialog textarea{
+  width:100%;
+  min-height:220px;
+  max-height:45vh;
+  resize:vertical;
+  overflow:auto;
+  white-space:pre;
+  font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
+}
+.dev-dialog input,
+.dev-dialog textarea{
+  scroll-margin-bottom:120px;
+}
+@media(max-width:620px){
+  .dev-modal{
+    padding:10px;
+  }
+  .dev-dialog{
+    max-height:calc(100vh - 20px);
+    border-radius:18px;
+    padding:18px;
+  }
+  .dev-dialog textarea{
+    min-height:180px;
+    max-height:40vh;
+  }
+  .dev-actions{
+    position:sticky;
+    bottom:0;
+    padding-top:12px;
+    background:linear-gradient(180deg,transparent,rgba(10,18,32,.98) 28%);
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1061,11 +1141,12 @@ body.theme-day .canvas-wrap{
       <h3>履歴データ一括移行</h3>
       <p>数字列を貼り付けると、既存履歴へまとめて追加します。同じ日付は上書きされます。</p>
       <div class="dev-format">
-        日付.現金.カード.貯金現金.貯金銀行.投資[.借金]<br>
-        例：20280513.5555.10000.1000.100000.200.0<br>
+        日付.現金.カード.貯金現金.貯金銀行.投資[.借金][.給料日]<br>
+        給料日：最後を1、通常日：0または省略<br>
+        例：20280513.5555.10000.1000.100000.200.0.1<br>
         区切り：改行 ／ / ／ ;
       </div>
-      <textarea id="bulkImportData" spellcheck="false" placeholder="20280513.5555.10000.1000.100000.200&#10;20280520.6000.12000.3000.100000.500.10000"></textarea>
+      <textarea id="bulkImportData" spellcheck="false" placeholder="20280513.5555.10000.1000.100000.200.0.1&#10;20280520.6000.12000.3000.100000.500.10000.0"></textarea>
       <div id="bulkImportStatus" class="dev-import-status"></div>
       <div class="dev-toolbar">
         <button id="devRandomSample" class="secondary" type="button">ランダムサンプル</button>
@@ -1760,8 +1841,8 @@ function renderHistory(records){
       <div>日付</div><div>現金</div><div>カード</div><div>貯金現金</div><div>貯金銀行</div><div>投資</div><div>借金</div><div></div>
     </div>`+
     [...records].reverse().map(r=>`
-      <div class="history-row">
-        <strong>${r.date}</strong>
+      <div class="history-row ${r.salaryDay?"salary-day":""}">
+        <strong>${r.date}${r.salaryDay?'<span class="salary-badge">給料日</span>':""}</strong>
         <div>${yen(r.cash)}</div>
         <div>${yen(r.card)}</div>
         <div>${yen(r.savingsCash)}</div>
@@ -1972,18 +2053,26 @@ function parseBulkRecords(source){
 
   return entries.map((entry,index)=>{
     const parts=entry.split(".").map(value=>value.trim());
-    if(parts.length!==6 && parts.length!==7){
-      throw new Error(`${index+1}件目は6項目または7項目にしてください`);
+    if(![6,7,8].includes(parts.length)){
+      throw new Error(`${index+1}件目は6〜8項目にしてください`);
     }
     const [dateRaw,...amountRaw]=parts;
     if(amountRaw.some(value=>!/^\d+$/.test(value))){
       throw new Error(`${index+1}件目の金額に数字以外が含まれています`);
     }
-    const [cash,card,savingsCash,savingsBank,investment,debt="0"]=amountRaw.map(Number);
+    const [cash,card,savingsCash,savingsBank,investment,debt="0",salaryFlag="0"]=amountRaw;
+    if(!["0","1"].includes(salaryFlag)){
+      throw new Error(`${index+1}件目の給料日フラグは0か1にしてください`);
+    }
     return normalizeRecord({
       date:parseCompactDate(dateRaw),
-      cash,card,savingsCash,savingsBank,investment,debt,
-      salaryDay:false
+      cash:Number(cash),
+      card:Number(card),
+      savingsCash:Number(savingsCash),
+      savingsBank:Number(savingsBank),
+      investment:Number(investment),
+      debt:Number(debt),
+      salaryDay:salaryFlag==="1"
     });
   });
 }

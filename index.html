@@ -959,6 +959,129 @@ body.theme-day .salary-badge{
   font-size:.9rem;
 }
 
+
+.student-plan-grid{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:10px;
+  margin:14px 0;
+}
+.student-plan-card{
+  padding:14px;
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+}
+.student-plan-card span{
+  display:block;
+  color:var(--muted);
+  font-size:.78rem;
+  margin-bottom:6px;
+}
+.student-plan-card strong{
+  display:block;
+  font-size:1.05rem;
+}
+.plan-message{
+  padding:15px 16px;
+  border-radius:16px;
+  border:1px solid rgba(124,240,207,.25);
+  background:rgba(124,240,207,.07);
+  line-height:1.7;
+}
+.plan-message.warn{
+  border-color:rgba(255,197,107,.35);
+  background:rgba(255,197,107,.09);
+}
+.plan-message.stop{
+  border-color:rgba(255,127,159,.38);
+  background:rgba(255,127,159,.10);
+}
+.purchase-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr .9fr auto;
+  gap:10px;
+  align-items:end;
+}
+.purchase-grid label{
+  display:grid;
+  gap:7px;
+  color:var(--muted);
+  font-size:.82rem;
+}
+.purchase-grid input,
+.purchase-grid select{
+  width:100%;
+}
+.purchase-result{
+  margin-top:14px;
+  min-height:86px;
+}
+.purchase-result h3{
+  margin:0 0 7px;
+}
+.purchase-result .decision{
+  font-size:1.15rem;
+}
+.purchase-result .purchase-metrics{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:10px;
+}
+.purchase-result .purchase-metrics span{
+  border:1px solid var(--line);
+  border-radius:999px;
+  padding:5px 9px;
+  color:var(--muted);
+  font-size:.78rem;
+}
+@media(max-width:800px){
+  .student-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .purchase-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:520px){
+  .student-plan-grid,.purchase-grid{grid-template-columns:1fr}
+}
+
+
+.dev-time-preview{
+  margin:18px 0 14px;
+  padding:14px;
+  border:1px solid rgba(124,240,207,.22);
+  border-radius:16px;
+  background:rgba(124,240,207,.055);
+}
+.dev-time-preview h4{margin:0 0 6px;font-size:.95rem}
+.dev-time-preview p{margin:0 0 12px;font-size:.8rem}
+.dev-time-buttons{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
+}
+.dev-time-buttons button{
+  min-width:0;
+  padding:10px 6px;
+  font-size:.78rem;
+}
+.dev-time-buttons button.active{
+  border-color:rgba(124,240,207,.72);
+  box-shadow:0 0 0 2px rgba(124,240,207,.12) inset;
+}
+.dev-time-reset{
+  width:100%;
+  margin-top:9px;
+}
+.dev-time-status{
+  margin-top:10px;
+  color:#8ff0d4;
+  font-size:.8rem;
+  line-height:1.5;
+}
+@media(max-width:520px){
+  .dev-time-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+
 </style>
 </head>
 <body>
@@ -1119,6 +1242,39 @@ body.theme-day .salary-badge{
         </div>
       </section>
 
+
+      <section class="panel">
+        <div class="panel-inner">
+          <div class="section-head">
+            <h2 class="section-title">大学生向け・購入判定</h2>
+            <span class="badge">Purchase Check</span>
+          </div>
+          <div class="purchase-grid">
+            <label>
+              商品・予定
+              <input id="purchaseName" type="text" placeholder="例：ギター機材、旅行、飲み会">
+            </label>
+            <label>
+              金額
+              <input id="purchasePrice" type="number" min="0" step="100" placeholder="10000">
+            </label>
+            <label>
+              種類
+              <select id="purchaseType">
+                <option value="want">趣味・欲しい物</option>
+                <option value="experience">旅行・交際・経験</option>
+                <option value="study">学業・資格・制作</option>
+                <option value="need">生活必需品</option>
+              </select>
+            </label>
+            <button id="purchaseJudge" type="button" class="primary" style="margin-top:0">判定する</button>
+          </div>
+          <div id="purchaseResult" class="purchase-result plan-message">
+            金額を入力すると、次の給料日までの生活費・自由費・貯金・借金・直近傾向から判定します。
+          </div>
+        </div>
+      </section>
+
       <section class="panel">
         <div class="panel-inner">
           <div class="section-head">
@@ -1181,6 +1337,20 @@ body.theme-day .salary-badge{
         <button id="devRandomSample" class="secondary" type="button">ランダムサンプル</button>
         <button id="bulkImportRun" class="primary" type="button" style="margin-top:0">履歴へ追加</button>
       </div>
+
+      <div class="dev-time-preview">
+        <h4>時間帯UIプレビュー</h4>
+        <p>実際の時刻を変えず、画面テーマだけを確認できます。</p>
+        <div class="dev-time-buttons">
+          <button type="button" class="secondary" data-dev-hour="7">朝 7時</button>
+          <button type="button" class="secondary" data-dev-hour="13">昼 13時</button>
+          <button type="button" class="secondary" data-dev-hour="18">夕方 18時</button>
+          <button type="button" class="secondary" data-dev-hour="23">夜 23時</button>
+        </div>
+        <button id="devTimeReset" class="secondary dev-time-reset" type="button">実際の現在時刻に戻す</button>
+        <div id="devTimeStatus" class="dev-time-status">現在時刻に連動中</div>
+      </div>
+
       <button id="devImportClose" class="danger" type="button">閉じる</button>
     </div>
   </div>
@@ -1189,8 +1359,11 @@ body.theme-day .salary-badge{
 
 <script>
 
+let devThemeHour=null;
+
 function applyTimeTheme(){
-  const hour = new Date().getHours();
+  const actualHour=new Date().getHours();
+  const hour=devThemeHour===null?actualHour:devThemeHour;
   const body = document.body;
   body.classList.remove("theme-morning","theme-day","theme-evening","theme-night");
 
@@ -1211,8 +1384,20 @@ function applyTimeTheme(){
   body.classList.add(themeClass);
   const indicator = document.getElementById("themeIndicator");
   if(indicator){
-    indicator.textContent = `${label}・現在 ${String(hour).padStart(2,"0")}時台`;
+    indicator.textContent = devThemeHour===null
+      ? `${label}・現在 ${String(actualHour).padStart(2,"0")}時台`
+      : `${label}・DEVプレビュー ${String(hour).padStart(2,"0")}時台`;
   }
+
+  const status=document.getElementById("devTimeStatus");
+  if(status){
+    status.textContent=devThemeHour===null
+      ? `現在時刻に連動中（${String(actualHour).padStart(2,"0")}時台）`
+      : `${String(hour).padStart(2,"0")}時台をプレビュー中。リセットすると現在時刻へ戻ります。`;
+  }
+  document.querySelectorAll("[data-dev-hour]").forEach(button=>{
+    button.classList.toggle("active",devThemeHour!==null && +button.dataset.devHour===devThemeHour);
+  });
 }
 applyTimeTheme();
 setInterval(applyTimeTheme, 60 * 1000);
@@ -1227,6 +1412,7 @@ const config={
 };
 let visible=Object.fromEntries(Object.keys(config).map(k=>[k,true]));
 let chartPeriod="daily";
+let currentStudentPlan=null;
 const $=id=>document.getElementById(id);
 const yen=n=>"¥"+Math.round(n||0).toLocaleString("ja-JP");
 const normalizeRecord=r=>({...r,cash:+r.cash||0,card:+r.card||0,savingsCash:+r.savingsCash||0,savingsBank:+r.savingsBank||0,investment:+r.investment||0,debt:+r.debt||0});
@@ -1335,6 +1521,7 @@ function analyze(records){
   box.className="analysis";
 
   if(records.length<3){
+    currentStudentPlan=null;
     title.textContent="データ蓄積中";
     detail.textContent="3件から仮判定、5件以上で精度が上がります。";
     updateIfRules("データ不足");
@@ -1766,6 +1953,93 @@ function analyze(records){
   const recent3TotalDiff=recent3.length>1?totals(recent3.at(-1)).total-totals(recent3[0]).total:0;
   const recent3LiquidDiff=recent3.length>1?totals(recent3.at(-1)).liquid-totals(recent3[0]).liquid:0;
 
+  // 大学生向けの次回給料日までの消費計画
+  const salaryRows=records.filter(r=>r.salaryDay===true);
+  const salaryIncreases=[];
+  for(let i=0;i<records.length;i++){
+    if(!records[i].salaryDay || i===0) continue;
+    salaryIncreases.push(Math.max(0,nonInvest(records[i])-nonInvest(records[i-1])));
+  }
+  const median=a=>{
+    if(!a.length)return 0;
+    const s=[...a].sort((x,y)=>x-y);
+    const m=Math.floor(s.length/2);
+    return s.length%2?s[m]:(s[m-1]+s[m])/2;
+  };
+  const typicalSalary=median(salaryIncreases.filter(v=>v>0));
+  const salaryDayOfMonth=salaryRows.length
+    ? +salaryRows.at(-1).date.slice(8,10)
+    : 25;
+  const latestDateObj=new Date(latest.date+"T00:00:00");
+  const nextSalaryDate=new Date(latestDateObj);
+  nextSalaryDate.setDate(salaryDayOfMonth);
+  if(nextSalaryDate<=latestDateObj){
+    nextSalaryDate.setMonth(nextSalaryDate.getMonth()+1);
+    nextSalaryDate.setDate(salaryDayOfMonth);
+  }
+  const daysToSalary=Math.max(1,Math.round((nextSalaryDate-latestDateObj)/86400000));
+  const nextSalaryLabel=`${nextSalaryDate.getMonth()+1}/${nextSalaryDate.getDate()}`;
+
+  const actualDailyUse=Math.max(0,typicalNonSalaryUse);
+  const studentBaseDaily=900;
+  const plannedDailyLiving=Math.round(Math.max(studentBaseDaily,Math.min(2200,actualDailyUse||studentBaseDaily))/100)*100;
+  const livingUntilSalary=plannedDailyLiving*daysToSalary;
+  const emergencyReserve=Math.max(20000,Math.min(60000,Math.round((typicalSalary||50000)*.4/1000)*1000));
+  const debtReserve=latestDebt>0?suggestedMonthlyRepayment:0;
+  const spendableBeforeSalary=Math.max(0,dynamicBalance-livingUntilSalary-emergencyReserve-debtReserve);
+
+  let monthlyFreeTarget;
+  if(typicalSalary>0){
+    monthlyFreeTarget=Math.round(clamp(typicalSalary*.18,5000,25000)/1000)*1000;
+  }else{
+    monthlyFreeTarget=Math.round(clamp(dynamicBalance*.15,3000,15000)/1000)*1000;
+  }
+  if(mode==="資産悪化が進行中"||mode==="下降傾向"||mode==="継続的な使いすぎ"){
+    monthlyFreeTarget=Math.min(monthlyFreeTarget,5000);
+  }
+  if(overSaving||ultraLowSpending){
+    monthlyFreeTarget=Math.max(monthlyFreeTarget,10000);
+  }
+  if(latestDebt>0){
+    monthlyFreeTarget=Math.min(monthlyFreeTarget,8000);
+  }
+
+  const weeklyFreeTarget=Math.max(0,Math.round(monthlyFreeTarget/4/500)*500);
+  const safePurchaseNow=Math.max(0,Math.min(spendableBeforeSalary,monthlyFreeTarget));
+  const planTone=spendableBeforeSalary<=0?"stop":spendableBeforeSalary<monthlyFreeTarget?"warn":"good";
+  const planSummary=
+    spendableBeforeSalary<=0
+      ? `次の給料日までは生活費と予備費を優先し、趣味の購入は保留します。`
+      : overSaving||ultraLowSpending
+        ? `貯める力は十分です。次の給料日までは${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}を、大学生活の経験・趣味・外出に計画的に使えます。`
+        : `次の給料日までは、生活費を除いて最大${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}を自由費の目安にします。`;
+
+  currentStudentPlan={
+    latestDate:latest.date,
+    daysToSalary,
+    nextSalaryLabel,
+    dynamicBalance,
+    plannedDailyLiving,
+    livingUntilSalary,
+    emergencyReserve,
+    debtReserve,
+    spendableBeforeSalary,
+    monthlyFreeTarget,
+    weeklyFreeTarget,
+    safePurchaseNow,
+    mode,
+    planTone,
+    planSummary,
+    latestDebt,
+    overSaving,
+    ultraLowSpending,
+    cardHoarding,
+    investmentStalled,
+    total:latestT.total,
+    savings:savingsBalance,
+    investment:latest.investment
+  };
+
   const direction=v=>v>200?"増加":v<-200?"減少":"安定";
   const longSummary=
     allTotalSlope>200
@@ -1790,6 +2064,8 @@ function analyze(records){
     if(debtDiff>500) recommendationItems.push("借金残高が増えているため、次回記録までは新しい借入と予定外消費を抑える");
     if(debtRatio>=55) recommendationItems.push("追加投資より返済を優先し、借金比率を50%未満へ下げる");
   }
+  recommendationItems.push(`次の給料日（${nextSalaryLabel}）までの生活費目安は${yen(livingUntilSalary)}`);
+  recommendationItems.push(`今週の自由費目安は${yen(weeklyFreeTarget)}、次の給料日までの自由費上限は${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}`);
   allocationAlerts.forEach(alert=>recommendationItems.push(alert.action));
   if(mode==="資産悪化が進行中"){
     recommendationItems.push("次の給料日まで生活必需品以外の支出を止める");
@@ -1819,7 +2095,8 @@ function analyze(records){
       <button type="button" class="active" data-page="0">要点</button>
       <button type="button" data-page="1">資産別</button>
       <button type="button" data-page="2">長期・月次</button>
-      <button type="button" data-page="3">具体策</button>
+      <button type="button" data-page="3">消費計画</button>
+      <button type="button" data-page="4">具体策</button>
     </div>
 
     <section class="analysis-page active" data-analysis-page="0">
@@ -1909,6 +2186,38 @@ function analyze(records){
     </section>
 
     <section class="analysis-page" data-analysis-page="3">
+      <h3>大学生向け・次の給料日までの消費計画</h3>
+      <div class="student-plan-grid">
+        <div class="student-plan-card"><span>次の給料日</span><strong>${nextSalaryLabel}まで ${daysToSalary}日</strong></div>
+        <div class="student-plan-card"><span>生活費の確保</span><strong>${yen(livingUntilSalary)}</strong></div>
+        <div class="student-plan-card"><span>今週の自由費</span><strong>${yen(weeklyFreeTarget)}</strong></div>
+        <div class="student-plan-card"><span>購入に使える上限</span><strong>${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}</strong></div>
+      </div>
+      <div class="plan-message ${planTone==="stop"?"stop":planTone==="warn"?"warn":""}">
+        <strong>${planSummary}</strong><br>
+        1日あたりの生活費は約${yen(plannedDailyLiving)}、緊急用として${yen(emergencyReserve)}
+        ${latestDebt>0?`、返済用として${yen(debtReserve)}`:""}を残す計算です。
+      </div>
+
+      <h3 style="margin-top:20px">使う順番</h3>
+      <ol style="margin:8px 0 0;padding-left:1.25em;line-height:1.8">
+        <li>授業・通学・食事など、大学生活を維持する費用</li>
+        <li>友人との外出、旅行、ライブ、制作など、学生の今に意味がある経験</li>
+        <li>趣味の商品や機材。自由費の上限内なら購入候補</li>
+        <li>残った分を貯金・投資・返済へ配分</li>
+      </ol>
+
+      <h3 style="margin-top:20px">今月の方針</h3>
+      ${overSaving||ultraLowSpending
+        ?"貯金額の最大化ではなく、自由費を先に確保して実際に使うことを計画へ含めます。"
+        :cardHoarding
+          ?"カードに残したままにせず、生活費・自由費・貯金・投資へ役割を分けます。"
+          :investmentStalled
+            ?"生活費と自由費を確保した後、投資する金額を給料日に固定します。"
+            :"生活費と予備費を守り、その範囲を超えない自由費を使います。"}
+    </section>
+
+    <section class="analysis-page" data-analysis-page="4">
       <h3>今回の具体策</h3>
       <ul style="margin:8px 0 0;padding-left:1.2em">
         ${recommendationItems.map(item=>`<li>${item}</li>`).join("")}
@@ -1923,7 +2232,7 @@ function analyze(records){
 
       <div class="foot">
         個別資産は自身に対する増減率、短期は直近3件、中期は直近8件、
-        長期は全履歴と月末記録を使っています。保存キー：money-if-auto-records-v2（固定）
+        長期は全履歴と月末記録を使っています。生活費・交際費・学業費・趣味を持つ大学生向けの基準です。保存キー：money-if-auto-records-v2（固定）
       </div>
     </section>
 
@@ -1950,6 +2259,78 @@ function analyze(records){
   tabs.forEach((tab,i)=>tab.addEventListener("click",()=>showPage(i)));
   prevButton.addEventListener("click",()=>showPage(currentPage-1));
   nextButton.addEventListener("click",()=>showPage(currentPage+1));
+}
+
+
+function judgePurchase(){
+  const result=$("purchaseResult");
+  const price=Math.max(0,+$("purchasePrice").value||0);
+  const name=$("purchaseName").value.trim()||"この購入";
+  const type=$("purchaseType").value;
+
+  if(!currentStudentPlan){
+    result.className="purchase-result plan-message warn";
+    result.innerHTML="<h3>まだ判定できません</h3>残高記録を3件以上入力してください。";
+    return;
+  }
+  if(price<=0){
+    result.className="purchase-result plan-message warn";
+    result.innerHTML="<h3>金額を入力してください</h3>100円以上の金額で判定します。";
+    return;
+  }
+
+  const p=currentStudentPlan;
+  const typeBoost={need:1.45,study:1.25,experience:1.10,want:1}[type]||1;
+  const adjustedLimit=p.safePurchaseNow*typeBoost;
+  const afterDynamic=p.dynamicBalance-price;
+  const protectedAfter=afterDynamic-p.livingUntilSalary-p.emergencyReserve-p.debtReserve;
+  const shareOfFree=p.monthlyFreeTarget>0?price/p.monthlyFreeTarget:99;
+
+  let decision,cls,reason,action;
+  if(type==="need" && protectedAfter>=0){
+    decision="買ってよい";
+    cls="";
+    reason="生活必需品で、購入後も次の給料日までの生活費・予備費を残せます。";
+    action="価格比較をしたうえで、必要な時期に購入します。";
+  }else if(protectedAfter<0 || price>adjustedLimit*1.6 || p.mode==="資産悪化が進行中"){
+    decision="今は買わない";
+    cls="stop";
+    reason=`購入すると、確保すべき生活費・予備費を${yen(Math.abs(Math.min(0,protectedAfter)))}ほど下回る可能性があります。`;
+    action=`次の給料日（${p.nextSalaryLabel}）まで保留するか、価格を${yen(Math.max(0,Math.floor(adjustedLimit/100)*100))}以下へ下げます。`;
+  }else if(price<=adjustedLimit && shareOfFree<=1){
+    decision="買ってよい";
+    cls="";
+    reason=`購入後も生活費${yen(p.livingUntilSalary)}と予備費${yen(p.emergencyReserve)}を残せます。`;
+    action=type==="experience"
+      ?"大学生の今に意味がある経験費として、予定を決めて使います。"
+      :type==="study"
+        ?"学業・制作への支出として、使用開始日を決めて購入します。"
+        :"自由費の範囲内です。同月に同規模の買い物を重ねない条件で購入できます。";
+  }else{
+    decision="条件付きで買える";
+    cls="warn";
+    reason=`金額が自由費目安${yen(p.monthlyFreeTarget)}に対して大きく、今月の他の外出や趣味費を圧迫します。`;
+    action=`48時間保留し、今月の他の予定を含めて${yen(Math.max(0,p.safePurchaseNow))}以内に収めます。`;
+  }
+
+  if((p.overSaving||p.ultraLowSpending) && decision==="条件付きで買える" && type!=="want"){
+    decision="買ってよい";
+    cls="";
+    reason="貯金・節約が強すぎる傾向があり、購入後も必要な残高を維持できます。";
+    action="貯金を増やす代わりに、学生生活・学業・経験へ使う支出として実行します。";
+  }
+
+  result.className=`purchase-result plan-message ${cls}`;
+  result.innerHTML=`
+    <h3><span class="decision">${name}：${decision}</span></h3>
+    ${reason}<br><strong>${action}</strong>
+    <div class="purchase-metrics">
+      <span>購入額 ${yen(price)}</span>
+      <span>判定上限 ${yen(Math.max(0,adjustedLimit))}</span>
+      <span>購入後の動的資金 ${yen(afterDynamic)}</span>
+      <span>給料日まで ${p.daysToSalary}日</span>
+    </div>
+  `;
 }
 
 function renderStats(records){
@@ -2201,6 +2582,14 @@ $("form").onsubmit=e=>{
 };
 
 
+$("purchaseJudge").addEventListener("click",judgePurchase);
+$("purchasePrice").addEventListener("keydown",event=>{
+  if(event.key==="Enter"){
+    event.preventDefault();
+    judgePurchase();
+  }
+});
+
 const DEV_SAMPLE_SETS=[
   {
     name:"安定成長",
@@ -2420,6 +2809,20 @@ document.getElementById("devRandomSample").onclick=()=>{
   loadRandomDevSample();
   document.getElementById("bulkImportStatus").className="dev-import-status success";
   document.getElementById("bulkImportStatus").textContent="ランダムサンプルを読み込みました。";
+};
+
+
+document.querySelectorAll("[data-dev-hour]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    devThemeHour=+button.dataset.devHour;
+    applyTimeTheme();
+    showDevToast(`${String(devThemeHour).padStart(2,"0")}時台のUIを表示しています`);
+  });
+});
+document.getElementById("devTimeReset").onclick=()=>{
+  devThemeHour=null;
+  applyTimeTheme();
+  showDevToast("実際の現在時刻に戻しました");
 };
 
 

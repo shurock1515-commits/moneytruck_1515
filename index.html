@@ -999,7 +999,7 @@ body.theme-day .salary-badge{
 }
 .purchase-grid{
   display:grid;
-  grid-template-columns:1.4fr 1fr .9fr auto;
+  grid-template-columns:1.4fr 1fr .9fr 1.15fr 1fr auto;
   gap:10px;
   align-items:end;
 }
@@ -1267,10 +1267,22 @@ body.theme-day .salary-badge{
                 <option value="need">生活必需品</option>
               </select>
             </label>
+            <label>
+              貯金の使い方
+              <select id="savingsUseMode">
+                <option value="none">貯金は使わない</option>
+                <option value="surplus">最近の最低額を超えた分まで</option>
+                <option value="custom">上限を自分で指定</option>
+              </select>
+            </label>
+            <label id="savingsLimitWrap" style="display:none">
+              貯金から使う上限
+              <input id="savingsUseLimit" type="number" min="0" step="100" placeholder="10000">
+            </label>
             <button id="purchaseJudge" type="button" class="primary" style="margin-top:0">判定する</button>
           </div>
           <div id="purchaseResult" class="purchase-result plan-message">
-            金額を入力すると、次の給料日までの生活費・自由費・貯金・借金・直近傾向から判定します。
+            金額と貯金の使い方を入力すると、動的なお金・貯金の履歴・借金・購入目的から判定します。
           </div>
         </div>
       </section>
@@ -2018,6 +2030,9 @@ function analyze(records){
         ? `貯める力は十分です。次の給料日までは${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}を、日常生活の経験・趣味・外出に計画的に使えます。`
         : `次の給料日までは、生活費を除いて最大${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}を自由費の目安にします。`;
 
+  const recentSavingsFloor=Math.min(...recent.map(r=>r.savingsCash+r.savingsBank));
+  const savingsSurplus=Math.max(0,savingsBalance-recentSavingsFloor);
+
   currentStudentPlan={
     latestDate:latest.date,
     daysToSalary,
@@ -2042,6 +2057,8 @@ function analyze(records){
     investmentStalled,
     total:latestT.total,
     savings:savingsBalance,
+    recentSavingsFloor,
+    savingsSurplus,
     investment:latest.investment
   };
 
@@ -2272,6 +2289,8 @@ function judgePurchase(){
   const price=Math.max(0,+$("purchasePrice").value||0);
   const name=$("purchaseName").value.trim()||"この購入";
   const type=$("purchaseType").value;
+  const savingsMode=$("savingsUseMode").value;
+  const customSavingsLimit=Math.max(0,+$("savingsUseLimit").value||0);
 
   if(!currentStudentPlan){
     result.className="purchase-result plan-message warn";
@@ -2285,47 +2304,78 @@ function judgePurchase(){
   }
 
   const p=currentStudentPlan;
-  const typeBoost={need:1.45,study:1.25,experience:1.10,want:1}[type]||1;
-  const adjustedLimit=p.safePurchaseNow*typeBoost;
-  const afterDynamic=p.dynamicBalance-price;
-  const requiredBeforeSalary=p.livingUntilSalary+p.debtReserve;
-  const freeAfterRequired=afterDynamic-requiredBeforeSalary;
-  const shareOfFree=p.monthlyFreeTarget>0?price/p.monthlyFreeTarget:99;
+  let savingsAllowance=0;
+  let savingsBasis="貯金は使わない設定";
 
-  let decision,cls,reason,action;
-  if(freeAfterRequired<0){
-    decision="今は買わない";
-    cls="stop";
-    reason=`計算は、動的なお金${yen(p.dynamicBalance)} − 購入${yen(price)} − 給料日までの生活費${yen(p.livingUntilSalary)}${p.debtReserve>0?` − 返済枠${yen(p.debtReserve)}`:""} ＝ ${yen(freeAfterRequired)}です。`;
-    action=`必要額が${yen(Math.abs(freeAfterRequired))}不足するため、次の給料日（${p.nextSalaryLabel}）以降に再判定します。`;
-  }else if(type==="need"){
-    decision="買ってよい";
-    cls="";
-    reason=`購入後の動的なお金は${yen(afterDynamic)}で、生活費${yen(p.livingUntilSalary)}${p.debtReserve>0?`と返済枠${yen(p.debtReserve)}`:""}を引いたあとも${yen(freeAfterRequired)}残ります。`;
-    action="生活必需品として、価格比較をしたうえで購入できます。";
-  }else if(price<=adjustedLimit && shareOfFree<=1){
-    decision="買ってよい";
-    cls="";
-    reason=`動的なお金${yen(p.dynamicBalance)}から購入額${yen(price)}を引くと${yen(afterDynamic)}残り、必要額を引いた自由残額は${yen(freeAfterRequired)}です。`;
-    action=type==="experience"
-      ?"今の生活に意味がある経験費として、予定を決めて使います。"
-      :type==="study"
-        ?"学業・制作への支出として、使用開始日を決めて購入します。"
-        :"自由費の範囲内です。同月に同規模の買い物を重ねない条件で購入できます。";
-  }else{
-    decision="条件付きで買える";
-    cls="warn";
-    reason=`購入後も必要額を引いて${yen(freeAfterRequired)}残ります。ただし購入額${yen(price)}は、現在の自由費目安${yen(p.monthlyFreeTarget)}に対して大きめです。`;
-    action=p.mode==="資産悪化が進行中"||p.mode==="下降傾向"||p.mode==="継続的な使いすぎ"
-      ?"残高不足ではありませんが、直近の減少傾向があるため、他の予定と合わせてから決めます。"
-      :"残高不足ではありません。今月の他の外出・趣味費と合計して自由費内なら購入できます。";
+  if(savingsMode==="surplus"){
+    savingsAllowance=Math.max(0,p.savingsSurplus);
+    savingsBasis=`直近8件の最低貯金額${yen(p.recentSavingsFloor)}を超えた分`;
+  }else if(savingsMode==="custom"){
+    savingsAllowance=Math.min(p.savings,customSavingsLimit);
+    savingsBasis=`自分で指定した上限${yen(customSavingsLimit)}`;
   }
 
-  if((p.overSaving||p.ultraLowSpending) && decision==="条件付きで買える" && type!=="want"){
+  const totalAvailable=p.dynamicBalance+savingsAllowance;
+  const shortage=price-totalAvailable;
+  const dynamicUsed=Math.min(price,p.dynamicBalance);
+  const savingsUsed=Math.max(0,price-dynamicUsed);
+  const dynamicAfter=p.dynamicBalance-dynamicUsed;
+  const savingsAfter=p.savings-savingsUsed;
+  const savingsUseRate=p.savings>0?savingsUsed/p.savings:0;
+
+  let decision,cls,reason,action;
+
+  if(shortage>0){
+    decision="今は買えない";
+    cls="stop";
+    reason=`使える金額は、動的なお金${yen(p.dynamicBalance)}と、設定上使える貯金${yen(savingsAllowance)}の合計${yen(totalAvailable)}です。購入額に${yen(shortage)}足りません。`;
+    action="価格を下げるか、貯金を使う上限を自分で変更して再判定します。";
+  }else if(savingsUsed===0){
     decision="買ってよい";
     cls="";
-    reason="貯金・節約が強すぎる傾向があり、購入後も必要な残高を維持できます。";
-    action="貯金を増やす代わりに、学生生活・学業・経験へ使う支出として実行します。";
+    reason=`動的なお金${yen(p.dynamicBalance)}から購入額${yen(price)}を引くと、${yen(dynamicAfter)}残ります。貯金は使いません。`;
+    action=type==="need"
+      ?"必要な支出として購入できます。"
+      :type==="study"
+        ?"学業・制作に使う時期が決まっているなら購入できます。"
+        :type==="experience"
+          ?"予定が具体的なら、経験への支出として購入できます。"
+          :"今月の他の趣味費と重ならないなら購入できます。";
+  }else{
+    const crossesFloor=savingsAfter<p.recentSavingsFloor;
+    const heavyUse=savingsUseRate>=.30;
+    const moderateUse=savingsUseRate>=.15;
+
+    if(type==="want" && (heavyUse || crossesFloor)){
+      decision="貯金を使ってまで買うか再検討";
+      cls="warn";
+      reason=`動的なお金${yen(p.dynamicBalance)}に加えて、貯金から${yen(savingsUsed)}使います。購入後の貯金は${yen(savingsAfter)}です。`;
+      action=crossesFloor
+        ? `直近8件の最低貯金額${yen(p.recentSavingsFloor)}を下回るため、趣味目的なら一度保留します。`
+        : `貯金の${(savingsUseRate*100).toFixed(1)}%を使うため、同じ金額を再び貯める期間も考えて決めます。`;
+    }else if(type==="experience" && heavyUse){
+      decision="条件付きで買える";
+      cls="warn";
+      reason=`貯金から${yen(savingsUsed)}使い、購入後の貯金は${yen(savingsAfter)}です。`;
+      action="日程や参加予定が具体的で、今しかできない経験なら購入候補です。";
+    }else if(type==="study" && crossesFloor){
+      decision="条件付きで買える";
+      cls="warn";
+      reason=`学業・制作目的ですが、購入後の貯金${yen(savingsAfter)}は直近の最低額${yen(p.recentSavingsFloor)}を下回ります。`;
+      action="代替手段や中古価格を確認し、それでも必要なら購入します。";
+    }else{
+      decision="買ってよい";
+      cls=moderateUse?"warn":"";
+      reason=`動的なお金${yen(p.dynamicBalance)}を使い切ったあと、貯金から${yen(savingsUsed)}使います。購入後は、動的なお金${yen(dynamicAfter)}、貯金${yen(savingsAfter)}です。`;
+      action=type==="need"
+        ?"必要な支出として、貯金を使う判断ができます。"
+        :`${savingsBasis}の範囲内で使っています。`;
+    }
+  }
+
+  if(p.latestDebt>0 && savingsUsed>0){
+    cls=cls||"warn";
+    action+=` 借金${yen(p.latestDebt)}があるため、貯金を使う額と返済を同時に増やさないようにします。`;
   }
 
   result.className=`purchase-result plan-message ${cls}`;
@@ -2333,11 +2383,11 @@ function judgePurchase(){
     <h3><span class="decision">${name}：${decision}</span></h3>
     ${reason}<br><strong>${action}</strong>
     <div class="purchase-metrics">
-      <span>現在 ${yen(p.dynamicBalance)}</span>
-      <span>購入後 ${yen(afterDynamic)}</span>
-      <span>必要額 ${yen(requiredBeforeSalary)}</span>
-      <span>必要額を引いた残り ${yen(freeAfterRequired)}</span>
-      <span>給料日まで ${p.daysToSalary}日</span>
+      <span>動的なお金 ${yen(p.dynamicBalance)}</span>
+      <span>設定上使える貯金 ${yen(savingsAllowance)}</span>
+      <span>貯金から使う額 ${yen(savingsUsed)}</span>
+      <span>購入後の貯金 ${yen(savingsAfter)}</span>
+      <span>購入後の動的資金 ${yen(dynamicAfter)}</span>
     </div>
   `;
 }
@@ -2591,6 +2641,9 @@ $("form").onsubmit=e=>{
 };
 
 
+$("savingsUseMode").addEventListener("change",()=>{
+  $("savingsLimitWrap").style.display=$("savingsUseMode").value==="custom"?"grid":"none";
+});
 $("purchaseJudge").addEventListener("click",judgePurchase);
 $("purchasePrice").addEventListener("keydown",event=>{
   if(event.key==="Enter"){

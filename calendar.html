@@ -404,9 +404,225 @@ input:focus,select:focus,textarea:focus{
   .two{grid-template-columns:1fr}
   .home-return span:last-child{display:none}
 }
+
+/* Select visibility fix */
+select{
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  background:
+    linear-gradient(45deg,transparent 50%,#9fc3ea 50%) calc(100% - 18px) calc(50% - 3px)/6px 6px no-repeat,
+    linear-gradient(135deg,#9fc3ea 50%,transparent 50%) calc(100% - 12px) calc(50% - 3px)/6px 6px no-repeat,
+    rgba(43,65,96,.96) !important;
+  color:#f4f7ff !important;
+  border:1px solid rgba(159,195,234,.28) !important;
+  padding-right:42px !important;
+}
+select:hover{
+  background:
+    linear-gradient(45deg,transparent 50%,#bfe0ff 50%) calc(100% - 18px) calc(50% - 3px)/6px 6px no-repeat,
+    linear-gradient(135deg,#bfe0ff 50%,transparent 50%) calc(100% - 12px) calc(50% - 3px)/6px 6px no-repeat,
+    rgba(51,77,112,.98) !important;
+}
+select:focus{
+  background:
+    linear-gradient(45deg,transparent 50%,#d6ebff 50%) calc(100% - 18px) calc(50% - 3px)/6px 6px no-repeat,
+    linear-gradient(135deg,#d6ebff 50%,transparent 50%) calc(100% - 12px) calc(50% - 3px)/6px 6px no-repeat,
+    rgba(56,84,121,.98) !important;
+  color:#ffffff !important;
+}
+select option{
+  background:#1f3552 !important;
+  color:#f4f7ff !important;
+}
+select option:checked{
+  background:#315986 !important;
+  color:#ffffff !important;
+}
+input[type="date"],
+input[type="time"]{
+  background:rgba(255,255,255,.07);
+}
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator{
+  filter:invert(85%) sepia(12%) saturate(789%) hue-rotate(177deg) brightness(102%) contrast(92%);
+  opacity:.95;
+  cursor:pointer;
+}
+
+
+.notification-bar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+  padding:12px 14px;
+  border-radius:16px;
+  background:rgba(117,170,255,.08);
+  border:1px solid rgba(117,170,255,.17);
+}
+.notification-bar strong{
+  display:block;
+  font-size:.82rem;
+}
+.notification-bar span{
+  color:var(--muted);
+  font-size:.72rem;
+}
+.notify-btn{
+  flex:0 0 auto;
+  min-height:38px;
+  padding:0 13px;
+  border-radius:999px;
+  border:0;
+  color:#07111f;
+  background:linear-gradient(135deg,var(--blue),var(--mint));
+  font-weight:850;
+}
+.notify-btn:disabled{
+  opacity:.5;
+  cursor:default;
+}
+.toast-stack{
+  position:fixed;
+  z-index:2000;
+  top:18px;
+  right:18px;
+  display:grid;
+  gap:10px;
+  width:min(360px,calc(100% - 36px));
+  pointer-events:none;
+}
+.toast{
+  pointer-events:auto;
+  padding:15px 16px;
+  border-radius:17px;
+  color:#f7faff;
+  background:rgba(18,36,61,.96);
+  border:1px solid rgba(124,240,207,.24);
+  box-shadow:0 20px 50px rgba(0,0,0,.32);
+  animation:toastIn .22s ease both;
+}
+.toast strong{
+  display:block;
+  margin-bottom:4px;
+}
+.toast span{
+  color:#b8c9de;
+  font-size:.78rem;
+}
+@keyframes toastIn{
+  from{opacity:0;transform:translateY(-8px) scale(.98)}
+  to{opacity:1;transform:none}
+}
+.notify-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  margin-top:5px;
+  color:#bcd6f3;
+  font-size:.68rem;
+}
+
+
+.expense-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:13px 14px;
+  border-radius:16px;
+  background:rgba(124,240,207,.07);
+  border:1px solid rgba(124,240,207,.16);
+}
+.expense-toggle div strong{
+  display:block;
+  color:var(--text);
+  font-size:.84rem;
+}
+.expense-toggle div span{
+  color:var(--muted);
+  font-size:.72rem;
+}
+.expense-switch{
+  flex:0 0 auto;
+  min-width:112px;
+  min-height:38px;
+  border:1px solid rgba(124,240,207,.22);
+  border-radius:999px;
+  color:#c5d5e8;
+  background:rgba(255,255,255,.06);
+  font-weight:800;
+}
+.expense-switch.active{
+  color:#07111f;
+  background:linear-gradient(135deg,var(--mint),var(--blue));
+}
+.expense-fields{
+  display:none;
+  gap:10px;
+  grid-template-columns:1fr 1fr;
+  padding:13px;
+  border-radius:16px;
+  background:rgba(117,170,255,.06);
+}
+.expense-fields.show{display:grid}
+.expense-mark{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-top:5px;
+  color:#ffd594;
+  font-size:.68rem;
+}
+@media(max-width:620px){
+  .expense-fields{grid-template-columns:1fr}
+}
+
+
+.money-toggle{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  padding:11px 12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.045);
+}
+.money-toggle input{
+  width:auto;
+  accent-color:var(--mint);
+}
+.money-fields{
+  display:none;
+  gap:10px;
+}
+.money-fields.active{
+  display:grid;
+}
+.money-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  margin-top:5px;
+  padding:3px 7px;
+  border-radius:999px;
+  font-size:.67rem;
+  font-weight:800;
+}
+.money-badge.expense{
+  color:#ffd4df;
+  background:rgba(255,127,159,.13);
+}
+.money-badge.income{
+  color:#c9ffef;
+  background:rgba(124,240,207,.12);
+}
+
 </style>
 </head>
 <body>
+<div id="toastStack" class="toast-stack" aria-live="polite"></div>
 <a class="home-return" href="index.html" aria-label="ホームへ戻る">
   <span class="home-return-icon" aria-hidden="true"></span>
   <span>HOME</span>
@@ -429,6 +645,14 @@ input:focus,select:focus,textarea:focus{
         <div class="section-head">
           <h2>予定を追加</h2>
           <span class="badge">NEW EVENT</span>
+        </div>
+
+        <div class="notification-bar">
+          <div>
+            <strong>予定通知</strong>
+            <span id="notificationStatus">通知の状態を確認しています</span>
+          </div>
+          <button id="enableNotifications" class="notify-btn" type="button">通知を許可</button>
         </div>
 
         <div class="form-grid">
@@ -461,6 +685,61 @@ input:focus,select:focus,textarea:focus{
             <label>
               終了
               <input id="eventEnd" type="time">
+            </label>
+          </div>
+
+          <label>
+            通知
+            <select id="eventReminder">
+              <option value="none">通知しない</option>
+              <option value="0">開始時刻</option>
+              <option value="5">5分前</option>
+              <option value="10">10分前</option>
+              <option value="30">30分前</option>
+              <option value="60">1時間前</option>
+              <option value="1440">1日前</option>
+            </select>
+          </label>
+
+          <div class="expense-toggle">
+            <div>
+              <strong>この予定を支出予定にする</strong>
+              <span>資産管理に金額と支払日を連携します</span>
+            </div>
+            <button id="expenseToggle" class="expense-switch" type="button" aria-pressed="false">支出なし</button>
+          </div>
+
+          <div id="expenseFields" class="expense-fields">
+            <label>
+              予定金額
+              <input id="eventExpenseAmount" type="number" min="0" step="100" placeholder="15000">
+            </label>
+            <label>
+              支出の重要度
+              <select id="eventExpensePriority">
+                <option value="essential">必ず必要</option>
+                <option value="important">できれば守る</option>
+                <option value="optional">削ってもよい</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="money-toggle">
+            <input id="hasMoneyFlow" type="checkbox">
+            この予定でお金が動く
+          </label>
+
+          <div id="moneyFields" class="money-fields two">
+            <label>
+              種類
+              <select id="moneyFlowType">
+                <option value="expense">支出</option>
+                <option value="income">収入</option>
+              </select>
+            </label>
+            <label>
+              金額
+              <input id="moneyFlowAmount" type="number" min="0" step="100" placeholder="10000">
             </label>
           </div>
 
@@ -514,8 +793,10 @@ input:focus,select:focus,textarea:focus{
 
 <script>
 const STORAGE_KEY="money-if-calendar-events-v1";
+const PLANNED_EXPENSES_KEY="money-if-planned-expenses-v1";
 const $=id=>document.getElementById(id);
 const pad=n=>String(n).padStart(2,"0");
+const yen=n=>`${Math.round(Number(n)||0).toLocaleString("ja-JP")}円`;
 const dateKey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
 const today=new Date();
 let viewDate=new Date(today.getFullYear(),today.getMonth(),1);
@@ -532,6 +813,37 @@ function loadEvents(){
 function saveEvents(events){
   localStorage.setItem(STORAGE_KEY,JSON.stringify(events));
 }
+function loadLinkedExpenses(){
+  try{
+    const data=JSON.parse(localStorage.getItem(PLANNED_EXPENSES_KEY)||"[]");
+    return Array.isArray(data)?data:[];
+  }catch{
+    return [];
+  }
+}
+function saveLinkedExpenses(items){
+  localStorage.setItem(PLANNED_EXPENSES_KEY,JSON.stringify(items));
+}
+function upsertLinkedExpense(event){
+  const items=loadLinkedExpenses();
+  const filtered=items.filter(item=>item.calendarEventId!==event.id);
+  if(event.isExpense&&event.expenseAmount>0){
+    filtered.push({
+      id:event.expenseId||("cal-exp-"+event.id),
+      calendarEventId:event.id,
+      source:"calendar",
+      name:event.title,
+      amount:event.expenseAmount,
+      date:event.date,
+      priority:event.expensePriority||"important"
+    });
+  }
+  saveLinkedExpenses(filtered);
+}
+function removeLinkedExpense(eventId){
+  saveLinkedExpenses(loadLinkedExpenses().filter(item=>item.calendarEventId!==eventId));
+}
+
 function escapeHtml(value){
   return String(value??"").replace(/[&<>"']/g,ch=>({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
@@ -540,6 +852,93 @@ function escapeHtml(value){
 function typeLabel(type){
   return {private:"プライベート",study:"学業",work:"仕事・バイト",important:"重要"}[type]||"予定";
 }
+function reminderLabel(value){
+  const labels={
+    "0":"開始時刻",
+    "5":"5分前",
+    "10":"10分前",
+    "30":"30分前",
+    "60":"1時間前",
+    "1440":"1日前"
+  };
+  return labels[String(value)]||"なし";
+}
+function updateNotificationUI(){
+  const status=$("notificationStatus");
+  const button=$("enableNotifications");
+  if(!("Notification" in window)){
+    status.textContent="このブラウザは通知に対応していません";
+    button.disabled=true;
+    return;
+  }
+  if(Notification.permission==="granted"){
+    status.textContent="通知は有効です（ページを開いている間）";
+    button.textContent="通知オン";
+    button.disabled=true;
+  }else if(Notification.permission==="denied"){
+    status.textContent="通知がブロックされています。ブラウザ設定から変更してください";
+    button.textContent="ブロック中";
+    button.disabled=true;
+  }else{
+    status.textContent="予定時刻にブラウザ通知を出せます";
+    button.textContent="通知を許可";
+    button.disabled=false;
+  }
+}
+async function requestNotifications(){
+  if(!("Notification" in window))return;
+  try{
+    await Notification.requestPermission();
+  }catch{}
+  updateNotificationUI();
+}
+function showToast(event){
+  const stack=$("toastStack");
+  const toast=document.createElement("div");
+  toast.className="toast";
+  toast.innerHTML=`
+    <strong>${escapeHtml(event.title)}</strong>
+    <span>${event.start||"時刻未定"}${event.memo?`・${escapeHtml(event.memo)}`:""}</span>
+  `;
+  stack.appendChild(toast);
+  setTimeout(()=>toast.remove(),9000);
+}
+function notifyEvent(event){
+  showToast(event);
+  if("Notification" in window&&Notification.permission==="granted"){
+    try{
+      new Notification(event.title,{
+        body:`${event.start||"時刻未定"}${event.memo?`・${event.memo}`:""}`,
+        tag:`money-if-${event.id}`,
+        renotify:false
+      });
+    }catch{}
+  }
+}
+function notificationTime(event){
+  if(!event.date||!event.start||!event.reminder||event.reminder==="none")return null;
+  const start=new Date(`${event.date}T${event.start}:00`);
+  return start.getTime()-(Number(event.reminder)||0)*60000;
+}
+function checkNotifications(){
+  const now=Date.now();
+  const events=loadEvents();
+  let changed=false;
+  for(const event of events){
+    const target=notificationTime(event);
+    if(target===null)continue;
+    const key=`${event.date}|${event.start}|${event.reminder}`;
+    if(event.lastNotifiedKey===key)continue;
+    // 予定通知時刻から10分以内、またはバックグラウンドから戻った直後の遅延通知
+    if(now>=target&&now-target<=10*60*1000){
+      notifyEvent(event);
+      event.lastNotifiedKey=key;
+      changed=true;
+    }
+  }
+  if(changed)saveEvents(events);
+}
+
 function formatDateJP(key){
   const d=new Date(key+"T00:00:00");
   return `${d.getFullYear()}年${d.getMonth()+1}月${d.getDate()}日`;
@@ -605,6 +1004,9 @@ function renderSelected(){
     <div class="agenda-item" style="border-left-color:${event.type==="study"?"var(--violet)":event.type==="work"?"var(--orange)":event.type==="important"?"var(--danger)":"var(--mint)"}">
       <strong>${escapeHtml(event.title)}</strong>
       <span>${event.start||"時刻未定"}${event.end?` – ${event.end}`:""}・${typeLabel(event.type)}</span>
+      ${event.moneyFlowAmount>0?`<span class="money-badge ${event.moneyFlowType}">${event.moneyFlowType==="income"?"+":"−"}${yen(event.moneyFlowAmount)}</span>`:""}
+      ${event.reminder&&event.reminder!=="none"?`<span class="notify-chip">通知 ${reminderLabel(event.reminder)}</span>`:""}
+      ${event.isExpense&&event.expenseAmount>0?`<span class="expense-mark">支出予定 ¥${Number(event.expenseAmount).toLocaleString("ja-JP")}</span>`:""}
     </div>
   `).join("");
 
@@ -613,7 +1015,7 @@ function renderSelected(){
       <div class="detail-time">${event.start||"未定"}${event.end?`<br>– ${event.end}`:""}</div>
       <div class="detail-main">
         <strong>${escapeHtml(event.title)}</strong>
-        <p>${typeLabel(event.type)}${event.memo?`<br>${escapeHtml(event.memo)}`:""}</p>
+        <p>${typeLabel(event.type)}${event.reminder&&event.reminder!=="none"?`・通知 ${reminderLabel(event.reminder)}`:""}${event.isExpense&&event.expenseAmount>0?`・支出予定 ¥${Number(event.expenseAmount).toLocaleString("ja-JP")}`:""}${event.memo?`<br>${escapeHtml(event.memo)}`:""}</p>
       </div>
       <button class="icon-btn delete-event" data-id="${event.id}" type="button">×</button>
     </div>
@@ -621,8 +1023,10 @@ function renderSelected(){
 
   document.querySelectorAll(".delete-event").forEach(btn=>{
     btn.addEventListener("click",()=>{
-      const next=loadEvents().filter(event=>event.id!==btn.dataset.id);
+      const eventId=btn.dataset.id;
+      const next=loadEvents().filter(event=>event.id!==eventId);
       saveEvents(next);
+      removeLinkedExpense(eventId);
       renderAll();
     });
   });
@@ -637,7 +1041,24 @@ function clearForm(){
   $("eventEnd").value="";
   $("eventMemo").value="";
   $("eventType").value="private";
+  $("eventReminder").value="none";
+  $("hasMoneyFlow").checked=false;
+  $("moneyFields").classList.remove("active");
+  $("moneyFlowType").value="expense";
+  $("moneyFlowAmount").value="";
   $("eventDate").value=selectedDate;
+  $("eventExpenseAmount").value="";
+  $("eventExpensePriority").value="important";
+  setExpenseMode(false);
+}
+
+let expenseMode=false;
+function setExpenseMode(enabled){
+  expenseMode=Boolean(enabled);
+  $("expenseFields").classList.toggle("show",expenseMode);
+  $("expenseToggle").classList.toggle("active",expenseMode);
+  $("expenseToggle").setAttribute("aria-pressed",String(expenseMode));
+  $("expenseToggle").textContent=expenseMode?"支出予定オン":"支出なし";
 }
 function addEvent(){
   const title=$("eventTitle").value.trim();
@@ -645,22 +1066,37 @@ function addEvent(){
   if(!title||!date)return;
 
   const events=loadEvents();
-  events.push({
-    id:String(Date.now())+Math.random().toString(36).slice(2,7),
+  const id=String(Date.now())+Math.random().toString(36).slice(2,7);
+  const expenseAmount=Math.max(0,+$("eventExpenseAmount").value||0);
+  if(expenseMode&&expenseAmount<=0){
+    $("eventExpenseAmount").focus();
+    return;
+  }
+  const newEvent={
+    id,
     title,
     date,
     start:$("eventStart").value,
     end:$("eventEnd").value,
     type:$("eventType").value,
+    reminder:$("eventReminder").value,
+    lastNotifiedKey:"",
+    isExpense:expenseMode,
+    expenseAmount:expenseMode?expenseAmount:0,
+    expensePriority:$("eventExpensePriority").value,
+    expenseId:"cal-exp-"+id,
     memo:$("eventMemo").value.trim()
-  });
+  };
+  events.push(newEvent);
   saveEvents(events);
+  upsertLinkedExpense(newEvent);
   selectedDate=date;
   const d=new Date(date+"T00:00:00");
   viewDate=new Date(d.getFullYear(),d.getMonth(),1);
   clearForm();
   renderAll();
 }
+$("expenseToggle").addEventListener("click",()=>setExpenseMode(!expenseMode));
 $("addEvent").addEventListener("click",addEvent);
 $("clearForm").addEventListener("click",clearForm);
 $("prevMonth").addEventListener("click",()=>{
@@ -684,8 +1120,20 @@ $("eventTitle").addEventListener("keydown",event=>{
   }
 });
 
+$("hasMoneyFlow").addEventListener("change",()=>{
+  $("moneyFields").classList.toggle("active",$("hasMoneyFlow").checked);
+});
+$("enableNotifications").addEventListener("click",requestNotifications);
+document.addEventListener("visibilitychange",()=>{
+  if(!document.hidden)checkNotifications();
+});
+window.addEventListener("focus",checkNotifications);
+setExpenseMode(false);
 $("eventDate").value=selectedDate;
+updateNotificationUI();
 renderAll();
+checkNotifications();
+setInterval(checkNotifications,30000);
 </script>
 </body>
 </html>

@@ -1411,6 +1411,199 @@ body.theme-day .canvas-wrap{
   border:none !important;
 }
 
+
+.expense-forecast{
+  display:grid;
+  gap:10px;
+  margin-top:16px;
+}
+.forecast-card{
+  display:grid;
+  grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(110px,.7fr));
+  gap:12px;
+  align-items:center;
+  padding:14px 15px;
+  border-radius:16px;
+  background:rgba(255,255,255,.035);
+  border-left:4px solid var(--accent);
+}
+.forecast-card.urgent{border-left-color:#ff8d76}
+.forecast-card.warning{border-left-color:#ffc56b}
+.forecast-title strong{
+  display:block;
+  margin-bottom:4px;
+}
+.forecast-title span,
+.forecast-metric span{
+  color:var(--muted);
+  font-size:.74rem;
+}
+.forecast-metric strong{
+  display:block;
+  margin-top:3px;
+}
+.forecast-summary{
+  margin-top:12px;
+  padding:14px 15px;
+  border-radius:16px;
+  background:rgba(106,167,255,.08);
+  line-height:1.7;
+}
+@media(max-width:780px){
+  .forecast-card{grid-template-columns:1fr 1fr}
+}
+
+
+.future-flow-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:14px 0;
+}
+.future-flow-card{
+  padding:14px;
+  border-radius:16px;
+  background:rgba(255,255,255,.04);
+}
+.future-flow-card span{
+  display:block;
+  color:var(--muted);
+  font-size:.75rem;
+  margin-bottom:5px;
+}
+.future-flow-list{
+  display:grid;
+  gap:8px;
+  margin-top:12px;
+}
+.future-flow-row{
+  display:grid;
+  grid-template-columns:90px 1fr auto;
+  gap:10px;
+  align-items:center;
+  padding:11px 12px;
+  border-radius:14px;
+  background:rgba(255,255,255,.035);
+}
+.future-flow-row .date{
+  color:var(--muted);
+  font-size:.75rem;
+}
+.future-flow-row .amount{
+  font-weight:850;
+}
+.future-flow-row.expense .amount{color:#ffb2c5}
+.future-flow-row.income .amount{color:#aaf4df}
+.future-flow-advice{
+  margin-top:12px;
+  padding:14px 15px;
+  border-radius:16px;
+  background:rgba(117,170,255,.08);
+  line-height:1.7;
+}
+@media(max-width:620px){
+  .future-flow-grid{grid-template-columns:1fr}
+  .future-flow-row{grid-template-columns:78px 1fr}
+  .future-flow-row .amount{grid-column:2}
+}
+
+
+/* Final HOME button styles */
+a.home-return{
+  position:fixed !important;
+  z-index:9999 !important;
+  top:16px !important;
+  left:16px !important;
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:10px !important;
+  width:auto !important;
+  min-height:48px !important;
+  padding:6px 16px 6px 7px !important;
+  margin:0 !important;
+  border:1px solid rgba(176,210,241,.30) !important;
+  border-radius:999px !important;
+  color:#eef6ff !important;
+  background:linear-gradient(145deg,rgba(15,38,66,.94),rgba(25,61,96,.88)) !important;
+  box-shadow:0 16px 38px rgba(3,14,29,.36),inset 0 1px 0 rgba(255,255,255,.10) !important;
+  text-decoration:none !important;
+  font-size:.82rem !important;
+  font-weight:850 !important;
+  line-height:1 !important;
+  letter-spacing:.07em !important;
+  backdrop-filter:blur(18px) saturate(140%) !important;
+  -webkit-backdrop-filter:blur(18px) saturate(140%) !important;
+  overflow:visible !important;
+}
+a.home-return .home-return-icon{
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  width:36px !important;
+  height:36px !important;
+  min-width:36px !important;
+  border-radius:50% !important;
+  background:linear-gradient(145deg,#72aaff,#7cf0cf) !important;
+  box-shadow:0 8px 22px rgba(80,159,226,.30) !important;
+}
+a.home-return .home-return-icon::before{
+  content:"" !important;
+  display:block !important;
+  width:10px !important;
+  height:10px !important;
+  margin-left:4px !important;
+  border-left:2.5px solid #071421 !important;
+  border-bottom:2.5px solid #071421 !important;
+  transform:rotate(45deg) !important;
+}
+a.home-return .home-return-label{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:4px !important;
+  color:inherit !important;
+  white-space:nowrap !important;
+}
+a.home-return .home-return-label small{
+  display:block !important;
+  color:#abc0d8 !important;
+  font-size:.61rem !important;
+  font-weight:650 !important;
+  line-height:1 !important;
+  letter-spacing:.01em !important;
+}
+a.home-return:hover{
+  transform:translateY(-2px) !important;
+  background:linear-gradient(145deg,rgba(25,58,94,.98),rgba(31,78,116,.94)) !important;
+  box-shadow:0 20px 44px rgba(3,14,29,.40),0 0 0 4px rgba(124,240,207,.08) !important;
+}
+body.theme-morning a.home-return,
+body.theme-day a.home-return{
+  color:#10233d !important;
+  background:linear-gradient(145deg,rgba(89,135,180,.94),rgba(130,170,207,.90)) !important;
+  border:1px solid rgba(20,49,78,.22) !important;
+  box-shadow:0 14px 32px rgba(29,58,91,.25),inset 0 1px 0 rgba(255,255,255,.20) !important;
+}
+body.theme-morning a.home-return .home-return-label small,
+body.theme-day a.home-return .home-return-label small{
+  color:#294c6d !important;
+}
+@media(max-width:640px){
+  a.home-return{
+    top:10px !important;
+    left:10px !important;
+    min-height:43px !important;
+    padding:4px 6px !important;
+  }
+  a.home-return .home-return-icon{
+    width:34px !important;
+    height:34px !important;
+    min-width:34px !important;
+  }
+  a.home-return .home-return-label{
+    display:none !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -1611,6 +1804,18 @@ body.theme-day .canvas-wrap{
             <button id="plannedAdd" type="button" class="primary" style="margin-top:0">追加</button>
           </div>
           <div id="plannedExpenseList" class="planned-expense-list"></div>
+          <div id="expenseForecast" class="expense-forecast"></div>
+        </div>
+      </section>
+
+
+      <section class="panel">
+        <div class="panel-inner">
+          <div class="section-head">
+            <h2 class="section-title">これからのお金の動き</h2>
+            <span class="badge">Calendar Link</span>
+          </div>
+          <div id="futureFlowSummary"></div>
         </div>
       </section>
 
@@ -2668,12 +2873,82 @@ function loadPlannedExpenses(){
 function savePlannedExpenses(items){
   localStorage.setItem(PLANNED_EXPENSES_KEY,JSON.stringify(items));
 }
+
+function renderExpenseForecast(){
+  const box=$("expenseForecast");
+  if(!box)return;
+
+  const items=loadPlannedExpenses()
+    .filter(item=>item.date&&item.amount>0)
+    .sort((a,b)=>a.date.localeCompare(b.date));
+  const records=load().sort((a,b)=>a.date.localeCompare(b.date));
+
+  if(!items.length){
+    box.innerHTML="";
+    return;
+  }
+
+  const latest=records.at(-1);
+  const dynamic=latest?latest.cash+latest.card:0;
+  const now=new Date();
+  now.setHours(0,0,0,0);
+
+  let cumulative=0;
+  let firstRisk=null;
+  const cards=items.map(item=>{
+    const due=new Date(item.date+"T00:00:00");
+    const days=Math.max(0,Math.ceil((due-now)/86400000));
+    cumulative+=Number(item.amount)||0;
+    const daily=days>0?Math.ceil(item.amount/days):item.amount;
+    const weekly=days>0?Math.ceil(item.amount/Math.max(1,days/7)/100)*100:item.amount;
+    const remainingAfter=dynamic-cumulative;
+    const urgent=days<=7;
+    const risk=remainingAfter<0;
+    if(risk&&!firstRisk)firstRisk={item,shortage:Math.abs(remainingAfter)};
+
+    return `
+      <div class="forecast-card ${risk?"urgent":urgent?"warning":""}">
+        <div class="forecast-title">
+          <strong>${escapeHtml(item.name)}</strong>
+          <span>${item.date}に${yen(item.amount)}の支出予定</span>
+        </div>
+        <div class="forecast-metric">
+          <span>あと</span>
+          <strong>${days}日</strong>
+        </div>
+        <div class="forecast-metric">
+          <span>毎週残す目安</span>
+          <strong>${yen(weekly)}</strong>
+        </div>
+        <div class="forecast-metric">
+          <span>予定確保後</span>
+          <strong>${yen(remainingAfter)}</strong>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  let summary;
+  if(!latest){
+    summary="資産記録を入力すると、現在の動的なお金から支出予定を確保できるか計算します。";
+  }else if(firstRisk){
+    summary=`${firstRisk.item.date}の「${escapeHtml(firstRisk.item.name)}」までに、現在の動的なお金では${yen(firstRisk.shortage)}不足する予測です。支出を減らすか、貯金から使う額を事前に決める必要があります。`;
+  }else{
+    const nearest=items[0];
+    const days=Math.max(0,Math.ceil((new Date(nearest.date+"T00:00:00")-now)/86400000));
+    const weekly=days>0?Math.ceil(nearest.amount/Math.max(1,days/7)/100)*100:nearest.amount;
+    summary=`${nearest.date}の「${escapeHtml(nearest.name)}」に向けて、毎週${yen(weekly)}程度を動的なお金から使わずに残すと、予定日に確保できます。`;
+  }
+
+  box.innerHTML=`<div class="forecast-summary">${summary}</div>${cards}`;
+}
 function renderPlannedExpenses(){
   const box=$("plannedExpenseList");
   if(!box)return;
   const items=loadPlannedExpenses().sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
   if(!items.length){
     box.innerHTML='<div class="planned-expense-empty">まだ予定支出はありません。</div>';
+    renderExpenseForecast();
     return;
   }
   box.innerHTML=items.map(item=>`
@@ -2689,8 +2964,10 @@ function renderPlannedExpenses(){
       const next=loadPlannedExpenses().filter(item=>item.id!==btn.dataset.id);
       savePlannedExpenses(next);
       renderPlannedExpenses();
+renderFutureMoneyFlows();
     });
   });
+  renderExpenseForecast();
 }
 function escapeHtml(value){
   return String(value??"").replace(/[&<>"']/g,ch=>({
@@ -2709,10 +2986,80 @@ function addPlannedExpense(){
     name,amount,date,priority
   });
   savePlannedExpenses(items);
+  renderPlannedExpenses();
   $("plannedName").value="";
   $("plannedAmount").value="";
   $("plannedDate").value="";
   renderPlannedExpenses();
+}
+
+
+function loadCalendarMoneyFlows(){
+  try{
+    const events=JSON.parse(localStorage.getItem("money-if-calendar-events-v1")||"[]");
+    return (Array.isArray(events)?events:[])
+      .filter(event=>Number(event.moneyFlowAmount)>0&&event.date)
+      .map(event=>({
+        id:event.id,
+        title:event.title||"予定",
+        date:event.date,
+        type:event.moneyFlowType==="income"?"income":"expense",
+        amount:Math.max(0,Number(event.moneyFlowAmount)||0)
+      }));
+  }catch{
+    return [];
+  }
+}
+function getUpcomingMoneyFlows(days=45){
+  const base=currentStudentPlan?.latestDate
+    ? new Date(currentStudentPlan.latestDate+"T00:00:00")
+    : new Date();
+  const end=new Date(base);
+  end.setDate(end.getDate()+days);
+  return loadCalendarMoneyFlows()
+    .filter(flow=>{
+      const d=new Date(flow.date+"T00:00:00");
+      return d>=base&&d<=end;
+    })
+    .sort((a,b)=>a.date.localeCompare(b.date));
+}
+function renderFutureMoneyFlows(){
+  const box=$("futureFlowSummary");
+  if(!box)return;
+  const flows=getUpcomingMoneyFlows(45);
+  const expenses=flows.filter(f=>f.type==="expense").reduce((s,f)=>s+f.amount,0);
+  const incomes=flows.filter(f=>f.type==="income").reduce((s,f)=>s+f.amount,0);
+  const net=incomes-expenses;
+
+  let advice;
+  if(!flows.length){
+    advice="カレンダーに金額付きの予定を登録すると、ここに未来の収支が表示されます。";
+  }else if(expenses>incomes){
+    const nearest=flows.find(f=>f.type==="expense");
+    advice=nearest
+      ? `${nearest.date.slice(5).replace("-","/")}の「${nearest.title}」までに、少なくとも${yen(nearest.amount)}を使わず残しておく必要があります。今後45日では支出予定が収入予定を${yen(expenses-incomes)}上回ります。`
+      : `今後45日では支出予定が収入予定を${yen(expenses-incomes)}上回ります。`;
+  }else{
+    advice=`今後45日の予定収支は${yen(net)}のプラスです。ただし収入予定より前に支出が来る場合は、先に支出分を確保します。`;
+  }
+
+  box.innerHTML=`
+    <div class="future-flow-grid">
+      <div class="future-flow-card"><span>支出予定</span><strong>${yen(expenses)}</strong></div>
+      <div class="future-flow-card"><span>収入予定</span><strong>${yen(incomes)}</strong></div>
+      <div class="future-flow-card"><span>差引予定</span><strong>${net>=0?"+":""}${yen(net)}</strong></div>
+    </div>
+    <div class="future-flow-advice">${advice}</div>
+    <div class="future-flow-list">
+      ${flows.length?flows.map(flow=>`
+        <div class="future-flow-row ${flow.type}">
+          <div class="date">${flow.date.slice(5).replace("-","/")}</div>
+          <div>${escapeHtml(flow.title)}</div>
+          <div class="amount">${flow.type==="income"?"+":"−"}${yen(flow.amount)}</div>
+        </div>
+      `).join(""):'<div class="planned-expense-empty">金額付きの予定はありません。</div>'}
+    </div>
+  `;
 }
 
 function judgePurchase(){
@@ -2736,6 +3083,9 @@ function judgePurchase(){
 
   const p=currentStudentPlan;
   const planned=loadPlannedExpenses();
+  const calendarFlows=getUpcomingMoneyFlows(45);
+  const calendarExpenses=calendarFlows.filter(f=>f.type==="expense").reduce((s,f)=>s+f.amount,0);
+  const calendarIncomes=calendarFlows.filter(f=>f.type==="income").reduce((s,f)=>s+f.amount,0);
   const today=new Date(p.latestDate+"T00:00:00");
   const horizon=new Date(today);
   horizon.setDate(horizon.getDate()+45);
@@ -2748,7 +3098,7 @@ function judgePurchase(){
 
   const essentialPlanned=relevant
     .filter(item=>item.priority==="essential")
-    .reduce((sum,item)=>sum+item.amount,0);
+    .reduce((sum,item)=>sum+item.amount,0) + calendarExpenses;
   const importantPlanned=relevant
     .filter(item=>item.priority==="important")
     .reduce((sum,item)=>sum+item.amount,0);
@@ -2823,6 +3173,8 @@ function judgePurchase(){
     <div class="purchase-metrics">
       <span>購入後に使える額 ${yen(afterPurchase)}</span>
       <span>必須予定 ${yen(essentialPlanned)}</span>
+      <span>うちカレンダー支出 ${yen(calendarExpenses)}</span>
+      <span>予定収入 ${yen(calendarIncomes)}</span>
       <span>重要予定 ${yen(importantPlanned)}</span>
       <span>任意予定 ${yen(optionalPlanned)}</span>
       <span>予定確保後 ${yen(afterImportant)}</span>
@@ -3083,6 +3435,9 @@ $("form").onsubmit=e=>{
 
 $("savingsUseMode").addEventListener("change",()=>{
   $("savingsLimitWrap").style.display=$("savingsUseMode").value==="custom"?"grid":"none";
+});
+window.addEventListener("storage",event=>{
+  if(event.key===PLANNED_EXPENSES_KEY)renderPlannedExpenses();
 });
 $("plannedAdd").addEventListener("click",addPlannedExpense);
 renderPlannedExpenses();

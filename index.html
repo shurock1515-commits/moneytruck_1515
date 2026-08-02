@@ -3,2915 +3,377 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Money IF Auto</title>
+<title>Money IF</title>
 <style>
 :root{
   --bg:#07111f;
-  --bg2:#0d1729;
-  --panel:rgba(14,24,42,.72);
-  --panel-strong:rgba(11,20,36,.88);
-  --panel-soft:rgba(255,255,255,.04);
-  --text:#eef4ff;
-  --muted:#97a7c3;
-  --line:rgba(255,255,255,.08);
-  --line-strong:rgba(255,255,255,.14);
-  --accent:#6aa7ff;
-  --accent2:#7cf0cf;
-  --accent3:#b388ff;
-  --warning:#ffc56b;
-  --danger:#ff7f9f;
-  --shadow:0 30px 80px rgba(0,0,0,.32);
-  --radius:28px;
-  --radius-sm:18px;
+  --bg2:#0c1930;
+  --panel:rgba(14,25,44,.68);
+  --text:#f2f6ff;
+  --muted:#99aac5;
+  --line:rgba(255,255,255,.11);
+  --blue:#72aaff;
+  --mint:#7cf0cf;
+  --violet:#ba91ff;
 }
 *{box-sizing:border-box}
-html,body{height:100%}
+html{min-height:100%}
 body{
   margin:0;
-  font-family:Inter,"Hiragino Sans","Yu Gothic UI","Yu Gothic",system-ui,sans-serif;
-  color:var(--text);
-  background:
-    radial-gradient(circle at 10% 10%, rgba(106,167,255,.18), transparent 28%),
-    radial-gradient(circle at 88% 15%, rgba(179,136,255,.18), transparent 24%),
-    radial-gradient(circle at 70% 80%, rgba(124,240,207,.10), transparent 28%),
-    linear-gradient(180deg,#06101d 0%,#081422 40%,#091524 100%);
   min-height:100vh;
+  color:var(--text);
+  font-family:Inter,"Hiragino Sans","Yu Gothic UI","Yu Gothic",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 15% 10%,rgba(114,170,255,.20),transparent 28%),
+    radial-gradient(circle at 87% 14%,rgba(186,145,255,.17),transparent 25%),
+    radial-gradient(circle at 68% 88%,rgba(124,240,207,.11),transparent 30%),
+    linear-gradient(155deg,#050d18 0%,#081422 43%,#0b1830 100%);
+  overflow-x:hidden;
 }
 body::before{
   content:"";
   position:fixed;
   inset:0;
   pointer-events:none;
+  opacity:.28;
   background-image:
-    linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-  background-size: 36px 36px;
-  mask-image: linear-gradient(to bottom, rgba(0,0,0,.7), transparent 92%);
+    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:42px 42px;
+  mask-image:linear-gradient(to bottom,black,transparent 88%);
 }
-.wrap{
-  width:min(1280px, calc(100% - 28px));
-  margin:0 auto;
-  padding:28px 0 70px;
+.shell{
+  width:min(1180px,calc(100% - 36px));
+  margin:auto;
+  padding:44px 0 64px;
 }
-.hero{
-  position:relative;
-  overflow:hidden;
-  background:
-    linear-gradient(135deg, rgba(106,167,255,.15), rgba(124,240,207,.08) 35%, rgba(179,136,255,.12) 100%),
-    var(--panel-strong);
-  border:1px solid var(--line);
-  border-radius:34px;
-  box-shadow:var(--shadow);
-  padding:34px;
-  margin-bottom:22px;
-}
-.hero::after{
-  content:"";
-  position:absolute;
-  width:340px;
-  height:340px;
-  border-radius:50%;
-  right:-80px;
-  top:-110px;
-  background:radial-gradient(circle, rgba(106,167,255,.22), transparent 64%);
-  pointer-events:none;
-}
-.hero-grid{
-  display:grid;
-  grid-template-columns:1.5fr .9fr;
-  gap:24px;
-  align-items:end;
-}
-.eyebrow{
-  display:inline-flex;
-  align-items:center;
-  gap:10px;
-  padding:7px 12px;
-  border-radius:999px;
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.08);
-  color:#c7d9ff;
-  font-size:.78rem;
-  letter-spacing:.16em;
-  text-transform:uppercase;
-  font-weight:800;
-}
-.eyebrow::before{
-  content:"";
-  width:8px;height:8px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  box-shadow:0 0 16px rgba(106,167,255,.7);
-}
-h1{
-  font-size:clamp(2.7rem, 6vw, 5.8rem);
-  line-height:.92;
-  margin:16px 0 0;
-  letter-spacing:-.065em;
-}
-.lead{
-  margin:16px 0 0;
-  max-width:760px;
-  color:var(--muted);
-  line-height:1.9;
-  font-size:1rem;
-}
-.hero-side{
-  display:grid;
-  gap:14px;
-}
-.status-card{
-  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:24px;
-  min-height:190px;
-  backdrop-filter:blur(20px);
-}
-.status-card small{
-  color:#b6c4da;
-  opacity:.8;
-  letter-spacing:.04em;
-}
-.status-card strong{
-  display:block;
-  font-size:2rem;
-  margin-top:10px;
-  letter-spacing:-.04em;
-}
-.status-detail{
-  margin-top:12px;
-  color:var(--muted);
-  line-height:1.72;
-}
-.mini-strip{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-}
-.mini{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.04);
-  border-radius:18px;
-  padding:14px;
-}
-.mini span{
-  display:block;
-  color:var(--muted);
-  font-size:.75rem;
-  margin-bottom:7px;
-}
-.mini strong{
-  font-size:1rem;
-}
-
-.layout{
-  display:grid;
-  grid-template-columns:360px 1fr;
-  gap:22px;
-  align-items:start;
-}
-.panel{
-  position:relative;
-  overflow:hidden;
-  background:var(--panel);
-  border:1px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  backdrop-filter:blur(18px);
-}
-.panel::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  background:linear-gradient(180deg, rgba(255,255,255,.035), transparent 42%);
-}
-.panel-inner{position:relative;z-index:1;padding:24px}
-.sticky{position:sticky;top:18px}
-.section-head{
+.topbar{
   display:flex;
-  align-items:center;
   justify-content:space-between;
-  gap:12px;
-  margin-bottom:14px;
-}
-.section-title{
-  margin:0;
-  font-size:1.12rem;
-  letter-spacing:-.03em;
-}
-.section-sub{
-  margin:0 0 18px;
-  font-size:.88rem;
-  line-height:1.75;
-  color:var(--muted);
-}
-.badge{
-  display:inline-flex;
   align-items:center;
-  gap:8px;
-  padding:7px 11px;
-  border-radius:999px;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--line);
-  color:#c9d7ee;
-  font-size:.75rem;
-  font-weight:700;
+  gap:20px;
+  margin-bottom:54px;
 }
-.badge::before{
-  content:"";
-  width:7px;height:7px;border-radius:50%;
-  background:linear-gradient(135deg,var(--accent2),var(--accent));
-}
-
-label{
-  display:block;
-  font-size:.84rem;
-  color:#d9e3f4;
-  font-weight:700;
-  margin:13px 0 8px;
-}
-.row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-.input-wrap{position:relative}
-.input-wrap::after{
-  content:"¥";
-  position:absolute;
-  left:14px;
-  top:50%;
-  transform:translateY(-50%);
-  color:#7891b4;
-  font-size:.92rem;
-  pointer-events:none;
-}
-.input-wrap input{padding-left:30px}
-input{
-  width:100%;
-  height:48px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.05);
-  color:var(--text);
-  padding:0 14px;
-  font-size:1rem;
-  outline:none;
-  transition:.18s ease;
-}
-input:focus{
-  border-color:rgba(106,167,255,.65);
-  box-shadow:0 0 0 4px rgba(106,167,255,.13);
-  background:rgba(255,255,255,.07);
-}
-input[type="date"]{
-  padding-right:14px;
-}
-button{
-  border:0;
-  border-radius:16px;
-  padding:13px 16px;
-  font-weight:800;
-  font-size:.94rem;
-  cursor:pointer;
-  transition:.18s ease;
-}
-button:hover{transform:translateY(-1px)}
-button:active{transform:translateY(0)}
-.primary{
-  width:100%;
-  margin-top:18px;
-  color:#07111f;
-  background:linear-gradient(135deg,var(--accent2),var(--accent));
-  box-shadow:0 18px 34px rgba(106,167,255,.18);
-}
-.secondary{
-  width:100%;
-  margin-top:10px;
-  color:#eff7ff;
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--line);
-}
-.danger{
-  width:100%;
-  margin-top:10px;
-  color:#ffd7df;
-  background:rgba(255,127,159,.08);
-  border:1px solid rgba(255,127,159,.18);
-}
-.note{
-  color:var(--muted);
-  font-size:.78rem;
-  line-height:1.7;
-  margin-top:12px;
-}
-
-.stack{display:grid;gap:22px}
-.stats-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:14px;
-}
-.stat{
-  position:relative;
-  overflow:hidden;
-  border-radius:22px;
-  border:1px solid var(--line);
-  background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-  padding:18px;
-}
-.stat::after{
-  content:"";
-  position:absolute;
-  inset:auto -20px -30px auto;
-  width:90px;height:90px;border-radius:50%;
-  background:radial-gradient(circle, rgba(106,167,255,.18), transparent 66%);
-}
-.stat span{
-  display:block;
-  color:var(--muted);
-  font-size:.78rem;
-  margin-bottom:8px;
-}
-.stat strong{
-  font-size:1.42rem;
-  letter-spacing:-.04em;
-}
-.stat small{
-  display:block;
-  margin-top:8px;
-  color:#bfd5f7;
-  opacity:.85;
-}
-
-.analysis{
-  border-radius:24px;
-  border:1px solid var(--line);
-  background:
-    linear-gradient(135deg, rgba(124,240,207,.08), rgba(106,167,255,.06)),
-    rgba(255,255,255,.03);
-  padding:22px;
-  line-height:1.8;
-}
-.analysis.warn{
-  background:
-    linear-gradient(135deg, rgba(255,197,107,.11), rgba(255,255,255,.03)),
-    rgba(255,255,255,.03);
-}
-.analysis.stop{
-  background:
-    linear-gradient(135deg, rgba(255,127,159,.11), rgba(255,255,255,.03)),
-    rgba(255,255,255,.03);
-}
-.analysis h3{
-  margin:0 0 10px;
-  font-size:1.24rem;
-  letter-spacing:-.03em;
-}
-.analysis strong{
-  color:#ffffff;
-}
-.analysis .foot{
-  margin-top:10px;
-  color:var(--muted);
-  font-size:.82rem;
-}
-
-.rule-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
-}
-.rule{
-  position:relative;
-  overflow:hidden;
-  min-height:144px;
-  padding:18px;
-  border-radius:22px;
-  border:1px solid var(--line);
-  background:linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
-}
-.rule::after{
-  content:"";
-  position:absolute;
-  right:-18px;top:-18px;
-  width:80px;height:80px;border-radius:50%;
-  background:radial-gradient(circle, rgba(106,167,255,.18), transparent 65%);
-}
-.rule small{
-  display:block;
-  color:#b9cae5;
-  margin-bottom:10px;
-  font-size:.76rem;
-  letter-spacing:.04em;
-}
-.rule strong{
-  display:block;
-  font-size:1.02rem;
-  line-height:1.55;
-  letter-spacing:-.02em;
-}
-
-.legend{
+.brand{
   display:flex;
-  flex-wrap:wrap;
-  gap:9px;
-  margin-bottom:14px;
-}
-.legend button{
-  padding:9px 12px;
-  border-radius:999px;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--line);
-  color:#d7e5fb;
-  font-size:.78rem;
-}
-.legend button.off{opacity:.36}
-.dot{
-  display:inline-block;
-  width:8px;height:8px;border-radius:50%;
-  margin-right:7px;
-  background:var(--dot);
-  box-shadow:0 0 10px color-mix(in srgb, var(--dot) 60%, white 0%);
-}
-
-.canvas-wrap{
-  height:400px;
-  border:1px solid var(--line);
-  border-radius:24px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.045), rgba(255,255,255,.02)),
-    #0b1527;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.04);
-  overflow:hidden;
-}
-canvas{
-  width:100%;
-  height:100%;
-  display:block;
-}
-
-.history{
-  overflow-x:auto;
-}
-.history-row{
-  display:grid;
-  grid-template-columns:108px repeat(6,1fr) 92px;
-  gap:10px;
   align-items:center;
-  min-width:770px;
-  padding:14px 0;
-  border-top:1px solid rgba(255,255,255,.08);
+  gap:12px;
+  font-weight:850;
+  letter-spacing:.08em;
+}
+.brand-mark{
+  width:38px;
+  height:38px;
+  border-radius:13px;
+  background:
+    linear-gradient(140deg,var(--blue),var(--mint));
+  box-shadow:0 12px 30px rgba(99,168,255,.28);
+  position:relative;
+}
+.brand-mark::after{
+  content:"";
+  position:absolute;
+  inset:9px;
+  border:2px solid rgba(7,17,31,.86);
+  border-radius:7px;
+}
+.top-note{
+  color:var(--muted);
   font-size:.83rem;
 }
-.history-row.head{
-  border-top:0;
-  padding-top:0;
-  color:var(--muted);
-  font-weight:700;
+.hero{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(310px,.85fr);
+  gap:42px;
+  align-items:end;
+  margin-bottom:58px;
 }
-.history-row strong{font-size:.9rem}
-.delete{
-  padding:8px 0;
-  border-radius:12px;
-  background:rgba(255,127,159,.08);
-  color:#ffd3de;
-  border:1px solid rgba(255,127,159,.16);
-}
-
-@media (max-width:960px){
-  .hero-grid,.layout{grid-template-columns:1fr}
-  .sticky{position:static}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .rule-grid{grid-template-columns:1fr}
-}
-@media (max-width:620px){
-  .wrap{width:min(100% - 18px, 1280px)}
-  .hero{padding:24px}
-  h1{font-size:3rem}
-  .mini-strip,.stats-grid,.row{grid-template-columns:1fr}
-  .canvas-wrap{height:330px}
-}
-
-/* Time-based themes */
-body.theme-morning{
-  --bg:#f5f7fb;
-  --bg2:#eaf0f8;
-  --panel:rgba(255,255,255,.76);
-  --panel-strong:rgba(255,255,255,.90);
-  --panel-soft:rgba(20,40,70,.04);
-  --text:#182235;
-  --muted:#6f7e96;
-  --line:rgba(24,34,53,.10);
-  --line-strong:rgba(24,34,53,.16);
-  --accent:#4e7cff;
-  --accent2:#54c8a8;
-  --accent3:#9c78ff;
-  --warning:#cc8517;
-  --danger:#d94f72;
-  --shadow:0 24px 60px rgba(44,67,106,.13);
-  background:
-    radial-gradient(circle at 12% 8%, rgba(118,166,255,.28), transparent 30%),
-    radial-gradient(circle at 88% 12%, rgba(255,196,133,.20), transparent 24%),
-    linear-gradient(180deg,#f7faff 0%,#eef3fa 50%,#e9eff7 100%);
-}
-body.theme-day{
-  --bg:#eef5fb;
-  --bg2:#e4edf6;
-  --panel:rgba(255,255,255,.80);
-  --panel-strong:rgba(255,255,255,.94);
-  --panel-soft:rgba(30,70,110,.04);
-  --text:#152033;
-  --muted:#697991;
-  --line:rgba(21,32,51,.10);
-  --line-strong:rgba(21,32,51,.16);
-  --accent:#3978ff;
-  --accent2:#34c6a0;
-  --accent3:#8f69f3;
-  --warning:#c67b13;
-  --danger:#d84f70;
-  --shadow:0 26px 64px rgba(45,72,112,.14);
-  background:
-    radial-gradient(circle at 10% 10%, rgba(87,154,255,.22), transparent 28%),
-    radial-gradient(circle at 85% 15%, rgba(76,220,187,.15), transparent 23%),
-    linear-gradient(180deg,#f3f8fd 0%,#eaf2f9 55%,#e4edf6 100%);
-}
-body.theme-evening{
-  --bg:#24182f;
-  --bg2:#30203e;
-  --panel:rgba(45,30,59,.70);
-  --panel-strong:rgba(38,25,51,.88);
-  --panel-soft:rgba(255,255,255,.04);
-  --text:#fff3ef;
-  --muted:#c6b0bd;
-  --line:rgba(255,255,255,.09);
-  --line-strong:rgba(255,255,255,.15);
-  --accent:#ff9f7a;
-  --accent2:#ffd166;
-  --accent3:#ba8cff;
-  --warning:#ffd166;
-  --danger:#ff7b9c;
-  --shadow:0 30px 80px rgba(15,6,22,.35);
-  background:
-    radial-gradient(circle at 12% 12%, rgba(255,140,102,.22), transparent 29%),
-    radial-gradient(circle at 87% 15%, rgba(186,140,255,.20), transparent 23%),
-    radial-gradient(circle at 70% 85%, rgba(255,209,102,.10), transparent 30%),
-    linear-gradient(180deg,#25172f 0%,#2c1b39 48%,#1d1528 100%);
-}
-body.theme-night{
-  --bg:#07111f;
-  --bg2:#0d1729;
-  --panel:rgba(14,24,42,.72);
-  --panel-strong:rgba(11,20,36,.88);
-  --panel-soft:rgba(255,255,255,.04);
-  --text:#eef4ff;
-  --muted:#97a7c3;
-  --line:rgba(255,255,255,.08);
-  --line-strong:rgba(255,255,255,.14);
-  --accent:#6aa7ff;
-  --accent2:#7cf0cf;
-  --accent3:#b388ff;
-  --warning:#ffc56b;
-  --danger:#ff7f9f;
-  --shadow:0 30px 80px rgba(0,0,0,.32);
-}
-body.theme-morning .panel,
-body.theme-day .panel,
-body.theme-morning .hero,
-body.theme-day .hero{
-  color:var(--text);
-}
-body.theme-morning .status-card,
-body.theme-day .status-card{
-  color:var(--text);
-  background:linear-gradient(180deg,rgba(255,255,255,.74),rgba(255,255,255,.54));
-}
-body.theme-morning input,
-body.theme-day input,
-body.theme-morning .legend button,
-body.theme-day .legend button,
-body.theme-morning .secondary,
-body.theme-day .secondary{
-  color:var(--text);
-  background:rgba(255,255,255,.72);
-}
-body.theme-morning .canvas-wrap,
-body.theme-day .canvas-wrap{
-  background:
-    linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.60)),
-    #f6f9fd;
-}
-.theme-indicator{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  margin-top:14px;
-  color:var(--muted);
-  font-size:.78rem;
-}
-.theme-indicator::before{
-  content:"";
-  width:8px;
-  height:8px;
-  border-radius:50%;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  box-shadow:0 0 12px color-mix(in srgb,var(--accent) 55%, transparent);
-}
-
-
-.dev-toast{
-  position:fixed;
-  right:22px;
-  bottom:22px;
-  z-index:9999;
-  padding:13px 16px;
-  border-radius:14px;
-  background:rgba(8,16,29,.92);
-  border:1px solid rgba(255,255,255,.12);
-  color:#eef4ff;
-  box-shadow:0 18px 50px rgba(0,0,0,.35);
-  font-size:.84rem;
-  opacity:0;
-  transform:translateY(10px);
-  pointer-events:none;
-  transition:.22s ease;
-}
-.dev-toast.show{
-  opacity:1;
-  transform:translateY(0);
-}
-
-
-.dev-modal{
-  position:fixed;
-  inset:0;
-  z-index:10000;
-  display:none;
-  place-items:center;
-  padding:20px;
-  background:rgba(3,8,16,.72);
-  backdrop-filter:blur(12px);
-}
-.dev-modal.open{display:grid}
-.dev-dialog{
-  width:min(420px,100%);
-  border-radius:22px;
-  padding:22px;
-  background:rgba(10,18,32,.96);
-  border:1px solid rgba(255,255,255,.12);
-  box-shadow:0 30px 90px rgba(0,0,0,.48);
-}
-.dev-dialog h3{margin:0 0 8px}
-.dev-dialog p{margin:0 0 16px;color:#97a7c3;line-height:1.7;font-size:.88rem}
-.dev-dialog input{
-  width:100%;
-  height:46px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:#eef4ff;
-  padding:0 14px;
-}
-.dev-actions{display:flex;gap:10px;margin-top:14px}
-.dev-actions button{flex:1}
-
-
-.chart-controls{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  flex-wrap:wrap;
-  margin-bottom:14px;
-}
-.segmented{
-  display:inline-flex;
-  padding:4px;
-  border-radius:14px;
-  background:rgba(255,255,255,.05);
-  border:1px solid var(--line);
-}
-.segmented button{
-  min-width:68px;
-  padding:8px 12px;
-  border-radius:10px;
-  background:transparent;
-  color:var(--muted);
-  border:0;
-  font-size:.78rem;
-}
-.segmented button.active{
-  color:var(--text);
-  background:rgba(255,255,255,.10);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
-}
-.chart-scroll{
-  width:100%;
-  overflow-x:auto;
-  overflow-y:hidden;
-  border-radius:24px;
-  scrollbar-width:thin;
-  scrollbar-color:rgba(255,255,255,.18) transparent;
-}
-.chart-scroll::-webkit-scrollbar{height:10px}
-.chart-scroll::-webkit-scrollbar-track{background:transparent}
-.chart-scroll::-webkit-scrollbar-thumb{
-  background:rgba(255,255,255,.16);
-  border-radius:999px;
-}
-.canvas-wrap{
-  min-width:100%;
-}
-.chart-hint{
-  color:var(--muted);
+.eyebrow{
+  color:var(--mint);
   font-size:.76rem;
+  text-transform:uppercase;
+  letter-spacing:.18em;
+  font-weight:800;
+  margin-bottom:16px;
 }
-
-
-.salary-toggle{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-top:16px;padding:14px 15px;border-radius:17px;border:1px solid var(--line);background:rgba(255,255,255,.045)}
-.salary-toggle span{display:block;font-weight:800;font-size:.9rem}.salary-toggle small{display:block;color:var(--muted);font-size:.75rem;margin-top:4px}.switch{position:relative;width:48px;height:28px;flex:0 0 auto}.switch input{opacity:0;width:0;height:0}.slider{position:absolute;inset:0;border-radius:999px;background:rgba(255,255,255,.10);border:1px solid var(--line);transition:.2s}.slider::before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.2s}.switch input:checked + .slider{background:linear-gradient(135deg,var(--accent2),var(--accent))}.switch input:checked + .slider::before{transform:translateX(20px)}
-.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:12px 0}.metric-card{padding:13px 14px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.035)}.metric-card span{display:block;color:var(--muted);font-size:.74rem;margin-bottom:5px}.metric-card strong{font-size:.96rem}.metric-card em{display:block;margin-top:5px;font-style:normal;font-size:.73rem;color:var(--muted)}@media(max-width:620px){.metric-grid{grid-template-columns:1fr}}
-
-.debt-section{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
-.debt-note{color:var(--muted);font-size:.74rem;margin-top:6px;line-height:1.6}
-.debt-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:12px 0}
-.debt-summary>div{padding:13px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.035)}
-.debt-summary span{display:block;color:var(--muted);font-size:.73rem;margin-bottom:5px}
-.debt-summary strong{font-size:.95rem}
-@media(max-width:620px){.debt-summary{grid-template-columns:1fr}}
-
-.row-actions{
-  display:flex;
-  gap:6px;
+h1{
+  margin:0;
+  max-width:760px;
+  font-size:clamp(3.2rem,8vw,7rem);
+  line-height:.91;
+  letter-spacing:-.07em;
 }
-.edit{
-  padding:8px 10px;
-  border-radius:12px;
-  background:rgba(106,167,255,.10);
-  color:#dce9ff;
-  border:1px solid rgba(106,167,255,.18);
+h1 span{
+  display:block;
+  color:transparent;
+  background:linear-gradient(100deg,#fff 7%,#9fc4ff 48%,#9ff5dd);
+  -webkit-background-clip:text;
+  background-clip:text;
 }
-
-
-.dev-login-view,.dev-import-view{display:block}
-.dev-import-view[hidden]{display:none}
-.dev-dialog textarea{
-  width:100%;
-  min-height:190px;
-  resize:vertical;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(255,255,255,.06);
-  color:#eef4ff;
-  padding:13px 14px;
-  font:600 .88rem/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;
-  outline:none;
-}
-.dev-dialog textarea:focus{
-  border-color:rgba(106,167,255,.65);
-  box-shadow:0 0 0 4px rgba(106,167,255,.12);
-}
-.dev-format{
-  margin:10px 0 14px;
-  padding:11px 12px;
-  border-radius:13px;
-  border:1px solid rgba(255,255,255,.08);
-  background:rgba(255,255,255,.04);
-  color:#b9c8df;
-  font:500 .75rem/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;
-  overflow-wrap:anywhere;
-}
-.dev-import-status{
-  min-height:22px;
-  margin-top:10px;
-  color:#9fb2ce;
-  font-size:.79rem;
-  line-height:1.55;
-}
-.dev-import-status.error{color:#ff9cb4}
-.dev-import-status.success{color:#8ff0d4}
-.dev-toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.dev-toolbar button{flex:1;min-width:110px}
-
-
-.analysis-tabs{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding-bottom:4px;
-  margin-bottom:18px;
-  scrollbar-width:thin;
-}
-.analysis-tabs button{
-  flex:0 0 auto;
-  padding:10px 14px;
-  border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.045);
+.lead{
+  max-width:650px;
+  margin:24px 0 0;
   color:var(--muted);
-  font-size:.8rem;
+  font-size:clamp(1rem,1.7vw,1.17rem);
+  line-height:1.9;
 }
-.analysis-tabs button.active{
-  color:var(--text);
-  background:linear-gradient(135deg,rgba(124,240,207,.14),rgba(106,167,255,.16));
-  border-color:rgba(106,167,255,.28);
+.hero-orbit{
+  min-height:290px;
+  border:1px solid var(--line);
+  border-radius:34px;
+  background:
+    radial-gradient(circle at 50% 50%,rgba(114,170,255,.15),transparent 43%),
+    rgba(255,255,255,.025);
+  position:relative;
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.28);
 }
-.analysis-page{display:none}
-.analysis-page.active{display:block}
-.analysis-page h3:first-child{margin-top:0}
-.analysis-nav{
+.orbit-core{
+  position:absolute;
+  width:112px;
+  height:112px;
+  border-radius:34px;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(8deg);
+  background:linear-gradient(140deg,rgba(114,170,255,.94),rgba(124,240,207,.86));
+  box-shadow:0 25px 60px rgba(90,170,255,.33);
+}
+.orbit-core::after{
+  content:"IF";
+  position:absolute;
+  inset:0;
+  display:grid;
+  place-items:center;
+  color:#07111f;
+  font-size:2rem;
+  font-weight:950;
+  transform:rotate(-8deg);
+}
+.ring{
+  position:absolute;
+  inset:50%;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+.ring.one{width:210px;height:210px}
+.ring.two{width:330px;height:330px}
+.dot{
+  position:absolute;
+  width:12px;
+  height:12px;
+  border-radius:50%;
+  background:var(--mint);
+  box-shadow:0 0 24px rgba(124,240,207,.7);
+}
+.dot.a{top:45px;left:56%}
+.dot.b{bottom:52px;left:18%;background:var(--violet)}
+.dot.c{top:54%;right:28px;background:var(--blue)}
+.section-head{
   display:flex;
   justify-content:space-between;
-  gap:10px;
-  margin-top:18px;
+  align-items:end;
+  gap:18px;
+  margin-bottom:18px;
 }
-.analysis-nav button{
-  padding:9px 13px;
-  border-radius:12px;
-  color:var(--text);
-  background:rgba(255,255,255,.055);
-  border:1px solid var(--line);
+.section-head h2{
+  margin:0;
+  font-size:1.45rem;
 }
-.analysis-nav button:disabled{opacity:.3;cursor:default}
-.long-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:10px;
-  margin:12px 0;
-}
-.long-grid > div{
-  padding:13px;
-  border-radius:16px;
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.035);
-}
-.long-grid span{display:block;color:var(--muted);font-size:.73rem;margin-bottom:5px}
-.long-grid strong{font-size:.94rem}
-@media(max-width:620px){.long-grid{grid-template-columns:1fr}}
-
-
-.history-row.salary-day{
-  position:relative;
-  border-top-color:rgba(255,166,77,.22);
-  background:linear-gradient(90deg,rgba(255,153,64,.13),rgba(255,153,64,.045) 55%,transparent);
-  box-shadow:inset 4px 0 0 rgba(255,164,73,.88);
-  border-radius:14px;
-  padding-left:12px;
-  padding-right:10px;
-}
-.salary-badge{
-  display:inline-flex;
-  align-items:center;
-  margin-left:8px;
-  padding:3px 7px;
-  border-radius:999px;
-  color:#ffd4a8;
-  background:rgba(255,153,64,.14);
-  border:1px solid rgba(255,169,84,.28);
-  font-size:.68rem;
-  font-weight:800;
-  vertical-align:middle;
-}
-body.theme-morning .history-row.salary-day,
-body.theme-day .history-row.salary-day{
-  background:linear-gradient(90deg,rgba(234,132,36,.15),rgba(255,174,82,.05) 55%,transparent);
-  box-shadow:inset 4px 0 0 rgba(222,123,25,.9);
-}
-body.theme-morning .salary-badge,
-body.theme-day .salary-badge{
-  color:#9b4d06;
-  background:rgba(236,139,43,.13);
-  border-color:rgba(211,115,22,.24);
-}
-
-
-.dev-modal{
-  overflow-y:auto;
-  align-items:flex-start;
-}
-.dev-dialog{
-  max-height:calc(100vh - 40px);
-  overflow-y:auto;
-  margin:auto;
-  overscroll-behavior:contain;
-}
-.dev-dialog textarea{
-  width:100%;
-  min-height:220px;
-  max-height:45vh;
-  resize:vertical;
-  overflow:auto;
-  white-space:pre;
-  font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;
-}
-.dev-dialog input,
-.dev-dialog textarea{
-  scroll-margin-bottom:120px;
-}
-@media(max-width:620px){
-  .dev-modal{
-    padding:10px;
-  }
-  .dev-dialog{
-    max-height:calc(100vh - 20px);
-    border-radius:18px;
-    padding:18px;
-  }
-  .dev-dialog textarea{
-    min-height:180px;
-    max-height:40vh;
-  }
-  .dev-actions{
-    position:sticky;
-    bottom:0;
-    padding-top:12px;
-    background:linear-gradient(180deg,transparent,rgba(10,18,32,.98) 28%);
-  }
-}
-
-
-.allocation-alerts{
-  display:grid;
-  gap:10px;
-  margin:14px 0 4px;
-}
-.allocation-alert{
-  border:1px solid rgba(255,197,107,.28);
-  background:linear-gradient(135deg,rgba(255,197,107,.12),rgba(255,127,159,.07));
-  border-radius:16px;
-  padding:14px 16px;
-}
-.allocation-alert.high{
-  border-color:rgba(255,127,159,.38);
-  background:linear-gradient(135deg,rgba(255,127,159,.15),rgba(255,197,107,.07));
-}
-.allocation-alert strong{
-  display:block;
-  margin-bottom:5px;
-  color:#ffe2a8;
-}
-.allocation-alert.high strong{color:#ffb4c7}
-.allocation-alert p{
+.section-head p{
   margin:0;
   color:var(--muted);
-  line-height:1.65;
+  font-size:.86rem;
+}
+.apps{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.app-card{
+  min-height:245px;
+  border:1px solid var(--line);
+  border-radius:28px;
+  padding:25px;
+  background:var(--panel);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  text-decoration:none;
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  overflow:hidden;
+  transition:transform .22s ease,border-color .22s ease,background .22s ease;
+}
+.app-card::before{
+  content:"";
+  position:absolute;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  right:-80px;
+  top:-80px;
+  background:radial-gradient(circle,rgba(114,170,255,.20),transparent 68%);
+}
+.app-card:hover{
+  transform:translateY(-6px);
+  border-color:rgba(124,240,207,.38);
+  background:rgba(19,34,59,.88);
+}
+.app-icon{
+  width:52px;
+  height:52px;
+  border-radius:17px;
+  display:grid;
+  place-items:center;
+  font-size:1.2rem;
+  font-weight:900;
+  color:#07111f;
+  background:linear-gradient(145deg,var(--blue),var(--mint));
+  box-shadow:0 12px 26px rgba(90,170,255,.22);
+}
+.app-card h3{
+  margin:26px 0 9px;
+  font-size:1.28rem;
+}
+.app-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.7;
   font-size:.9rem;
 }
-
-
-.student-plan-grid{
-  display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:10px;
-  margin:14px 0;
-}
-.student-plan-card{
-  padding:14px;
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(255,255,255,.035);
-}
-.student-plan-card span{
-  display:block;
-  color:var(--muted);
-  font-size:.78rem;
-  margin-bottom:6px;
-}
-.student-plan-card strong{
-  display:block;
-  font-size:1.05rem;
-}
-.plan-message{
-  padding:15px 16px;
-  border-radius:16px;
-  border:1px solid rgba(124,240,207,.25);
-  background:rgba(124,240,207,.07);
-  line-height:1.7;
-}
-.plan-message.warn{
-  border-color:rgba(255,197,107,.35);
-  background:rgba(255,197,107,.09);
-}
-.plan-message.stop{
-  border-color:rgba(255,127,159,.38);
-  background:rgba(255,127,159,.10);
-}
-.purchase-grid{
-  display:grid;
-  grid-template-columns:1.4fr 1fr .9fr 1.15fr 1fr auto;
-  gap:10px;
-  align-items:end;
-}
-.purchase-grid label{
-  display:grid;
-  gap:7px;
-  color:var(--muted);
-  font-size:.82rem;
-}
-.purchase-grid input,
-.purchase-grid select{
-  width:100%;
-}
-.purchase-result{
-  margin-top:14px;
-  min-height:86px;
-}
-.purchase-result h3{
-  margin:0 0 7px;
-}
-.purchase-result .decision{
-  font-size:1.15rem;
-}
-.purchase-result .purchase-metrics{
+.app-meta{
+  margin-top:auto;
+  padding-top:24px;
   display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  margin-top:10px;
+  justify-content:space-between;
+  align-items:center;
+  color:#cbd8ea;
+  font-size:.78rem;
 }
-.purchase-result .purchase-metrics span{
+.arrow{
+  width:34px;
+  height:34px;
   border:1px solid var(--line);
-  border-radius:999px;
-  padding:5px 9px;
-  color:var(--muted);
-  font-size:.78rem;
-}
-@media(max-width:800px){
-  .student-plan-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .purchase-grid{grid-template-columns:1fr 1fr}
-}
-@media(max-width:520px){
-  .student-plan-grid,.purchase-grid{grid-template-columns:1fr}
-}
-
-
-.dev-time-preview{
-  margin:18px 0 14px;
-  padding:14px;
-  border:1px solid rgba(124,240,207,.22);
-  border-radius:16px;
-  background:rgba(124,240,207,.055);
-}
-.dev-time-preview h4{margin:0 0 6px;font-size:.95rem}
-.dev-time-preview p{margin:0 0 12px;font-size:.8rem}
-.dev-time-buttons{
+  border-radius:50%;
   display:grid;
-  grid-template-columns:repeat(4,minmax(0,1fr));
-  gap:8px;
+  place-items:center;
+  font-size:1rem;
 }
-.dev-time-buttons button{
-  min-width:0;
-  padding:10px 6px;
-  font-size:.78rem;
+.app-card.placeholder{
+  opacity:.58;
+  cursor:default;
 }
-.dev-time-buttons button.active{
-  border-color:rgba(124,240,207,.72);
-  box-shadow:0 0 0 2px rgba(124,240,207,.12) inset;
+.app-card.placeholder:hover{
+  transform:none;
+  border-color:var(--line);
+  background:var(--panel);
 }
-.dev-time-reset{
-  width:100%;
-  margin-top:9px;
+.placeholder .app-icon{
+  background:rgba(255,255,255,.09);
+  color:#b7c3d7;
+  box-shadow:none;
 }
-.dev-time-status{
-  margin-top:10px;
-  color:#8ff0d4;
-  font-size:.8rem;
-  line-height:1.5;
+footer{
+  margin-top:42px;
+  color:#71829d;
+  font-size:.76rem;
+  text-align:center;
 }
-@media(max-width:520px){
-  .dev-time-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:850px){
+  .hero{grid-template-columns:1fr}
+  .hero-orbit{min-height:230px}
+  .apps{grid-template-columns:1fr}
 }
-
+@media(max-width:560px){
+  .shell{width:min(100% - 22px,1180px);padding-top:24px}
+  .topbar{margin-bottom:38px}
+  .top-note{display:none}
+  h1{font-size:clamp(3.2rem,20vw,5rem)}
+  .hero{gap:28px;margin-bottom:40px}
+  .section-head{align-items:start;flex-direction:column}
+}
 </style>
 </head>
 <body>
-<main class="wrap">
-  <section class="hero">
-    <div class="hero-grid">
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>MONEY IF</span>
+      </div>
+      <div class="top-note">Personal decision dashboard</div>
+    </header>
+
+    <section class="hero">
       <div>
-        <div class="eyebrow">Money Signal Dashboard</div>
-        <h1 id="devTrigger" aria-label="Money IF Auto">Money IF Auto</h1>
+        <div class="eyebrow">Your personal control center</div>
+        <h1><span>生活を、</span><span>数字で整える。</span></h1>
         <p class="lead">
-          残高を記録すると、直近3件・直近8件・全履歴・月次推移を組み合わせ、資金移動や資産悪化まで自動で読み取る、
-          自分専用のお金ダッシュボード。
+          資産・消費・予定を、それぞれ別々に眺めるのではなく、
+          次の行動を決めるためのひとつの場所へまとめる。
         </p>
-        <div id="themeIndicator" class="theme-indicator">時間帯テーマを読み込み中</div>
       </div>
-      <div class="hero-side">
-        <div class="status-card">
-          <small>自動判定モード</small>
-          <strong id="modeTitle">データ不足</strong>
-          <div id="modeDetail" class="status-detail">2件以上記録すると傾向を判定します。</div>
-        </div>
-        <div class="mini-strip">
-          <div class="mini"><span>判定軸</span><strong>総資産</strong></div>
-          <div class="mini"><span>判定軸</span><strong>使えるお金</strong></div>
-          <div class="mini"><span>判定軸</span><strong>貯金比率</strong></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="layout">
-    <aside class="panel sticky">
-      <div class="panel-inner">
-        <div class="section-head">
-          <h2 class="section-title">資産残高を記録</h2>
-          <span class="badge">Auto Analyze</span>
-        </div>
-        <p class="section-sub">
-          支出を逐一入力しなくても大丈夫。現金・カード・貯金・投資の残高だけ記録して、
-          傾向を自動判定します。
-        </p>
-
-        <form id="form">
-          <label for="date">日付</label>
-          <input id="date" type="date" required>
-
-          <div class="row">
-            <div>
-              <label for="cash">現金</label>
-              <div class="input-wrap"><input id="cash" type="number" min="0" required></div>
-            </div>
-            <div>
-              <label for="card">カード残高</label>
-              <div class="input-wrap"><input id="card" type="number" min="0" required></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="savingsCash">貯金（現金）</label>
-              <div class="input-wrap"><input id="savingsCash" type="number" min="0" required></div>
-            </div>
-            <div>
-              <label for="savingsBank">貯金（銀行）</label>
-              <div class="input-wrap"><input id="savingsBank" type="number" min="0" required></div>
-            </div>
-          </div>
-
-          <label for="investment">投資</label>
-          <div class="input-wrap"><input id="investment" type="number" min="0" required></div>
-          <div class="debt-section">
-            <label for="debt">借金総額</label>
-            <div class="input-wrap"><input id="debt" type="number" min="0" value="0"></div>
-            <div class="debt-note">現在残っている借金の合計額を入力します。</div>
-          </div>
-
-          <div class="salary-toggle"><div><span>給料日として記録</span><small>増加分を収入として扱い、貯金目安を提案します</small></div><label class="switch" aria-label="給料日として記録"><input id="salaryDay" type="checkbox"><span class="slider"></span></label></div>
-          <button class="primary" type="submit">記録して自動分析</button>
-                    <button class="danger" id="clear" type="button">全データ削除</button>
-        </form>
-
-        <div class="note">
-          保存先はこのブラウザ内です。同じ日付で入力すると上書きされます。
-        </div>
-      </div>
-    </aside>
-
-    <div style="display:grid; gap:22px;">
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">いまの資産スナップショット</h2>
-            <span class="badge">Live Summary</span>
-          </div>
-          <div class="stats-grid">
-            <div class="stat">
-              <span>純資産</span>
-              <strong id="total">¥0</strong>
-              <small>資産−借金</small>
-            </div>
-            <div class="stat">
-              <span>使えるお金</span>
-              <strong id="liquid">¥0</strong>
-              <small>現金＋カード残高</small>
-            </div>
-            <div class="stat">
-              <span>守るお金</span>
-              <strong id="protected">¥0</strong>
-              <small>貯金（現金＋銀行）</small>
-            </div>
-            <div class="stat">
-              <span>投資</span>
-              <strong id="investStat">¥0</strong>
-              <small>運用資産</small>
-            </div>
-            <div class="stat">
-              <span>借金</span>
-              <strong id="debtStat">¥0</strong>
-              <small>現在の借金総額</small>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">自動分析</h2>
-            <span class="badge">Trend Reading</span>
-          </div>
-          <div id="analysis" class="analysis">
-            <h3>まだ判定できません</h3>
-            2件以上の記録が必要です。
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">今日のIFルール</h2>
-            <span class="badge">Behavior Guide</span>
-          </div>
-          <div class="rule-grid" id="ifRuleGrid">
-            <div class="rule">
-              <small id="ifRule1Label">IF データ不足</small>
-              <strong id="ifRule1Text">記録を3件以上ためる</strong>
-            </div>
-            <div class="rule">
-              <small id="ifRule2Label">IF 次の記録まで</small>
-              <strong id="ifRule2Text">大きな判断は保留する</strong>
-            </div>
-            <div class="rule">
-              <small id="ifRule3Label">IF 確認すること</small>
-              <strong id="ifRule3Text">資産の置き場所と残高を確認する</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">購入判定</h2>
-            <span class="badge">Purchase Check</span>
-          </div>
-          <div class="purchase-grid">
-            <label>
-              商品・予定
-              <input id="purchaseName" type="text" placeholder="例：ギター機材、旅行、飲み会">
-            </label>
-            <label>
-              金額
-              <input id="purchasePrice" type="number" min="0" step="100" placeholder="10000">
-            </label>
-            <label>
-              種類
-              <select id="purchaseType">
-                <option value="want">趣味・欲しい物</option>
-                <option value="experience">旅行・交際・経験</option>
-                <option value="study">学業・資格・制作</option>
-                <option value="need">生活必需品</option>
-              </select>
-            </label>
-            <label>
-              貯金の使い方
-              <select id="savingsUseMode">
-                <option value="none">貯金は使わない</option>
-                <option value="surplus">最近の最低額を超えた分まで</option>
-                <option value="custom">上限を自分で指定</option>
-              </select>
-            </label>
-            <label id="savingsLimitWrap" style="display:none">
-              貯金から使う上限
-              <input id="savingsUseLimit" type="number" min="0" step="100" placeholder="10000">
-            </label>
-            <button id="purchaseJudge" type="button" class="primary" style="margin-top:0">判定する</button>
-          </div>
-          <div id="purchaseResult" class="purchase-result plan-message">
-            金額と貯金の使い方を入力すると、動的なお金・貯金の履歴・借金・購入目的から判定します。
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">資産推移</h2>
-            <span class="badge">Line Graph</span>
-          </div>
-          <div class="chart-controls">
-            <div class="segmented" id="periodControl">
-              <button type="button" data-period="daily" class="active">日足</button>
-              <button type="button" data-period="weekly">週足</button>
-              <button type="button" data-period="monthly">月足</button>
-            </div>
-            <div class="chart-hint">データが多いと横にスクロールできます</div>
-          </div>
-          <div id="legend" class="legend"></div>
-          <div id="chartScroll" class="chart-scroll">
-            <div id="canvasWrap" class="canvas-wrap"><canvas id="chart"></canvas></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner history">
-          <div class="section-head">
-            <h2 class="section-title">記録一覧</h2>
-            <span class="badge">History</span>
-          </div>
-          <div id="history"></div>
-        </div>
-      </section>
-    </div>
-  </section>
-</main>
-<div id="devToast" class="dev-toast"></div>
-
-<div id="devModal" class="dev-modal" aria-hidden="true">
-  <div class="dev-dialog" role="dialog" aria-modal="true" aria-labelledby="devTitle">
-    <div id="devLoginView" class="dev-login-view">
-      <h3 id="devTitle">Developer Mode</h3>
-      <p>開発者コードを入力してください。</p>
-      <input id="devCode" type="password" autocomplete="off" placeholder="Developer code">
-      <div class="dev-actions">
-        <button id="devCancel" class="secondary" type="button">閉じる</button>
-        <button id="devRun" class="primary" type="button" style="margin-top:0">認証</button>
-      </div>
-    </div>
-
-    <div id="devImportView" class="dev-import-view" hidden>
-      <h3>履歴データ一括移行</h3>
-      <p>数字列を貼り付けると、既存履歴へまとめて追加します。同じ日付は上書きされます。</p>
-      <div class="dev-format">
-        日付.現金.カード.貯金現金.貯金銀行.投資[.借金][.給料日]<br>
-        給料日：最後を1、通常日：0または省略<br>
-        例：20280513.5555.10000.1000.100000.200.0.1<br>
-        区切り：改行 ／ / ／ ;
-      </div>
-      <textarea id="bulkImportData" spellcheck="false" placeholder="20280513.5555.10000.1000.100000.200.0.1&#10;20280520.6000.12000.3000.100000.500.10000.0"></textarea>
-      <div id="bulkImportStatus" class="dev-import-status"></div>
-      <div class="dev-toolbar">
-        <button id="devRandomSample" class="secondary" type="button">ランダムサンプル</button>
-        <button id="bulkImportRun" class="primary" type="button" style="margin-top:0">履歴へ追加</button>
-      </div>
-
-      <div class="dev-time-preview">
-        <h4>時間帯UIプレビュー</h4>
-        <p>実際の時刻を変えず、画面テーマだけを確認できます。</p>
-        <div class="dev-time-buttons">
-          <button type="button" class="secondary" data-dev-hour="7">朝 7時</button>
-          <button type="button" class="secondary" data-dev-hour="13">昼 13時</button>
-          <button type="button" class="secondary" data-dev-hour="18">夕方 18時</button>
-          <button type="button" class="secondary" data-dev-hour="23">夜 23時</button>
-        </div>
-        <button id="devTimeReset" class="secondary dev-time-reset" type="button">実際の現在時刻に戻す</button>
-        <div id="devTimeStatus" class="dev-time-status">現在時刻に連動中</div>
-      </div>
-
-      <button id="devImportClose" class="danger" type="button">閉じる</button>
-    </div>
-  </div>
-</div>
-
-
-<script>
-
-let devThemeHour=null;
-
-function applyTimeTheme(){
-  const actualHour=new Date().getHours();
-  const hour=devThemeHour===null?actualHour:devThemeHour;
-  const body = document.body;
-  body.classList.remove("theme-morning","theme-day","theme-evening","theme-night");
-
-  let themeClass = "theme-night";
-  let label = "夜モード";
-
-  if(hour >= 5 && hour < 10){
-    themeClass = "theme-morning";
-    label = "朝モード";
-  }else if(hour >= 10 && hour < 17){
-    themeClass = "theme-day";
-    label = "昼モード";
-  }else if(hour >= 17 && hour < 20){
-    themeClass = "theme-evening";
-    label = "夕方モード";
-  }
-
-  body.classList.add(themeClass);
-  const indicator = document.getElementById("themeIndicator");
-  if(indicator){
-    indicator.textContent = devThemeHour===null
-      ? `${label}・現在 ${String(actualHour).padStart(2,"0")}時台`
-      : `${label}・DEVプレビュー ${String(hour).padStart(2,"0")}時台`;
-  }
-
-  const status=document.getElementById("devTimeStatus");
-  if(status){
-    status.textContent=devThemeHour===null
-      ? `現在時刻に連動中（${String(actualHour).padStart(2,"0")}時台）`
-      : `${String(hour).padStart(2,"0")}時台をプレビュー中。リセットすると現在時刻へ戻ります。`;
-  }
-  document.querySelectorAll("[data-dev-hour]").forEach(button=>{
-    button.classList.toggle("active",devThemeHour!==null && +button.dataset.devHour===devThemeHour);
-  });
-}
-applyTimeTheme();
-setInterval(applyTimeTheme, 60 * 1000);
-
-const KEY="money-if-auto-records-v2";
-const config={
- cash:{label:"現金",color:"#6aa7ff"},
- card:{label:"カード残高",color:"#7cf0cf"},
- savingsCash:{label:"貯金（現金）",color:"#ffc56b"},
- savingsBank:{label:"貯金（銀行）",color:"#b388ff"},
- investment:{label:"投資",color:"#ff7f9f"}
-};
-let visible=Object.fromEntries(Object.keys(config).map(k=>[k,true]));
-let chartPeriod="daily";
-let currentStudentPlan=null;
-const $=id=>document.getElementById(id);
-const yen=n=>"¥"+Math.round(n||0).toLocaleString("ja-JP");
-const normalizeRecord=r=>({...r,cash:+r.cash||0,card:+r.card||0,savingsCash:+r.savingsCash||0,savingsBank:+r.savingsBank||0,investment:+r.investment||0,debt:+r.debt||0});
-const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]").map(normalizeRecord)}catch{return[]}};
-const save=r=>localStorage.setItem(KEY,JSON.stringify(r));
-
-function today(){
-  const d=new Date(),o=d.getTimezoneOffset();
-  return new Date(d.getTime()-o*60000).toISOString().slice(0,10);
-}
-function totals(r){
-  const gross=r.cash+r.card+r.savingsCash+r.savingsBank+r.investment;
-  const debt=+r.debt||0;
-  return {liquid:r.cash+r.card,protected:r.savingsCash+r.savingsBank,investment:r.investment,debt,gross,total:gross,net:gross-debt};
-}
-function pct(a,b){return b===0?0:(a-b)/b*100}
-
-function updateIfRules(mode, context={}){
-  const rules={
-    "資産悪化が進行中":[
-      ["IF 純資産の減少が継続","予定外の消費を止め、次の給料日まで生活費以外を抑える"],
-      ["IF 借金も増加中","給料日に返済枠を先取りし、新しい借入を増やさない"],
-      ["IF 次回記録でも減少","月の支出上限を具体的な金額で設定する"]
-    ],
-    "下降傾向":[
-      ["IF 資産が下向き","大きな買い物は次回記録まで保留する"],
-      ["IF 動的なお金も減少","追加貯金・追加投資より手元資金を優先する"],
-      ["IF 2回連続で続く","消費額を一段下げる"]
-    ],
-    "継続的な使いすぎ":[
-      ["IF 減少が3区間以上続く","予定外の買い物を止める"],
-      ["IF 3,000円以上の支出","48時間待ってから判断する"],
-      ["IF 次回も減少","自由費の上限を下げる"]
-    ],
-    "単発の大きな支出":[
-      ["IF 大きな支出の直後","同規模の支出を続けて重ねない"],
-      ["IF 次回記録で戻らない","単発ではなく継続支出として扱う"],
-      ["IF 給料日前","手元資金を優先する"]
-    ],
-    "資金移動を検出":[
-      ["IF 資産間で同額が移動","支出として扱わない"],
-      ["IF 移動先の残高が一致","記録だけ確認して通常運用を続ける"],
-      ["IF 総額が減っている","差額だけを支出として確認する"]
-    ],
-    "相場変動の可能性":[
-      ["IF 投資だけが動く","生活費の判断には反映しない"],
-      ["IF 現金と貯金が維持","通常の支出ルールを続ける"],
-      ["IF 投資下落が続く","追加投資は別判断にする"]
-    ],
-    "貯めすぎ傾向":[
-      ["IF 最低貯金額を達成","追加貯金を止める"],
-      ["IF 手元資金が減少","500〜1,500円の自由費を許可する"],
-      ["IF 給料日","貯金後の動的資金を先に確保する"]
-    ],
-    "資産配分に偏り":[
-      ["IF カード残高が増え続ける","生活費として残す上限を決め、超過分を貯金か投資へ移す"],
-      ["IF 投資が2か月以上ほぼ停止","投資を増やすか、増やさない理由を明確にして配分を固定する"],
-      ["IF 貯金だけが増え続ける","追加貯金を止め、自由費と投資の配分を先に確保する"]
-    ],
-    "手元資金が少なめ":[
-      ["IF 動的資金が少ない","追加貯金・追加投資を止める"],
-      ["IF 給料日","生活費の残高を最初に確保する"],
-      ["IF 借金返済中","返済後も最低残高を残す"]
-    ],
-    "余裕が拡大":[
-      ["IF 貯金ルールを維持できる","予定していた支出に使ってよい"],
-      ["IF 欲しい物が具体的","自由費内で購入してよい"],
-      ["IF 給料日","余剰分だけ貯金へ回す"]
-    ],
-    "投資主導の増加":[
-      ["IF 増加の主因が投資","含み益を自由費に含めない"],
-      ["IF 現金が増えていない","支出上限は変えない"],
-      ["IF 利確した","現金化後に配分を再判定する"]
-    ],
-    "変動が大きい":[
-      ["IF 上下が交互に発生","1回の変化だけでルールを変えない"],
-      ["IF 大きな資金移動がある","移動と支出を分けて確認する"],
-      ["IF 傾きが弱い","あと2回記録して方向を確認する"]
-    ],
-    "安定":[
-      ["IF 現在の配分が維持","今のルールを続ける"],
-      ["IF 欲しい物が具体的","自由費内で普通に使ってよい"],
-      ["IF 給料日","通常の貯金額だけ移す"]
-    ],
-    "様子見":[
-      ["IF 複数要因が混在","大きな買い物を次回まで保留する"],
-      ["IF 次回も同方向","その傾向を本判定に切り替える"],
-      ["IF 資金移動がある","移動元と移動先を確認する"]
-    ]
-  };
-  const selected=rules[mode]||[
-    ["IF データ不足","記録を3件以上ためる"],
-    ["IF 次の記録まで","大きな判断は保留する"],
-    ["IF 確認すること","残高を同じ間隔で記録する"]
-  ];
-  selected.forEach((rule,i)=>{
-    const label=document.getElementById(`ifRule${i+1}Label`);
-    const body=document.getElementById(`ifRule${i+1}Text`);
-    if(label)label.textContent=rule[0];
-    if(body)body.textContent=rule[1];
-  });
-}
-
-function analyze(records){
-  const box=$("analysis"), title=$("modeTitle"), detail=$("modeDetail");
-  box.className="analysis";
-
-  if(records.length<3){
-    currentStudentPlan=null;
-    title.textContent="データ蓄積中";
-    detail.textContent="3件から仮判定、5件以上で精度が上がります。";
-    updateIfRules("データ不足");
-    box.innerHTML=`
-      <h3>まだ判断材料が少なめです</h3>
-      現在 ${records.length} 件。最低3件、できれば5〜8件あると、
-      単発の変化と継続的な傾向を分けやすくなります。
-      <div class="foot">入力間隔が毎回違っても、1日あたりの変化に直して判定します。</div>
-    `;
-    return;
-  }
-
-  const recent=records.slice(-8);
-  const latest=recent.at(-1);
-  const prev=recent.at(-2);
-  const latestT=totals(latest);
-  const prevT=totals(prev);
-
-  const nonInvest=r=>r.cash+r.card+r.savingsCash+r.savingsBank;
-  const day=(dateText)=>new Date(dateText+"T00:00:00").getTime()/86400000;
-  const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
-  const mean=a=>a.length?a.reduce((s,v)=>s+v,0)/a.length:0;
-  const stdev=a=>{
-    if(a.length<2)return 0;
-    const m=mean(a);
-    return Math.sqrt(mean(a.map(v=>(v-m)**2)));
-  };
-  const regression=(values,dataSet=recent)=>{
-    const xs=dataSet.map(r=>day(r.date));
-    const x0=xs[0];
-    const x=xs.map(v=>v-x0);
-    const xm=mean(x), ym=mean(values);
-    const den=x.reduce((s,v)=>s+(v-xm)**2,0);
-    if(!den)return 0;
-    return x.reduce((s,v,i)=>s+(v-xm)*(values[i]-ym),0)/den;
-  };
-
-  const intervals=[];
-  for(let i=1;i<recent.length;i++){
-    const a=recent[i-1], b=recent[i];
-    const days=Math.max(1,day(b.date)-day(a.date));
-    const ta=totals(a), tb=totals(b);
-    intervals.push({
-      days,
-      totalDaily:(tb.total-ta.total)/days,
-      liquidDaily:(tb.liquid-ta.liquid)/days,
-      protectedDaily:(tb.protected-ta.protected)/days,
-      nonInvestDaily:(nonInvest(b)-nonInvest(a))/days,
-      investmentDaily:(b.investment-a.investment)/days
-    });
-  }
-
-  const totalSlope=regression(recent.map(r=>totals(r).total));
-  const liquidSlope=regression(recent.map(r=>totals(r).liquid));
-  const protectedSlope=regression(recent.map(r=>totals(r).protected));
-  const nonInvestSlope=regression(recent.map(nonInvest));
-  const investmentSlope=regression(recent.map(r=>r.investment));
-  const netSlope=regression(recent.map(r=>totals(r).net));
-  const recentNetValues=recent.map(r=>totals(r).net);
-  const recentNetPeak=Math.max(...recentNetValues);
-  const recentNetStart=recentNetValues[0]||1;
-  const recentNetDrawdown=recentNetPeak>0?(latestT.net-recentNetPeak)/recentNetPeak*100:0;
-  const recentNetChangeRate=recentNetStart!==0?(latestT.net-recentNetStart)/Math.abs(recentNetStart)*100:0;
-  const netIntervals=[];
-  for(let i=1;i<recent.length;i++){
-    const days=Math.max(1,day(recent[i].date)-day(recent[i-1].date));
-    netIntervals.push((totals(recent[i]).net-totals(recent[i-1]).net)/days);
-  }
-  const negativeNetCount=netIntervals.filter(v=>v<0).length;
-  const positiveNetCount=netIntervals.filter(v=>v>0).length;
-  const declineConsistency=netIntervals.length?negativeNetCount/netIntervals.length:0;
-  const directionChanges=netIntervals.slice(1).filter((v,i)=>Math.sign(v)!==Math.sign(netIntervals[i])&&v!==0&&netIntervals[i]!==0).length;
-  const latestDebtIncrease=(+latest.debt||0)-(+prev.debt||0);
-
-  const totalDailyChanges=intervals.map(x=>x.totalDaily);
-  const liquidDailyChanges=intervals.map(x=>x.liquidDaily);
-  const volatility=stdev(totalDailyChanges);
-  const avgAbsTotal=mean(recent.map(r=>totals(r).total))||1;
-  const volatilityRate=volatility/avgAbsTotal*100;
-
-  const lastDays=Math.max(1,day(latest.date)-day(prev.date));
-  const lastTotalDiff=latestT.total-prevT.total;
-  const lastLiquidDiff=latestT.liquid-prevT.liquid;
-  const lastProtectedDiff=latestT.protected-prevT.protected;
-  const lastNonInvestDiff=nonInvest(latest)-nonInvest(prev);
-  const lastInvestmentDiff=latest.investment-prev.investment;
-
-  const liquidShare=latestT.total>0?latestT.liquid/latestT.total*100:0;
-  const protectedShare=latestT.total>0?(latestT.protected+latest.investment)/latestT.total*100:0;
-
-  const lastThree=intervals.slice(-3);
-  const negativeLiquidCount=lastThree.filter(x=>x.liquidDaily<0).length;
-  const negativeTotalCount=lastThree.filter(x=>x.nonInvestDaily<0).length;
-  const positiveProtectedCount=lastThree.filter(x=>x.protectedDaily>0).length;
-
-  const transferSimilarity=
-    Math.abs(lastLiquidDiff)>0
-      ? 1-Math.min(1,Math.abs(Math.abs(lastLiquidDiff)-Math.abs(lastProtectedDiff))/Math.abs(lastLiquidDiff))
-      : 0;
-  const likelyTransfer=
-    Math.sign(lastLiquidDiff)!==Math.sign(lastProtectedDiff) &&
-    transferSimilarity>.72 &&
-    Math.abs(lastNonInvestDiff)<Math.max(1500,Math.abs(lastLiquidDiff)*.22);
-
-  const likelyInvestmentNoise=
-    Math.abs(lastInvestmentDiff)>Math.max(1500,Math.abs(lastNonInvestDiff)*1.4) &&
-    Math.abs(lastNonInvestDiff)<3000;
-
-  const typicalLiquidMove=mean(liquidDailyChanges.map(Math.abs))||1;
-  const shockStrength=Math.abs(lastLiquidDiff/lastDays)/typicalLiquidMove;
-  const largeNegativeShock=lastLiquidDiff<0 && shockStrength>2.2 && lastLiquidDiff<-3000;
-
-  // 総資産とは別に、資産配分の偏りを複数同時に判定する
-  const firstRecent=recent[0];
-  const firstRecentT=totals(firstRecent);
-  const recentSpanDays=Math.max(1,day(latest.date)-day(firstRecent.date));
-  const recentTotalGrowth=latestT.total-firstRecentT.total;
-  const recentSavingGrowth=latestT.protected-firstRecentT.protected;
-  const recentCardGrowth=latest.card-firstRecent.card;
-  const recentInvestmentGrowth=latest.investment-firstRecent.investment;
-  const cardShare=latestT.total>0?latest.card/latestT.total*100:0;
-  const pureSavingShare=latestT.total>0?latestT.protected/latestT.total*100:0;
-  const investmentShare=latestT.total>0?latest.investment/latestT.total*100:0;
-  const nonSalaryIntervals=[];
-  for(let i=1;i<recent.length;i++){
-    if(recent[i].salaryDay===true) continue;
-    const days=Math.max(1,day(recent[i].date)-day(recent[i-1].date));
-    nonSalaryIntervals.push((totals(recent[i]).liquid-totals(recent[i-1]).liquid)/days);
-  }
-  const typicalNonSalaryUse=nonSalaryIntervals.length
-    ? mean(nonSalaryIntervals.map(v=>Math.max(0,-v)))
-    : 0;
-
-  const allocationAlerts=[];
-
-  const cardHoarding=
-    latest.card>=50000 &&
-    (cardShare>=35 ||
-     (recentCardGrowth>=30000 && recentCardGrowth>Math.max(10000,recentSavingGrowth*1.25)));
-  if(cardHoarding){
-    allocationAlerts.push({
-      id:"card",
-      level:cardShare>=50?"high":"warn",
-      title:"カード残高への集中",
-      detail:`カード残高が総資産の${cardShare.toFixed(1)}%を占めています。生活費として残す上限を決め、超過分を貯金または投資へ移す余地があります。`,
-      action:"カードに残す生活費上限を決め、超過分を別口へ移す"
-    });
-  }
-
-  const investmentStalled=
-    recentSpanDays>=45 &&
-    recentTotalGrowth>=30000 &&
-    recentInvestmentGrowth<=Math.max(1500,recentTotalGrowth*.04) &&
-    investmentShare<15;
-  if(investmentStalled){
-    allocationAlerts.push({
-      id:"investment",
-      level:"warn",
-      title:"投資への配分が停滞",
-      detail:`直近${recentSpanDays}日で総資産は${yen(recentTotalGrowth)}増えていますが、投資は${yen(recentInvestmentGrowth)}の増加にとどまっています。投資を増やすか、増やさない方針を明確にする段階です。`,
-      action:"次回給料日に投資額を固定するか、投資しない理由を決める"
-    });
-  }
-
-  const overSaving=
-    recentSavingGrowth>=20000 &&
-    (pureSavingShare>=65 ||
-     (recentTotalGrowth>0 && recentSavingGrowth/recentTotalGrowth>=.72)) &&
-    latestT.liquid<Math.max(30000,latestT.total*.16);
-  if(overSaving){
-    allocationAlerts.push({
-      id:"saving",
-      level:pureSavingShare>=78?"high":"warn",
-      title:"貯金への配分が強すぎる",
-      detail:`貯金が総資産の${pureSavingShare.toFixed(1)}%を占め、直近では${yen(recentSavingGrowth)}増えています。手元資金を圧迫してまで追加貯金する必要はありません。`,
-      action:"最低貯金額を超えた分は、自由費か投資へ振り分ける"
-    });
-  }
-
-  const ultraLowSpending=
-    recentSpanDays>=35 &&
-    recentTotalGrowth>=50000 &&
-    typicalNonSalaryUse<150 &&
-    latestT.debt===0;
-  if(ultraLowSpending){
-    allocationAlerts.push({
-      id:"spending",
-      level:"warn",
-      title:"消費が極端に少ない",
-      detail:`給料日以外の動的資金の減少は平均で1日${yen(typicalNonSalaryUse)}程度です。資産形成は強い一方、必要な経験・外出・買い替えまで先送りしていないか確認が必要です。`,
-      action:"月の自由費を先に確保し、使わなかった分だけ翌月へ回す"
-    });
-  }
-
-  let mode="安定";
-  let cls="";
-  let headline="大きな乱れはありません";
-  let advice="今の配分を維持。欲しい物が具体的なら、自由費の範囲で普通に使ってよい状態です。";
-  let reason="複数回の推移が安定しています。";
-  let strength=45;
-
-  const severeDecline=
-    (recentNetChangeRate<=-20 && declineConsistency>=.55) ||
-    (recentNetDrawdown<=-25 && netSlope<-200) ||
-    (netSlope<-700 && declineConsistency>=.60) ||
-    (latestDebtIncrease>5000 && netSlope<-250);
-  const sustainedDecline=
-    !severeDecline &&
-    ((recentNetChangeRate<=-8 && declineConsistency>=.55) ||
-     (netSlope<-300 && declineConsistency>=.60));
-
-  if(severeDecline){
-    mode="資産悪化が進行中";
-    cls="stop";
-    headline="純資産の減少が継続し、改善より悪化が優勢です";
-    advice="予定外の消費を止め、次の給料日に返済・生活費・貯金の順で配分を組み直します。";
-    reason=`直近${recent.length}件で純資産が${recentNetChangeRate.toFixed(1)}%変化し、${negativeNetCount}/${netIntervals.length}区間で減少しています。${latestDebtIncrease>0?`借金も前回から${yen(latestDebtIncrease)}増えています。`:""}`;
-    strength=96;
-  }else if(sustainedDecline){
-    mode="下降傾向";
-    cls="stop";
-    headline="純資産が継続的に下向いています";
-    advice="大きな支出を保留し、次回記録まで動的なお金と借金の改善を優先します。";
-    reason=`直近${recent.length}件の純資産は${recentNetChangeRate.toFixed(1)}%変化し、減少区間が${negativeNetCount}/${netIntervals.length}あります。日々の上下より下降方向の傾きが強い状態です。`;
-    strength=91;
-  }else if(likelyTransfer){
-    mode="資金移動を検出";
-    headline="支出より、口座間の移動に見えます";
-    advice="使いすぎとは判定しません。移動先の残高が正しいかだけ確認すれば大丈夫です。";
-    reason="使えるお金と貯金がほぼ同額、逆方向に動き、投資を除く総額がほぼ維持されています。";
-    strength=82;
-  }else if(likelyInvestmentNoise){
-    mode="相場変動の可能性";
-    cls="warn";
-    headline="総資産の変化は投資額が中心です";
-    advice="今日の消費判断は変えなくて大丈夫です。現金・貯金側の推移を優先して見ます。";
-    reason="投資額だけが大きく動き、投資を除いた残高はほぼ変化していません。";
-    strength=78;
-  }else if(negativeLiquidCount>=3 && negativeTotalCount>=2 && liquidSlope<-500){
-    mode="継続的な使いすぎ";
-    cls="stop";
-    headline="使えるお金の減少が続いています";
-    advice="次の記録までは予定外の買い物を止め、3,000円以上は48時間保留にします。";
-    reason="直近3区間で使えるお金が連続して減り、投資を除く総資産も下向きです。";
-    strength=90;
-  }else if(largeNegativeShock && !likelyTransfer){
-    mode="単発の大きな支出";
-    cls="stop";
-    headline="普段より大きな減少が出ています";
-    advice="同じ規模の支出を重ねないよう、次の記録までは大型の買い物を保留します。";
-    reason="直近の減少速度が、これまでの通常変動の2倍以上です。";
-    strength=82;
-  }else if(positiveProtectedCount>=2 && liquidSlope<-250 && protectedSlope>250 && protectedShare>=72){
-    mode="貯めすぎ傾向";
-    cls="warn";
-    headline="使えるお金を貯金へ寄せ続けています";
-    advice="今月の最低貯金額を達成済みなら、追加貯金を停止。500〜1,500円の自由費を1回使ってよい状態です。";
-    reason="複数区間で貯金が増える一方、使えるお金が継続して減り、守る資産の比率も高めです。";
-    strength=86;
-  }else if(liquidShare<8 && latestT.liquid<15000){
-    mode="手元資金が少なめ";
-    cls="warn";
-    headline="総資産に対して、すぐ使えるお金が少なめです";
-    advice="追加投資・追加貯金より、当面の現金余力を優先します。";
-    reason="総資産はあっても、現金とカード残高の比率が低くなっています。";
-    strength=76;
-  }else if(nonInvestSlope>350 && liquidSlope>=-100){
-    mode="余裕が拡大";
-    headline="投資相場に頼らず資産が増えています";
-    advice="貯金ルールを崩さない範囲で、予定していた買い物や外出に使ってよい状態です。";
-    reason="投資を除く総資産が上向きで、使えるお金もほぼ維持されています。";
-    strength=84;
-  }else if(totalSlope>250 && nonInvestSlope<50 && investmentSlope>250){
-    mode="投資主導の増加";
-    headline="資産は増えていますが、主因は投資です";
-    advice="含み益を自由費として扱わず、普段の現金ルールは維持します。";
-    reason="総資産は上向きですが、現金・貯金の増加より投資額の伸びが中心です。";
-    strength=80;
-  }else if(volatilityRate>1.4 && directionChanges>=2 && Math.abs(netSlope)<Math.max(250,volatility*.45)){
-    mode="変動が大きい";
-    cls="warn";
-    headline="残高の上下が大きく、方向が定まりません";
-    advice="1回の増減でルールを変えず、あと2回ほど記録してから判断します。";
-    reason=`増減方向が${directionChanges}回切り替わり、純資産の傾きより日々の上下のほうが強く出ています。`;
-    strength=68;
-  }else if(Math.abs(totalSlope)<180 && Math.abs(liquidSlope)<180){
-    mode="安定";
-    headline="大きな乱れはありません";
-    advice="今の配分を維持。欲しい物が具体的なら、自由費の範囲で普通に使ってよい状態です。";
-    reason="総資産と使えるお金の中期的な傾きが小さく、変動も限定的です。";
-    strength=78;
-  }else{
-    mode="様子見";
-    cls="warn";
-    headline="複数の動きが混ざっています";
-    advice="大きな買い物や追加貯金は次の記録まで保留し、方向が続くか確認します。";
-    reason="支出・貯金・投資の変化が一方向に揃わず、明確な傾向に分類できません。";
-    strength=58;
-  }
-
-  const seriousModes=new Set(["資産悪化が進行中","下降傾向","継続的な使いすぎ","単発の大きな支出"]);
-  if(allocationAlerts.length && !seriousModes.has(mode)){
-    mode="資産配分に偏り";
-    cls="warn";
-    headline=`資産は維持・増加していますが、配分上の警告が${allocationAlerts.length}件あります`;
-    advice="総資産だけで良好と判断せず、カード・貯金・投資・自由費の配分を調整します。";
-    reason=allocationAlerts.map(a=>a.title).join("、")+"が検出されています。";
-    strength=Math.max(strength,84);
-  }
-
-  const dataScore=clamp((recent.length-2)*9,10,54);
-  const regularityDays=intervals.map(x=>x.days);
-  const regularity=regularityDays.length>1
-    ? clamp(30-stdev(regularityDays)*3,5,30)
-    : 10;
-  const confidence=Math.round(clamp(dataScore+regularity+strength*.22,35,96));
-  const confidenceLabel=confidence>=80?"高め":confidence>=65?"中程度":"低め";
-
-  updateIfRules(mode,{recentNetChangeRate,declineConsistency,latestDebtIncrease});
-  title.textContent=mode;
-  detail.textContent=`信頼度 ${confidence}%（${confidenceLabel}）`;
-  box.className="analysis "+cls;
-  const cashSlope=regression(recent.map(r=>r.cash));
-  const cardSlope=regression(recent.map(r=>r.card));
-  const savingsCashSlope=regression(recent.map(r=>r.savingsCash));
-  const savingsBankSlope=regression(recent.map(r=>r.savingsBank));
-
-  const percentChange=(current,previous)=>previous===0?(current===0?0:100):(current-previous)/previous*100;
-  const latestChanges={
-    cash:percentChange(latest.cash,prev.cash),
-    card:percentChange(latest.card,prev.card),
-    savingsCash:percentChange(latest.savingsCash,prev.savingsCash),
-    savingsBank:percentChange(latest.savingsBank,prev.savingsBank),
-    investment:percentChange(latest.investment,prev.investment)
-  };
-  const importance=(rate,diff)=>Math.abs(rate)*.75+(prevT.total?Math.abs(diff)/prevT.total*100*.25:0);
-  const scores={
-    cash:importance(latestChanges.cash,latest.cash-prev.cash),
-    card:importance(latestChanges.card,latest.card-prev.card),
-    savingsCash:importance(latestChanges.savingsCash,latest.savingsCash-prev.savingsCash),
-    savingsBank:importance(latestChanges.savingsBank,latest.savingsBank-prev.savingsBank),
-    investment:importance(latestChanges.investment,latest.investment-prev.investment)
-  };
-  const trendWord=(rate,score)=>{
-    if(score>=25)return rate>0?"大幅増加":rate<0?"大幅減少":"変化なし";
-    if(Math.abs(rate)>=10)return rate>0?"増加":"減少";
-    if(Math.abs(rate)>=3)return rate>0?"やや増加":"やや減少";
-    return "安定";
-  };
-  const importanceWord=v=>v>=60?"非常に大きい変化":v>=25?"大きい変化":v>=10?"無視できない変化":"小さい変化";
-
-  const dynamicBalance=latest.cash+latest.card;
-  const savingsBalance=latest.savingsCash+latest.savingsBank;
-  const dynamicRate=latestT.total?dynamicBalance/latestT.total*100:0;
-  const savingsRate=latestT.total?savingsBalance/latestT.total*100:0;
-
-  const salaryRecord=latest.salaryDay===true;
-  const estimatedIncome=salaryRecord?Math.max(0,nonInvest(latest)-nonInvest(prev)):0;
-  const minimumDynamicBuffer=Math.max(15000,Math.round(dynamicBalance*.35));
-  const safeSurplus=Math.max(0,dynamicBalance-minimumDynamicBuffer);
-  const baseRate=dynamicRate<12?.25:dynamicRate<20?.35:.45;
-  const suggestedSaving=salaryRecord&&estimatedIncome>0?Math.max(0,Math.round(Math.min(estimatedIncome*baseRate,safeSurplus)/1000)*1000):0;
-  const savingRateSuggestion=estimatedIncome?suggestedSaving/estimatedIncome*100:0;
-
-  const latestDebt=+latest.debt||0;
-  const prevDebt=+prev.debt||0;
-  const debtDiff=latestDebt-prevDebt;
-  const grossAssets=latestT.gross||latestT.total;
-  const netWorth=grossAssets-latestDebt;
-  const debtRatio=grossAssets>0?latestDebt/grossAssets*100:0;
-  const debtTrend=debtDiff>500?"増加":debtDiff<-500?"減少":"ほぼ一定";
-
-  const repayableAssets=dynamicBalance+savingsBalance;
-  // 一括返済後に残す基準は、直近の実際の支出ペース30日分だけにする
-  const repaymentReserve=Math.max(0,Math.ceil((typicalNonSalaryUse*30)/1000)*1000);
-  const liquidAfterFullRepayment=repayableAssets-latestDebt;
-  const lumpSumCapacity=Math.max(0,repayableAssets-repaymentReserve);
-  const canRepayInFull=latestDebt>0&&liquidAfterFullRepayment>=repaymentReserve;
-  const repaymentMonths=debtRatio<20?12:debtRatio<45?24:36;
-  const baseMonthlyRepayment=latestDebt>0?Math.ceil((latestDebt/repaymentMonths)/1000)*1000:0;
-  const affordableMonthlyCap=Math.max(1000,Math.floor((dynamicBalance*.15)/1000)*1000);
-  const suggestedMonthlyRepayment=latestDebt>0?Math.min(baseMonthlyRepayment,affordableMonthlyCap):0;
-  const projectedMonths=suggestedMonthlyRepayment>0?Math.ceil(latestDebt/suggestedMonthlyRepayment):0;
-
-  let debtAssessment="借金はありません";
-  let debtAction="借金に関する返済提案はありません。";
-  if(latestDebt>0&&canRepayInFull){
-    debtAssessment="満額返済を検討できる水準";
-    debtAction=`現金・カード・貯金の合計${yen(repayableAssets)}から借金${yen(latestDebt)}を全額返すと、${yen(liquidAfterFullRepayment)}残ります。直近の支出ペース30日分は${yen(repaymentReserve)}です。`;
-  }else if(latestDebt>0&&debtRatio>=55){
-    debtAssessment="借金比率が高め";
-    debtAction=`月${yen(suggestedMonthlyRepayment)}を返すと、動的なお金は${yen(Math.max(0,dynamicBalance-suggestedMonthlyRepayment))}、借金残高は${yen(Math.max(0,latestDebt-suggestedMonthlyRepayment))}になります。完済目安は約${projectedMonths}か月です。`;
-  }else if(latestDebt>0&&debtDiff>500){
-    debtAssessment="借金が増加中";
-    debtAction=`月${yen(suggestedMonthlyRepayment)}を返すと、動的なお金は${yen(Math.max(0,dynamicBalance-suggestedMonthlyRepayment))}、借金残高は${yen(Math.max(0,latestDebt-suggestedMonthlyRepayment))}になります。`;
-  }else if(latestDebt>0&&debtDiff<-500){
-    debtAssessment="返済が進行中";
-    debtAction=`月${yen(suggestedMonthlyRepayment)}を返すと、動的なお金は${yen(Math.max(0,dynamicBalance-suggestedMonthlyRepayment))}、借金残高は${yen(Math.max(0,latestDebt-suggestedMonthlyRepayment))}になります。完済目安は約${projectedMonths}か月です。`;
-  }else if(latestDebt>0){
-    debtAssessment="分割返済が適する水準";
-    debtAction=`月${yen(suggestedMonthlyRepayment)}を返す場合、動的なお金${yen(dynamicBalance)} − 返済${yen(suggestedMonthlyRepayment)} ＝ ${yen(Math.max(0,dynamicBalance-suggestedMonthlyRepayment))}です。借金残高は${yen(Math.max(0,latestDebt-suggestedMonthlyRepayment))}になります。`;
-  }
-
-
-  const allRecords=records;
-  const allTotalSlope=regression(allRecords.map(r=>totals(r).total),allRecords);
-  const allLiquidSlope=regression(allRecords.map(r=>totals(r).liquid),allRecords);
-  const allSavingSlope=regression(allRecords.map(r=>totals(r).protected),allRecords);
-  const allInvestmentSlope=regression(allRecords.map(r=>r.investment),allRecords);
-  const allDebtSlope=regression(allRecords.map(r=>+r.debt||0),allRecords);
-
-  const monthlyMap=new Map();
-  allRecords.forEach(r=>{
-    const key=r.date.slice(0,7);
-    monthlyMap.set(key,r);
-  });
-  const monthlyRecords=[...monthlyMap.values()];
-  const monthlyChanges=[];
-  for(let i=1;i<monthlyRecords.length;i++){
-    monthlyChanges.push({
-      total:totals(monthlyRecords[i]).total-totals(monthlyRecords[i-1]).total,
-      liquid:totals(monthlyRecords[i]).liquid-totals(monthlyRecords[i-1]).liquid,
-      saving:totals(monthlyRecords[i]).protected-totals(monthlyRecords[i-1]).protected
-    });
-  }
-  const avgMonthlyTotal=monthlyChanges.length?mean(monthlyChanges.map(x=>x.total)):0;
-  const avgMonthlyLiquid=monthlyChanges.length?mean(monthlyChanges.map(x=>x.liquid)):0;
-  const avgMonthlySaving=monthlyChanges.length?mean(monthlyChanges.map(x=>x.saving)):0;
-
-  const recent3=records.slice(-3);
-  const recent3TotalDiff=recent3.length>1?totals(recent3.at(-1)).total-totals(recent3[0]).total:0;
-  const recent3LiquidDiff=recent3.length>1?totals(recent3.at(-1)).liquid-totals(recent3[0]).liquid:0;
-
-  // 次回給料日までの消費計画
-  const salaryRows=records.filter(r=>r.salaryDay===true);
-  const salaryIncreases=[];
-  for(let i=0;i<records.length;i++){
-    if(!records[i].salaryDay || i===0) continue;
-    salaryIncreases.push(Math.max(0,nonInvest(records[i])-nonInvest(records[i-1])));
-  }
-  const median=a=>{
-    if(!a.length)return 0;
-    const s=[...a].sort((x,y)=>x-y);
-    const m=Math.floor(s.length/2);
-    return s.length%2?s[m]:(s[m-1]+s[m])/2;
-  };
-  const typicalSalary=median(salaryIncreases.filter(v=>v>0));
-  const salaryDayOfMonth=salaryRows.length
-    ? +salaryRows.at(-1).date.slice(8,10)
-    : 25;
-  const latestDateObj=new Date(latest.date+"T00:00:00");
-  const nextSalaryDate=new Date(latestDateObj);
-  nextSalaryDate.setDate(salaryDayOfMonth);
-  if(nextSalaryDate<=latestDateObj){
-    nextSalaryDate.setMonth(nextSalaryDate.getMonth()+1);
-    nextSalaryDate.setDate(salaryDayOfMonth);
-  }
-  const daysToSalary=Math.max(1,Math.round((nextSalaryDate-latestDateObj)/86400000));
-  const nextSalaryLabel=`${nextSalaryDate.getMonth()+1}/${nextSalaryDate.getDate()}`;
-
-  const actualDailyUse=Math.max(0,typicalNonSalaryUse);
-  const studentBaseDaily=900;
-  const plannedDailyLiving=Math.round(Math.max(studentBaseDaily,Math.min(2200,actualDailyUse||studentBaseDaily))/100)*100;
-  const livingUntilSalary=plannedDailyLiving*daysToSalary;
-  // 貯金はすでに別項目で管理されているため、購入判定で架空の予備費を二重に差し引かない
-  const emergencyReserve=0;
-  const debtReserve=latestDebt>0?suggestedMonthlyRepayment:0;
-  const requiredBeforeSalary=livingUntilSalary+debtReserve;
-  const spendableBeforeSalary=Math.max(0,dynamicBalance-requiredBeforeSalary);
-
-  let monthlyFreeTarget;
-  if(typicalSalary>0){
-    monthlyFreeTarget=Math.round(clamp(typicalSalary*.18,5000,25000)/1000)*1000;
-  }else{
-    monthlyFreeTarget=Math.round(clamp(dynamicBalance*.15,3000,15000)/1000)*1000;
-  }
-  if(mode==="資産悪化が進行中"||mode==="下降傾向"||mode==="継続的な使いすぎ"){
-    monthlyFreeTarget=Math.min(monthlyFreeTarget,5000);
-  }
-  if(overSaving||ultraLowSpending){
-    monthlyFreeTarget=Math.max(monthlyFreeTarget,10000);
-  }
-  if(latestDebt>0){
-    monthlyFreeTarget=Math.min(monthlyFreeTarget,8000);
-  }
-
-  const weeklyFreeTarget=Math.max(0,Math.round(monthlyFreeTarget/4/500)*500);
-  const safePurchaseNow=Math.max(0,Math.min(spendableBeforeSalary,monthlyFreeTarget));
-  const planTone=spendableBeforeSalary<=0?"stop":spendableBeforeSalary<monthlyFreeTarget?"warn":"good";
-  const planSummary=
-    spendableBeforeSalary<=0
-      ? `次の給料日までは生活費と予備費を優先し、趣味の購入は保留します。`
-      : overSaving||ultraLowSpending
-        ? `貯める力は十分です。次の給料日までは${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}を、日常生活の経験・趣味・外出に計画的に使えます。`
-        : `次の給料日までは、生活費を除いて最大${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}を自由費の目安にします。`;
-
-  const recentSavingsFloor=Math.min(...recent.map(r=>r.savingsCash+r.savingsBank));
-  const savingsSurplus=Math.max(0,savingsBalance-recentSavingsFloor);
-
-  currentStudentPlan={
-    latestDate:latest.date,
-    daysToSalary,
-    nextSalaryLabel,
-    dynamicBalance,
-    plannedDailyLiving,
-    livingUntilSalary,
-    emergencyReserve,
-    debtReserve,
-    requiredBeforeSalary,
-    spendableBeforeSalary,
-    monthlyFreeTarget,
-    weeklyFreeTarget,
-    safePurchaseNow,
-    mode,
-    planTone,
-    planSummary,
-    latestDebt,
-    overSaving,
-    ultraLowSpending,
-    cardHoarding,
-    investmentStalled,
-    total:latestT.total,
-    savings:savingsBalance,
-    recentSavingsFloor,
-    savingsSurplus,
-    investment:latest.investment
-  };
-
-  const direction=v=>v>200?"増加":v<-200?"減少":"安定";
-  const longSummary=
-    allTotalSlope>200
-      ? "全期間では資産形成が進んでいます。"
-      : allTotalSlope<-200
-        ? "全期間では総資産が減少方向です。"
-        : "全期間では総資産は大きく変わっていません。";
-
-  const recommendationItems=[];
-  if(salaryRecord&&estimatedIncome>0){
-    recommendationItems.push(`今回の収入増加は約${yen(estimatedIncome)}と推定`);
-    recommendationItems.push(`今回の貯金目安は約${yen(suggestedSaving)}（推定収入の約${Math.round(savingRateSuggestion)}%）`);
-    recommendationItems.push(`貯金後も動的なお金を最低${yen(minimumDynamicBuffer)}程度残す`);
-  }
-  if(latestDebt>0){
-    if(canRepayInFull){
-      recommendationItems.push(`全額返済すると現金・カード・貯金の合計は${yen(liquidAfterFullRepayment)}残る`);
-    }else{
-      recommendationItems.push(`月${yen(suggestedMonthlyRepayment)}を返済枠として先に確保する`);
-      recommendationItems.push(`この返済額なら完済目安は約${projectedMonths}か月`);
-    }
-    if(debtDiff>500) recommendationItems.push("借金残高が増えているため、次回記録までは新しい借入と予定外消費を抑える");
-    if(debtRatio>=55) recommendationItems.push("追加投資より返済を優先し、借金比率を50%未満へ下げる");
-  }
-  recommendationItems.push(`次の給料日（${nextSalaryLabel}）までの生活費目安は${yen(livingUntilSalary)}`);
-  recommendationItems.push(`今週の自由費目安は${yen(weeklyFreeTarget)}、次の給料日までの自由費上限は${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}`);
-  allocationAlerts.forEach(alert=>recommendationItems.push(alert.action));
-  if(mode==="資産悪化が進行中"){
-    recommendationItems.push("次の給料日まで生活必需品以外の支出を止める");
-    recommendationItems.push("給料日は生活費・借金返済・最低貯金の順で配分する");
-    recommendationItems.push("次回記録で純資産が改善しなければ自由費上限を引き下げる");
-  }
-  else if(mode==="下降傾向"){
-    recommendationItems.push("予定外の大型支出を次回記録まで保留する");
-    recommendationItems.push("動的なお金と借金残高のどちらかを改善させる");
-  }
-  else if(mode==="継続的な使いすぎ") recommendationItems.push("予定外の買い物を止め、3,000円以上は48時間保留する");
-  else if(mode==="単発の大きな支出") recommendationItems.push("同規模の支出を続けて重ねず、次回記録で戻りを見る");
-  else if(mode==="貯めすぎ傾向") recommendationItems.push("最低貯金額を達成済みなら追加貯金を止め、少額の自由費を許可する");
-  else if(mode==="手元資金が少なめ") recommendationItems.push("追加投資・追加貯金より日常支出用の残高を優先する");
-  else if(mode==="資金移動を検出") recommendationItems.push("使いすぎとは扱わず、移動先残高だけ確認する");
-  else if(mode==="相場変動の可能性"||mode==="投資主導の増加") recommendationItems.push("投資の増減を自由費の判断材料にしない");
-  else if(mode==="余裕が拡大") recommendationItems.push("予定していた買い物や外出には使ってよい");
-  else if(mode==="資産配分に偏り") recommendationItems.push("総資産の増加だけで良好とせず、検出された偏りを1つずつ解消する");
-  else if(mode==="安定") recommendationItems.push("現在の配分を維持し、具体的に欲しい物なら普通に使ってよい");
-  else recommendationItems.push("大きな買い物や追加貯金は次回記録まで保留する");
-
-  title.textContent=mode;
-  detail.textContent=`信頼度 ${confidence}%（${confidenceLabel}）`;
-  box.className="analysis "+cls;
-  box.innerHTML=`
-    <div class="analysis-tabs" role="tablist">
-      <button type="button" class="active" data-page="0">要点</button>
-      <button type="button" data-page="1">資産別</button>
-      <button type="button" data-page="2">長期・月次</button>
-      <button type="button" data-page="3">消費計画</button>
-      <button type="button" data-page="4">具体策</button>
-    </div>
-
-    <section class="analysis-page active" data-analysis-page="0">
-      <h3>総合判定</h3>
-      <strong>${headline}</strong><br>
-      ${reason}<br><br>
-      直近3件では総資産が <strong>${recent3TotalDiff>=0?"+":""}${yen(recent3TotalDiff)}</strong>、
-      動的なお金が <strong>${recent3LiquidDiff>=0?"+":""}${yen(recent3LiquidDiff)}</strong> 変化しています。<br>
-      ${longSummary}<br><br>
-      信頼度は <strong>${confidence}%（${confidenceLabel}）</strong> です。
-
-      ${allocationAlerts.length?`
-        <h3 style="margin-top:20px">資産配分の警告</h3>
-        <div class="allocation-alerts">
-          ${allocationAlerts.map(alert=>`
-            <div class="allocation-alert ${alert.level}">
-              <strong>${alert.title}</strong>
-              <p>${alert.detail}</p>
-            </div>
-          `).join("")}
-        </div>
-      `:`
-        <h3 style="margin-top:20px">資産配分</h3>
-        <div class="allocation-alerts">
-          <div class="allocation-alert">
-            <strong>大きな偏りは検出されていません</strong>
-            <p>カード・貯金・投資・手元資金の構成に、現在のルール上の強い警告はありません。</p>
-          </div>
-        </div>
-      `}
-
-      <h3 style="margin-top:20px">借金と返済</h3>
-      <div class="debt-summary">
-        <div><span>借金総額</span><strong>${yen(latestDebt)}</strong></div>
-        <div><span>前回から</span><strong>${debtDiff>=0?"+":""}${yen(debtDiff)}</strong></div>
-        <div><span>純資産</span><strong>${yen(netWorth)}</strong></div>
-      </div>
-      <strong>${debtAssessment}</strong><br>${debtAction}
-    </section>
-
-    <section class="analysis-page" data-analysis-page="1">
-      <h3>資産形態ごとの直近変化</h3>
-      <div class="metric-grid">
-        ${[
-          ["現金",latestChanges.cash,scores.cash,prev.cash,latest.cash],
-          ["カード残高",latestChanges.card,scores.card,prev.card,latest.card],
-          ["貯金（現金）",latestChanges.savingsCash,scores.savingsCash,prev.savingsCash,latest.savingsCash],
-          ["貯金（銀行）",latestChanges.savingsBank,scores.savingsBank,prev.savingsBank,latest.savingsBank],
-          ["投資",latestChanges.investment,scores.investment,prev.investment,latest.investment]
-        ].map(([name,rate,score,before,after])=>`
-          <div class="metric-card">
-            <span>${name}</span>
-            <strong>${trendWord(rate,score)}（${rate>=0?"+":""}${rate.toFixed(1)}%）</strong>
-            <em>${importanceWord(score)}｜${yen(before)} → ${yen(after)}</em>
-          </div>
-        `).join("")}
-      </div>
-
-      <h3 style="margin-top:20px">動的なお金と貯金</h3>
-      動的なお金は <strong>${yen(dynamicBalance)}</strong>（総資産の ${dynamicRate.toFixed(1)}%）、
-      貯金は <strong>${yen(savingsBalance)}</strong>（${savingsRate.toFixed(1)}%）です。<br>
-      直近変化は、動的なお金 ${lastLiquidDiff>=0?"+":""}${yen(lastLiquidDiff)}、
-      貯金 ${lastProtectedDiff>=0?"+":""}${yen(lastProtectedDiff)}です。<br><br>
-      カード残高比率は <strong>${cardShare.toFixed(1)}%</strong>、
-      純粋な貯金比率は <strong>${pureSavingShare.toFixed(1)}%</strong>、
-      投資比率は <strong>${investmentShare.toFixed(1)}%</strong> です。
-    </section>
-
-    <section class="analysis-page" data-analysis-page="2">
-      <h3>全期間の基準</h3>
-      <div class="long-grid">
-        <div><span>総資産</span><strong>${direction(allTotalSlope)}｜1日 ${allTotalSlope>=0?"+":""}${yen(allTotalSlope)}</strong></div>
-        <div><span>動的なお金</span><strong>${direction(allLiquidSlope)}｜1日 ${allLiquidSlope>=0?"+":""}${yen(allLiquidSlope)}</strong></div>
-        <div><span>貯金</span><strong>${direction(allSavingSlope)}｜1日 ${allSavingSlope>=0?"+":""}${yen(allSavingSlope)}</strong></div>
-        <div><span>投資</span><strong>${direction(allInvestmentSlope)}｜1日 ${allInvestmentSlope>=0?"+":""}${yen(allInvestmentSlope)}</strong></div>
-        <div><span>借金</span><strong>${direction(allDebtSlope)}｜1日 ${allDebtSlope>=0?"+":""}${yen(allDebtSlope)}</strong></div>
-        <div><span>分析件数</span><strong>${allRecords.length}件</strong></div>
-      </div>
-
-      <h3 style="margin-top:20px">月単位の平均変化</h3>
-      月末記録を基準に、
-      総資産は月平均 <strong>${avgMonthlyTotal>=0?"+":""}${yen(avgMonthlyTotal)}</strong>、
-      動的なお金は <strong>${avgMonthlyLiquid>=0?"+":""}${yen(avgMonthlyLiquid)}</strong>、
-      貯金は <strong>${avgMonthlySaving>=0?"+":""}${yen(avgMonthlySaving)}</strong> です。<br><br>
-      全期間は「本人にとって通常の状態」を作るために使い、
-      直近8件は現在の傾向、直近3件は急変検知に使っています。
-    </section>
-
-    <section class="analysis-page" data-analysis-page="3">
-      <h3>次の給料日までの消費計画</h3>
-      <div class="student-plan-grid">
-        <div class="student-plan-card"><span>次の給料日</span><strong>${nextSalaryLabel}まで ${daysToSalary}日</strong></div>
-        <div class="student-plan-card"><span>生活費の確保</span><strong>${yen(livingUntilSalary)}</strong></div>
-        <div class="student-plan-card"><span>今週の自由費</span><strong>${yen(weeklyFreeTarget)}</strong></div>
-        <div class="student-plan-card"><span>購入に使える上限</span><strong>${yen(Math.min(spendableBeforeSalary,monthlyFreeTarget))}</strong></div>
-      </div>
-      <div class="plan-message ${planTone==="stop"?"stop":planTone==="warn"?"warn":""}">
-        <strong>${planSummary}</strong><br>
-        1日あたりの生活費は約${yen(plannedDailyLiving)}として、給料日までに${yen(livingUntilSalary)}
-        ${latestDebt>0?`、今回の返済枠として${yen(debtReserve)}`:""}を確保する計算です。貯金はこの購入判定では差し引いていません。
-      </div>
-
-      <h3 style="margin-top:20px">使う順番</h3>
-      <ol style="margin:8px 0 0;padding-left:1.25em;line-height:1.8">
-        <li>授業・通学・食事など、日常生活を維持する費用</li>
-        <li>友人との外出、旅行、ライブ、制作など、今の時期に意味がある経験</li>
-        <li>趣味の商品や機材。自由費の上限内なら購入候補</li>
-        <li>残った分を貯金・投資・返済へ配分</li>
-      </ol>
-
-      <h3 style="margin-top:20px">今月の方針</h3>
-      ${overSaving||ultraLowSpending
-        ?"貯金額の最大化ではなく、自由費を先に確保して実際に使うことを計画へ含めます。"
-        :cardHoarding
-          ?"カードに残したままにせず、生活費・自由費・貯金・投資へ役割を分けます。"
-          :investmentStalled
-            ?"生活費と自由費を確保した後、投資する金額を給料日に固定します。"
-            :"生活費と予備費を守り、その範囲を超えない自由費を使います。"}
-    </section>
-
-    <section class="analysis-page" data-analysis-page="4">
-      <h3>今回の具体策</h3>
-      <ul style="margin:8px 0 0;padding-left:1.2em">
-        ${recommendationItems.map(item=>`<li>${item}</li>`).join("")}
-      </ul>
-
-      ${salaryRecord&&estimatedIncome>0?`
-        <h3 style="margin-top:20px">給料日の配分案</h3>
-        推定収入増加は約 <strong>${yen(estimatedIncome)}</strong>。<br>
-        貯金目安は約 <strong>${yen(suggestedSaving)}</strong>、
-        動的なお金は最低 <strong>${yen(minimumDynamicBuffer)}</strong> 残す計算です。
-      `:""}
-
-      <div class="foot">
-        個別資産は自身に対する増減率、短期は直近3件、中期は直近8件、
-        長期は全履歴と月末記録を使っています。生活費・交際費・学業費・趣味を含む日常向けの基準です。保存キー：money-if-auto-records-v2（固定）
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="ring one"></div>
+        <div class="ring two"></div>
+        <div class="orbit-core"></div>
+        <span class="dot a"></span>
+        <span class="dot b"></span>
+        <span class="dot c"></span>
       </div>
     </section>
 
-    <div class="analysis-nav">
-      <button type="button" data-analysis-prev disabled>← 前へ</button>
-      <button type="button" data-analysis-next>次へ →</button>
-    </div>
-  `;
-
-  const tabs=[...box.querySelectorAll("[data-page]")];
-  const pages=[...box.querySelectorAll("[data-analysis-page]")];
-  const prevButton=box.querySelector("[data-analysis-prev]");
-  const nextButton=box.querySelector("[data-analysis-next]");
-  let currentPage=0;
-
-  const showPage=index=>{
-    currentPage=Math.max(0,Math.min(pages.length-1,index));
-    tabs.forEach((tab,i)=>tab.classList.toggle("active",i===currentPage));
-    pages.forEach((page,i)=>page.classList.toggle("active",i===currentPage));
-    prevButton.disabled=currentPage===0;
-    nextButton.disabled=currentPage===pages.length-1;
-  };
-
-  tabs.forEach((tab,i)=>tab.addEventListener("click",()=>showPage(i)));
-  prevButton.addEventListener("click",()=>showPage(currentPage-1));
-  nextButton.addEventListener("click",()=>showPage(currentPage+1));
-}
-
-
-function judgePurchase(){
-  const result=$("purchaseResult");
-  const price=Math.max(0,+$("purchasePrice").value||0);
-  const name=$("purchaseName").value.trim()||"この購入";
-  const type=$("purchaseType").value;
-  const savingsMode=$("savingsUseMode").value;
-  const customSavingsLimit=Math.max(0,+$("savingsUseLimit").value||0);
-
-  if(!currentStudentPlan){
-    result.className="purchase-result plan-message warn";
-    result.innerHTML="<h3>まだ判定できません</h3>残高記録を3件以上入力してください。";
-    return;
-  }
-  if(price<=0){
-    result.className="purchase-result plan-message warn";
-    result.innerHTML="<h3>金額を入力してください</h3>100円以上の金額で判定します。";
-    return;
-  }
-
-  const p=currentStudentPlan;
-  let savingsAllowance=0;
-  let savingsBasis="貯金は使わない設定";
-
-  if(savingsMode==="surplus"){
-    savingsAllowance=Math.max(0,p.savingsSurplus);
-    savingsBasis=`直近8件の最低貯金額${yen(p.recentSavingsFloor)}を超えた分`;
-  }else if(savingsMode==="custom"){
-    savingsAllowance=Math.min(p.savings,customSavingsLimit);
-    savingsBasis=`自分で指定した上限${yen(customSavingsLimit)}`;
-  }
-
-  const totalAvailable=p.dynamicBalance+savingsAllowance;
-  const shortage=price-totalAvailable;
-  const dynamicUsed=Math.min(price,p.dynamicBalance);
-  const savingsUsed=Math.max(0,price-dynamicUsed);
-  const dynamicAfter=p.dynamicBalance-dynamicUsed;
-  const savingsAfter=p.savings-savingsUsed;
-  const savingsUseRate=p.savings>0?savingsUsed/p.savings:0;
-
-  let decision,cls,reason,action;
-
-  if(shortage>0){
-    decision="今は買えない";
-    cls="stop";
-    reason=`使える金額は、動的なお金${yen(p.dynamicBalance)}と、設定上使える貯金${yen(savingsAllowance)}の合計${yen(totalAvailable)}です。購入額に${yen(shortage)}足りません。`;
-    action="価格を下げるか、貯金を使う上限を自分で変更して再判定します。";
-  }else if(savingsUsed===0){
-    decision="買ってよい";
-    cls="";
-    reason=`動的なお金${yen(p.dynamicBalance)}から購入額${yen(price)}を引くと、${yen(dynamicAfter)}残ります。貯金は使いません。`;
-    action=type==="need"
-      ?"必要な支出として購入できます。"
-      :type==="study"
-        ?"学業・制作に使う時期が決まっているなら購入できます。"
-        :type==="experience"
-          ?"予定が具体的なら、経験への支出として購入できます。"
-          :"今月の他の趣味費と重ならないなら購入できます。";
-  }else{
-    const crossesFloor=savingsAfter<p.recentSavingsFloor;
-    const heavyUse=savingsUseRate>=.30;
-    const moderateUse=savingsUseRate>=.15;
-
-    if(type==="want" && (heavyUse || crossesFloor)){
-      decision="貯金を使ってまで買うか再検討";
-      cls="warn";
-      reason=`動的なお金${yen(p.dynamicBalance)}に加えて、貯金から${yen(savingsUsed)}使います。購入後の貯金は${yen(savingsAfter)}です。`;
-      action=crossesFloor
-        ? `直近8件の最低貯金額${yen(p.recentSavingsFloor)}を下回るため、趣味目的なら一度保留します。`
-        : `貯金の${(savingsUseRate*100).toFixed(1)}%を使うため、同じ金額を再び貯める期間も考えて決めます。`;
-    }else if(type==="experience" && heavyUse){
-      decision="条件付きで買える";
-      cls="warn";
-      reason=`貯金から${yen(savingsUsed)}使い、購入後の貯金は${yen(savingsAfter)}です。`;
-      action="日程や参加予定が具体的で、今しかできない経験なら購入候補です。";
-    }else if(type==="study" && crossesFloor){
-      decision="条件付きで買える";
-      cls="warn";
-      reason=`学業・制作目的ですが、購入後の貯金${yen(savingsAfter)}は直近の最低額${yen(p.recentSavingsFloor)}を下回ります。`;
-      action="代替手段や中古価格を確認し、それでも必要なら購入します。";
-    }else{
-      decision="買ってよい";
-      cls=moderateUse?"warn":"";
-      reason=`動的なお金${yen(p.dynamicBalance)}を使い切ったあと、貯金から${yen(savingsUsed)}使います。購入後は、動的なお金${yen(dynamicAfter)}、貯金${yen(savingsAfter)}です。`;
-      action=type==="need"
-        ?"必要な支出として、貯金を使う判断ができます。"
-        :`${savingsBasis}の範囲内で使っています。`;
-    }
-  }
-
-  if(p.latestDebt>0 && savingsUsed>0){
-    cls=cls||"warn";
-    action+=` 借金${yen(p.latestDebt)}があるため、貯金を使う額と返済を同時に増やさないようにします。`;
-  }
-
-  result.className=`purchase-result plan-message ${cls}`;
-  result.innerHTML=`
-    <h3><span class="decision">${name}：${decision}</span></h3>
-    ${reason}<br><strong>${action}</strong>
-    <div class="purchase-metrics">
-      <span>動的なお金 ${yen(p.dynamicBalance)}</span>
-      <span>設定上使える貯金 ${yen(savingsAllowance)}</span>
-      <span>貯金から使う額 ${yen(savingsUsed)}</span>
-      <span>購入後の貯金 ${yen(savingsAfter)}</span>
-      <span>購入後の動的資金 ${yen(dynamicAfter)}</span>
-    </div>
-  `;
-}
-
-function renderStats(records){
-  if(!records.length){["total","liquid","protected","investStat","debtStat"].forEach(id=>$(id).textContent="¥0");return;}
-  const t=totals(records.at(-1));
-  $("total").textContent=yen(t.net);$("liquid").textContent=yen(t.liquid);$("protected").textContent=yen(t.protected);$("investStat").textContent=yen(t.investment);$("debtStat").textContent=yen(t.debt);
-}
-
-function renderLegend(){
-  $("legend").innerHTML="";
-  Object.entries(config).forEach(([k,v])=>{
-    const b=document.createElement("button");
-    b.type="button";
-    b.className=visible[k]?"":"off";
-    b.innerHTML=`<span class="dot" style="--dot:${v.color}"></span>${v.label}`;
-    b.onclick=()=>{visible[k]=!visible[k]; renderLegend(); render()};
-    $("legend").appendChild(b);
-  });
-}
-
-
-function aggregateRecords(records, period){
-  if(period==="daily") return records;
-
-  const groups=new Map();
-
-  records.forEach(record=>{
-    const d=new Date(record.date+"T00:00:00");
-    let key;
-
-    if(period==="monthly"){
-      key=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}`;
-    }else{
-      const copy=new Date(d);
-      const day=(copy.getDay()+6)%7;
-      copy.setDate(copy.getDate()-day);
-      key=copy.toISOString().slice(0,10);
-    }
-
-    if(!groups.has(key)) groups.set(key,[]);
-    groups.get(key).push(record);
-  });
-
-  return [...groups.entries()].map(([key,rows])=>{
-    const last=rows.at(-1);
-    return {
-      ...last,
-      date: period==="monthly" ? `${key}-01` : key,
-      displayDate:
-        period==="monthly"
-          ? key.replace("-", "/")
-          : `${new Date(key+"T00:00:00").getMonth()+1}/${new Date(key+"T00:00:00").getDate()}週`
-    };
-  });
-}
-
-function draw(records){
-  const plotted=aggregateRecords(records,chartPeriod);
-  const c=$("chart");
-  const wrap=$("canvasWrap");
-  const scroll=$("chartScroll");
-
-  const pointWidth=chartPeriod==="daily" ? 82 : chartPeriod==="weekly" ? 100 : 115;
-  const minWidth=scroll.clientWidth || 600;
-  const desiredWidth=Math.max(minWidth, 130 + plotted.length*pointWidth);
-  wrap.style.width=desiredWidth+"px";
-
-  const ctx=c.getContext("2d");
-  const rect=wrap.getBoundingClientRect();
-  const ratio=devicePixelRatio||1;
-  c.style.width=rect.width+"px";
-  c.style.height=rect.height+"px";
-  c.width=Math.round(rect.width*ratio);
-  c.height=Math.round(rect.height*ratio);
-  ctx.setTransform(ratio,0,0,ratio,0,0);
-
-  const w=rect.width, h=rect.height;
-  ctx.clearRect(0,0,w,h);
-  if(!plotted.length)return;
-
-  const keys=Object.keys(config).filter(k=>visible[k]);
-  if(!keys.length)return;
-
-  const p={l:72,r:22,t:24,b:52};
-  const pw=w-p.l-p.r, ph=h-p.t-p.b;
-
-  let max=1;
-  plotted.forEach(r=>keys.forEach(k=>max=Math.max(max,+r[k]||0)));
-  const magnitude=10**Math.floor(Math.log10(max));
-  const nice=Math.ceil(max/magnitude*1.15)*magnitude;
-
-  const isLight=document.body.classList.contains("theme-morning") ||
-                document.body.classList.contains("theme-day");
-  const gridColor=isLight ? "rgba(28,47,79,.10)" : "rgba(255,255,255,.08)";
-  const labelColor=isLight ? "rgba(70,86,110,.82)" : "rgba(196,213,240,.80)";
-
-  ctx.font="12px Inter, system-ui, sans-serif";
-  ctx.textBaseline="middle";
-
-  for(let i=0;i<=5;i++){
-    const y=p.t+ph*i/5;
-    const val=nice*(1-i/5);
-    ctx.strokeStyle=gridColor;
-    ctx.lineWidth=1;
-    ctx.beginPath();
-    ctx.moveTo(p.l,y);
-    ctx.lineTo(w-p.r,y);
-    ctx.stroke();
-
-    ctx.fillStyle=labelColor;
-    ctx.textAlign="right";
-    ctx.fillText(
-      val>=10000 ? Math.round(val/10000)+"万" : Math.round(val).toLocaleString("ja-JP"),
-      p.l-10,
-      y
-    );
-  }
-
-  const x=i=>plotted.length===1 ? p.l+pw/2 : p.l+pw*i/(plotted.length-1);
-  const labelStep=Math.max(1,Math.ceil(plotted.length/12));
-
-  plotted.forEach((r,i)=>{
-    if(i%labelStep!==0 && i!==plotted.length-1)return;
-    const d=new Date(r.date+"T00:00:00");
-    let label=r.displayDate;
-    if(!label){
-      label=chartPeriod==="monthly"
-        ? `${d.getFullYear()}/${d.getMonth()+1}`
-        : `${d.getMonth()+1}/${d.getDate()}`;
-    }
-    ctx.fillStyle=labelColor;
-    ctx.textAlign="center";
-    ctx.fillText(label,x(i),h-24);
-  });
-
-  keys.forEach(k=>{
-    const color=config[k].color;
-    ctx.strokeStyle=color;
-    ctx.lineWidth=3;
-    ctx.lineJoin="round";
-    ctx.lineCap="round";
-
-    ctx.beginPath();
-    plotted.forEach((r,i)=>{
-      const y=p.t+ph-(r[k]/nice)*ph;
-      if(i===0)ctx.moveTo(x(i),y);
-      else ctx.lineTo(x(i),y);
-    });
-    ctx.stroke();
-
-    plotted.forEach((r,i)=>{
-      const y=p.t+ph-(r[k]/nice)*ph;
-      ctx.beginPath();
-      ctx.fillStyle=color;
-      ctx.shadowColor=color;
-      ctx.shadowBlur=10;
-      ctx.arc(x(i),y,3.8,0,Math.PI*2);
-      ctx.fill();
-      ctx.shadowBlur=0;
-    });
-  });
-}
-
-function renderHistory(records){
-  if(!records.length){
-    $("history").innerHTML='<div class="note">まだ記録がありません。</div>';
-    return;
-  }
-
-  $("history").innerHTML=
-    `<div class="history-row head">
-      <div>日付</div><div>現金</div><div>カード</div><div>貯金現金</div><div>貯金銀行</div><div>投資</div><div>借金</div><div></div>
-    </div>`+
-    [...records].reverse().map(r=>`
-      <div class="history-row ${r.salaryDay?"salary-day":""}">
-        <strong>${r.date}${r.salaryDay?'<span class="salary-badge">給料日</span>':""}</strong>
-        <div>${yen(r.cash)}</div>
-        <div>${yen(r.card)}</div>
-        <div>${yen(r.savingsCash)}</div>
-        <div>${yen(r.savingsBank)}</div>
-        <div>${yen(r.investment)}</div>
-        <div>${yen(r.debt||0)}</div>
-        <div class="row-actions">
-          <button class="edit" data-date="${r.date}" type="button">編集</button>
-          <button class="delete" data-date="${r.date}" type="button">×</button>
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>ダッシュボード</h2>
+          <p>使いたい機能を選択</p>
         </div>
       </div>
-    `).join("");
 
-  document.querySelectorAll(".edit").forEach(b=>{
-    b.onclick=()=>{
-      const record=load().find(r=>r.date===b.dataset.date);
-      if(!record)return;
+      <div class="apps">
+        <a class="app-card" href="assets.html">
+          <div class="app-icon">¥</div>
+          <h3>資産・消費管理</h3>
+          <p>
+            残高の推移、資産配分、予定支出、購入後の生活への影響までまとめて判断する。
+          </p>
+          <div class="app-meta">
+            <span>Money IF Auto</span>
+            <span class="arrow">→</span>
+          </div>
+        </a>
 
-      $("date").value=record.date;
-      $("cash").value=record.cash;
-      $("card").value=record.card;
-      $("savingsCash").value=record.savingsCash;
-      $("savingsBank").value=record.savingsBank;
-      $("investment").value=record.investment;
-      $("debt").value=record.debt||record.debtTotal||0;
-      $("salaryDay").checked=record.salaryDay===true;
+        <div class="app-card placeholder">
+          <div class="app-icon">＋</div>
+          <h3>次の機能</h3>
+          <p>
+            今後追加する機能を、ここから独立したセクションとして開ける。
+          </p>
+          <div class="app-meta">
+            <span>Coming later</span>
+            <span class="arrow">•</span>
+          </div>
+        </div>
 
-      document.querySelector(".sticky").scrollIntoView({
-        behavior:"smooth",
-        block:"start"
-      });
+        <div class="app-card placeholder">
+          <div class="app-icon">IF</div>
+          <h3>新しい判断ツール</h3>
+          <p>
+            資産管理以外の判断ツールも、同じデザインのホームへ追加できる。
+          </p>
+          <div class="app-meta">
+            <span>Reserved</span>
+            <span class="arrow">•</span>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      showDevToast(`${record.date} の記録を編集中`);
-    };
-  });
-
-  document.querySelectorAll(".delete").forEach(b=>{
-    b.onclick=()=>{
-      save(load().filter(r=>r.date!==b.dataset.date));
-      render();
-    };
-  });
-}
-
-function render(){
-  const records=load().sort((a,b)=>a.date.localeCompare(b.date));
-  renderStats(records);
-  analyze(records);
-  renderHistory(records);
-  draw(records);
-}
-
-$("form").onsubmit=e=>{
-  e.preventDefault();
-  const r={
-    date:$("date").value,
-    cash:+$("cash").value,
-    card:+$("card").value,
-    savingsCash:+$("savingsCash").value,
-    savingsBank:+$("savingsBank").value,
-    investment:+$("investment").value,
-    debt:+$("debt").value,
-    salaryDay:$("salaryDay").checked
-  };
-  let all=load();
-  const i=all.findIndex(x=>x.date===r.date);
-  if(i>=0) all[i]=r;
-  else all.push(r);
-  all.sort((a,b)=>a.date.localeCompare(b.date));
-  save(all);
-  $("salaryDay").checked=false;
-  render();
-};
-
-
-$("savingsUseMode").addEventListener("change",()=>{
-  $("savingsLimitWrap").style.display=$("savingsUseMode").value==="custom"?"grid":"none";
-});
-$("purchaseJudge").addEventListener("click",judgePurchase);
-$("purchasePrice").addEventListener("keydown",event=>{
-  if(event.key==="Enter"){
-    event.preventDefault();
-    judgePurchase();
-  }
-});
-
-const DEV_SAMPLE_SETS=[
-  {
-    name:"安定成長",
-    rows:[
-      {date:"2026-06-15",cash:18000,card:12000,savingsCash:45000,savingsBank:112000,investment:22000},
-      {date:"2026-06-22",cash:18500,card:12500,savingsCash:47000,savingsBank:114000,investment:22500},
-      {date:"2026-06-29",cash:19000,card:13000,savingsCash:49000,savingsBank:116000,investment:23100},
-      {date:"2026-07-06",cash:19500,card:13500,savingsCash:51000,savingsBank:118000,investment:23800},
-      {date:"2026-07-13",cash:20000,card:14000,savingsCash:53000,savingsBank:120000,investment:24400},
-      {date:"2026-07-20",cash:20500,card:14500,savingsCash:55000,savingsBank:122000,investment:25100}
-    ]
-  },
-  {
-    name:"継続的な使いすぎ",
-    rows:[
-      {date:"2026-06-15",cash:28000,card:22000,savingsCash:50000,savingsBank:120000,investment:24000},
-      {date:"2026-06-22",cash:24500,card:19000,savingsCash:50000,savingsBank:120000,investment:24200},
-      {date:"2026-06-29",cash:20500,card:15500,savingsCash:50000,savingsBank:120000,investment:24100},
-      {date:"2026-07-06",cash:16500,card:12000,savingsCash:50000,savingsBank:120000,investment:24300},
-      {date:"2026-07-13",cash:12500,card:8500,savingsCash:50000,savingsBank:120000,investment:24200}
-    ]
-  },
-  {
-    name:"貯めすぎ",
-    rows:[
-      {date:"2026-06-15",cash:26000,card:18000,savingsCash:40000,savingsBank:110000,investment:26000},
-      {date:"2026-06-22",cash:23000,card:16000,savingsCash:45000,savingsBank:115000,investment:26500},
-      {date:"2026-06-29",cash:20000,card:14000,savingsCash:50000,savingsBank:120000,investment:27000},
-      {date:"2026-07-06",cash:17000,card:12000,savingsCash:56000,savingsBank:126000,investment:27500},
-      {date:"2026-07-13",cash:14000,card:10000,savingsCash:62000,savingsBank:132000,investment:28000}
-    ]
-  },
-  {
-    name:"資金移動",
-    rows:[
-      {date:"2026-07-01",cash:30000,card:18000,savingsCash:30000,savingsBank:120000,investment:25000},
-      {date:"2026-07-08",cash:29000,card:17000,savingsCash:30000,savingsBank:121000,investment:25200},
-      {date:"2026-07-15",cash:12000,card:9000,savingsCash:30000,savingsBank:146000,investment:25300}
-    ]
-  },
-  {
-    name:"投資相場変動",
-    rows:[
-      {date:"2026-06-15",cash:20000,card:15000,savingsCash:50000,savingsBank:120000,investment:30000},
-      {date:"2026-06-22",cash:20500,card:14800,savingsCash:50000,savingsBank:120500,investment:34000},
-      {date:"2026-06-29",cash:20300,card:15000,savingsCash:50000,savingsBank:120000,investment:28500},
-      {date:"2026-07-06",cash:20200,card:14900,savingsCash:50000,savingsBank:120200,investment:36500}
-    ]
-  },
-  {
-    name:"単発の大きな支出",
-    rows:[
-      {date:"2026-06-15",cash:22000,card:18000,savingsCash:50000,savingsBank:120000,investment:25000},
-      {date:"2026-06-22",cash:22500,card:17500,savingsCash:51000,savingsBank:121000,investment:25200},
-      {date:"2026-06-29",cash:22800,card:17600,savingsCash:52000,savingsBank:122000,investment:25400},
-      {date:"2026-07-06",cash:8000,card:5000,savingsCash:52000,savingsBank:122000,investment:25500}
-    ]
-  }
-];
-
-function showDevToast(message){
-  const toast=document.getElementById("devToast");
-  if(!toast)return;
-  toast.textContent=message;
-  toast.classList.add("show");
-  clearTimeout(window.__devToastTimer);
-  window.__devToastTimer=setTimeout(()=>toast.classList.remove("show"),2200);
-}
-
-function loadRandomDevSample(){
-  const sample=DEV_SAMPLE_SETS[Math.floor(Math.random()*DEV_SAMPLE_SETS.length)];
-  save(sample.rows);
-  render();
-  showDevToast(`開発サンプル「${sample.name}」を読み込みました`);
-}
-
-
-
-
-const DEV_ACCESS_HASH="eadc0b9714d9e8b13686c96d9ea0cc8269479f56f75270f17dbb70e6a0605fd0";
-let devTapCount=0;
-let devTapTimer=null;
-
-async function sha256(text){
-  const data=new TextEncoder().encode(text);
-  const digest=await crypto.subtle.digest("SHA-256",data);
-  return [...new Uint8Array(digest)].map(b=>b.toString(16).padStart(2,"0")).join("");
-}
-
-function openDevModal(){
-  const modal=document.getElementById("devModal");
-  modal.classList.add("open");
-  modal.setAttribute("aria-hidden","false");
-  document.getElementById("devLoginView").hidden=false;
-  document.getElementById("devImportView").hidden=true;
-  const input=document.getElementById("devCode");
-  input.value="";
-  document.getElementById("bulkImportStatus").textContent="";
-  setTimeout(()=>input.focus(),50);
-}
-
-function closeDevModal(){
-  const modal=document.getElementById("devModal");
-  modal.classList.remove("open");
-  modal.setAttribute("aria-hidden","true");
-}
-
-function showDevImporter(){
-  document.getElementById("devLoginView").hidden=true;
-  document.getElementById("devImportView").hidden=false;
-  setTimeout(()=>document.getElementById("bulkImportData").focus(),50);
-}
-
-function parseCompactDate(raw){
-  if(!/^\d{8}$/.test(raw))throw new Error(`日付「${raw}」は8桁で入力してください`);
-  const year=Number(raw.slice(0,4));
-  const month=Number(raw.slice(4,6));
-  const day=Number(raw.slice(6,8));
-  const d=new Date(year,month-1,day);
-  if(d.getFullYear()!==year || d.getMonth()!==month-1 || d.getDate()!==day){
-    throw new Error(`日付「${raw}」が正しくありません`);
-  }
-  return `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}`;
-}
-
-function parseBulkRecords(source){
-  const entries=source
-    .split(/[\/;\n\r]+/)
-    .map(value=>value.trim())
-    .filter(Boolean);
-
-  if(!entries.length)throw new Error("データを入力してください");
-
-  return entries.map((entry,index)=>{
-    const parts=entry.split(".").map(value=>value.trim());
-    if(![6,7,8].includes(parts.length)){
-      throw new Error(`${index+1}件目は6〜8項目にしてください`);
-    }
-    const [dateRaw,...amountRaw]=parts;
-    if(amountRaw.some(value=>!/^\d+$/.test(value))){
-      throw new Error(`${index+1}件目の金額に数字以外が含まれています`);
-    }
-    const [cash,card,savingsCash,savingsBank,investment,debt="0",salaryFlag="0"]=amountRaw;
-    if(!["0","1"].includes(salaryFlag)){
-      throw new Error(`${index+1}件目の給料日フラグは0か1にしてください`);
-    }
-    return normalizeRecord({
-      date:parseCompactDate(dateRaw),
-      cash:Number(cash),
-      card:Number(card),
-      savingsCash:Number(savingsCash),
-      savingsBank:Number(savingsBank),
-      investment:Number(investment),
-      debt:Number(debt),
-      salaryDay:salaryFlag==="1"
-    });
-  });
-}
-
-function importBulkRecords(){
-  const status=document.getElementById("bulkImportStatus");
-  status.className="dev-import-status";
-  try{
-    const imported=parseBulkRecords(document.getElementById("bulkImportData").value);
-    const merged=new Map(load().map(record=>[record.date,record]));
-    let overwritten=0;
-    imported.forEach(record=>{
-      if(merged.has(record.date))overwritten++;
-      merged.set(record.date,record);
-    });
-    const result=[...merged.values()].sort((a,b)=>a.date.localeCompare(b.date));
-    save(result);
-    render();
-    status.classList.add("success");
-    status.textContent=`${imported.length}件を追加しました${overwritten?`（${overwritten}件上書き）`:""}。`;
-    showDevToast(`履歴を${imported.length}件読み込みました`);
-  }catch(error){
-    status.classList.add("error");
-    status.textContent=error.message;
-  }
-}
-
-document.getElementById("devTrigger").addEventListener("click",()=>{
-  devTapCount++;
-  clearTimeout(devTapTimer);
-  devTapTimer=setTimeout(()=>devTapCount=0,1800);
-  if(devTapCount>=7){
-    devTapCount=0;
-    openDevModal();
-  }
-});
-
-document.getElementById("devCancel").onclick=closeDevModal;
-document.getElementById("devImportClose").onclick=closeDevModal;
-document.getElementById("devModal").addEventListener("click",event=>{
-  if(event.target.id==="devModal")closeDevModal();
-});
-document.getElementById("devRun").onclick=async()=>{
-  const code=document.getElementById("devCode").value;
-  const hash=await sha256(code);
-  if(hash!==DEV_ACCESS_HASH){
-    showDevToast("開発者コードが違います");
-    return;
-  }
-  showDevImporter();
-};
-document.getElementById("devCode").addEventListener("keydown",event=>{
-  if(event.key==="Enter")document.getElementById("devRun").click();
-  if(event.key==="Escape")closeDevModal();
-});
-document.getElementById("bulkImportData").addEventListener("keydown",event=>{
-  if(event.ctrlKey && event.key==="Enter")importBulkRecords();
-  if(event.key==="Escape")closeDevModal();
-});
-document.getElementById("bulkImportRun").onclick=importBulkRecords;
-document.getElementById("devRandomSample").onclick=()=>{
-  loadRandomDevSample();
-  document.getElementById("bulkImportStatus").className="dev-import-status success";
-  document.getElementById("bulkImportStatus").textContent="ランダムサンプルを読み込みました。";
-};
-
-
-document.querySelectorAll("[data-dev-hour]").forEach(button=>{
-  button.addEventListener("click",()=>{
-    devThemeHour=+button.dataset.devHour;
-    applyTimeTheme();
-    showDevToast(`${String(devThemeHour).padStart(2,"0")}時台のUIを表示しています`);
-  });
-});
-document.getElementById("devTimeReset").onclick=()=>{
-  devThemeHour=null;
-  applyTimeTheme();
-  showDevToast("実際の現在時刻に戻しました");
-};
-
-
-$("clear").onclick=()=>{
-  if(confirm("すべて削除しますか？")){
-    localStorage.removeItem(KEY);
-    render();
-  }
-};
-
-
-document.querySelectorAll("#periodControl button").forEach(button=>{
-  button.addEventListener("click",()=>{
-    chartPeriod=button.dataset.period;
-    document.querySelectorAll("#periodControl button").forEach(b=>b.classList.remove("active"));
-    button.classList.add("active");
-    render();
-  });
-});
-
-$("date").value=today();
-renderLegend();
-render();
-window.onresize=()=>{
-  clearTimeout(window.__resizeTimer);
-  window.__resizeTimer=setTimeout(render,100);
-};
-</script>
+    <footer>Money IF — personal dashboard</footer>
+  </main>
 </body>
 </html>

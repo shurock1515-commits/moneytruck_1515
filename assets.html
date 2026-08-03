@@ -1604,6 +1604,45 @@ body.theme-day a.home-return .home-return-label small{
   }
 }
 
+
+/* User-selectable theme settings */
+.theme-settings{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.theme-settings label{
+  color:var(--muted);
+  font-size:.72rem;
+  font-weight:750;
+}
+.theme-settings select{
+  width:auto;
+  min-width:150px;
+  padding:8px 34px 8px 11px;
+  border-radius:999px;
+  color:var(--text);
+  background:rgba(16,35,61,.72);
+  border:1px solid rgba(255,255,255,.14);
+}
+.theme-settings select option{
+  color:#f4f7ff;
+  background:#172b47;
+}
+body.theme-morning .theme-settings select,
+body.theme-day .theme-settings select{
+  color:#10233d !important;
+  background:rgba(173,204,231,.72) !important;
+  border-color:rgba(16,35,61,.18) !important;
+}
+body.theme-morning .theme-settings select option,
+body.theme-day .theme-settings select option{
+  color:#f4f7ff;
+  background:#27486c;
+}
+
 </style>
 </head>
 <body>
@@ -1626,6 +1665,16 @@ body.theme-day a.home-return .home-return-label small{
           自分専用のお金ダッシュボード。
         </p>
         <div id="themeIndicator" class="theme-indicator">時間帯テーマを読み込み中</div>
+        <div class="theme-settings">
+          <label for="themePreference">表示テーマ</label>
+          <select id="themePreference" aria-label="表示テーマ">
+            <option value="auto">時刻に合わせる</option>
+            <option value="morning">朝に固定</option>
+            <option value="day">昼に固定</option>
+            <option value="evening">夕方に固定</option>
+            <option value="night">夜に固定</option>
+          </select>
+        </div>
       </div>
       <div class="hero-side">
         <div class="status-card">
@@ -1948,47 +1997,73 @@ body.theme-day a.home-return .home-return-label small{
 <script>
 
 let devThemeHour=null;
+const THEME_PREFERENCE_KEY="money-if-theme-preference-v1";
+
+function getThemePreference(){
+  const value=localStorage.getItem(THEME_PREFERENCE_KEY)||"auto";
+  return ["auto","morning","day","evening","night"].includes(value)?value:"auto";
+}
+
+function themeFromHour(hour){
+  if(hour>=5&&hour<10)return {key:"morning",className:"theme-morning",label:"朝モード"};
+  if(hour>=10&&hour<17)return {key:"day",className:"theme-day",label:"昼モード"};
+  if(hour>=17&&hour<20)return {key:"evening",className:"theme-evening",label:"夕方モード"};
+  return {key:"night",className:"theme-night",label:"夜モード"};
+}
 
 function applyTimeTheme(){
   const actualHour=new Date().getHours();
-  const hour=devThemeHour===null?actualHour:devThemeHour;
-  const body = document.body;
-  body.classList.remove("theme-morning","theme-day","theme-evening","theme-night");
+  const preference=getThemePreference();
+  let theme;
+  let sourceLabel;
 
-  let themeClass = "theme-night";
-  let label = "夜モード";
-
-  if(hour >= 5 && hour < 10){
-    themeClass = "theme-morning";
-    label = "朝モード";
-  }else if(hour >= 10 && hour < 17){
-    themeClass = "theme-day";
-    label = "昼モード";
-  }else if(hour >= 17 && hour < 20){
-    themeClass = "theme-evening";
-    label = "夕方モード";
+  if(devThemeHour!==null){
+    theme=themeFromHour(devThemeHour);
+    sourceLabel=`DEVプレビュー ${String(devThemeHour).padStart(2,"0")}時台`;
+  }else if(preference!=="auto"){
+    const map={
+      morning:{key:"morning",className:"theme-morning",label:"朝モード"},
+      day:{key:"day",className:"theme-day",label:"昼モード"},
+      evening:{key:"evening",className:"theme-evening",label:"夕方モード"},
+      night:{key:"night",className:"theme-night",label:"夜モード"}
+    };
+    theme=map[preference];
+    sourceLabel="設定で固定中";
+  }else{
+    theme=themeFromHour(actualHour);
+    sourceLabel=`現在 ${String(actualHour).padStart(2,"0")}時台`;
   }
 
-  body.classList.add(themeClass);
-  const indicator = document.getElementById("themeIndicator");
-  if(indicator){
-    indicator.textContent = devThemeHour===null
-      ? `${label}・現在 ${String(actualHour).padStart(2,"0")}時台`
-      : `${label}・DEVプレビュー ${String(hour).padStart(2,"0")}時台`;
-  }
+  document.body.classList.remove("theme-morning","theme-day","theme-evening","theme-night");
+  document.body.classList.add(theme.className);
+
+  const indicator=document.getElementById("themeIndicator");
+  if(indicator)indicator.textContent=`${theme.label}・${sourceLabel}`;
+
+  const selector=document.getElementById("themePreference");
+  if(selector&&selector.value!==preference)selector.value=preference;
 
   const status=document.getElementById("devTimeStatus");
   if(status){
     status.textContent=devThemeHour===null
-      ? `現在時刻に連動中（${String(actualHour).padStart(2,"0")}時台）`
-      : `${String(hour).padStart(2,"0")}時台をプレビュー中。リセットすると現在時刻へ戻ります。`;
+      ? (preference==="auto"?`現在時刻に連動中（${String(actualHour).padStart(2,"0")}時台）`:`${theme.label}に固定中`)
+      : `${String(devThemeHour).padStart(2,"0")}時台をプレビュー中。リセットすると表示設定へ戻ります。`;
   }
   document.querySelectorAll("[data-dev-hour]").forEach(button=>{
-    button.classList.toggle("active",devThemeHour!==null && +button.dataset.devHour===devThemeHour);
+    button.classList.toggle("active",devThemeHour!==null&&+button.dataset.devHour===devThemeHour);
   });
 }
 applyTimeTheme();
 setInterval(applyTimeTheme, 60 * 1000);
+const themePreferenceSelect=document.getElementById("themePreference");
+if(themePreferenceSelect){
+  themePreferenceSelect.value=getThemePreference();
+  themePreferenceSelect.addEventListener("change",()=>{
+    localStorage.setItem(THEME_PREFERENCE_KEY,themePreferenceSelect.value);
+    devThemeHour=null;
+    applyTimeTheme();
+  });
+}
 
 const KEY="money-if-auto-records-v2";
 const config={

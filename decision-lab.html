@@ -1,386 +1,505 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Money IF</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Decision Lab</title>
 <style>
-:root{
-  --bg:#07111f;
-  --bg2:#0c1930;
-  --panel:rgba(14,25,44,.68);
-  --text:#f2f6ff;
-  --muted:#99aac5;
-  --line:rgba(255,255,255,.11);
-  --blue:#72aaff;
-  --mint:#7cf0cf;
-  --violet:#ba91ff;
-}
-*{box-sizing:border-box}
-html{min-height:100%}
-body{
-  margin:0;
-  min-height:100vh;
-  color:var(--text);
-  font-family:Inter,"Hiragino Sans","Yu Gothic UI","Yu Gothic",system-ui,sans-serif;
-  background:
-    radial-gradient(circle at 15% 10%,rgba(114,170,255,.20),transparent 28%),
-    radial-gradient(circle at 87% 14%,rgba(186,145,255,.17),transparent 25%),
-    radial-gradient(circle at 68% 88%,rgba(124,240,207,.11),transparent 30%),
-    linear-gradient(155deg,#050d18 0%,#081422 43%,#0b1830 100%);
-  overflow-x:hidden;
-}
-body::before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  opacity:.28;
-  background-image:
-    linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-  background-size:42px 42px;
-  mask-image:linear-gradient(to bottom,black,transparent 88%);
-}
-.shell{
-  width:min(1180px,calc(100% - 36px));
-  margin:auto;
-  padding:44px 0 64px;
-}
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:20px;
-  margin-bottom:54px;
-}
-.brand{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  font-weight:850;
-  letter-spacing:.08em;
-}
-.brand-mark{
-  width:38px;
-  height:38px;
-  border-radius:13px;
-  background:
-    linear-gradient(140deg,var(--blue),var(--mint));
-  box-shadow:0 12px 30px rgba(99,168,255,.28);
-  position:relative;
-}
-.brand-mark::after{
-  content:"";
-  position:absolute;
-  inset:9px;
-  border:2px solid rgba(7,17,31,.86);
-  border-radius:7px;
-}
-.top-note{
-  color:var(--muted);
-  font-size:.83rem;
-}
-.hero{
-  display:grid;
-  grid-template-columns:minmax(0,1.15fr) minmax(310px,.85fr);
-  gap:42px;
-  align-items:end;
-  margin-bottom:58px;
-}
-.eyebrow{
-  color:var(--mint);
-  font-size:.76rem;
-  text-transform:uppercase;
-  letter-spacing:.18em;
-  font-weight:800;
-  margin-bottom:16px;
-}
-h1{
-  margin:0;
-  max-width:760px;
-  font-size:clamp(3.2rem,8vw,7rem);
-  line-height:.91;
-  letter-spacing:-.07em;
-}
-h1 span{
-  display:block;
-  color:transparent;
-  background:linear-gradient(100deg,#fff 7%,#9fc4ff 48%,#9ff5dd);
-  -webkit-background-clip:text;
-  background-clip:text;
-}
-.lead{
-  max-width:650px;
-  margin:24px 0 0;
-  color:var(--muted);
-  font-size:clamp(1rem,1.7vw,1.17rem);
-  line-height:1.9;
-}
-.hero-orbit{
-  min-height:290px;
-  border:1px solid var(--line);
-  border-radius:34px;
-  background:
-    radial-gradient(circle at 50% 50%,rgba(114,170,255,.15),transparent 43%),
-    rgba(255,255,255,.025);
-  position:relative;
-  overflow:hidden;
-  box-shadow:0 30px 80px rgba(0,0,0,.28);
-}
-.orbit-core{
-  position:absolute;
-  width:112px;
-  height:112px;
-  border-radius:34px;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) rotate(8deg);
-  background:linear-gradient(140deg,rgba(114,170,255,.94),rgba(124,240,207,.86));
-  box-shadow:0 25px 60px rgba(90,170,255,.33);
-}
-.orbit-core::after{
-  content:"IF";
-  position:absolute;
-  inset:0;
-  display:grid;
-  place-items:center;
-  color:#07111f;
-  font-size:2rem;
-  font-weight:950;
-  transform:rotate(-8deg);
-}
-.ring{
-  position:absolute;
-  inset:50%;
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:50%;
-  transform:translate(-50%,-50%);
-}
-.ring.one{width:210px;height:210px}
-.ring.two{width:330px;height:330px}
-.dot{
-  position:absolute;
-  width:12px;
-  height:12px;
-  border-radius:50%;
-  background:var(--mint);
-  box-shadow:0 0 24px rgba(124,240,207,.7);
-}
-.dot.a{top:45px;left:56%}
-.dot.b{bottom:52px;left:18%;background:var(--violet)}
-.dot.c{top:54%;right:28px;background:var(--blue)}
-.section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:end;
-  gap:18px;
-  margin-bottom:18px;
-}
-.section-head h2{
-  margin:0;
-  font-size:1.45rem;
-}
-.section-head p{
-  margin:0;
-  color:var(--muted);
-  font-size:.86rem;
-}
-.apps{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:16px;
-}
-.app-card{
-  min-height:245px;
-  border:1px solid var(--line);
-  border-radius:28px;
-  padding:25px;
-  background:var(--panel);
-  backdrop-filter:blur(18px);
-  -webkit-backdrop-filter:blur(18px);
-  text-decoration:none;
-  color:var(--text);
-  display:flex;
-  flex-direction:column;
-  position:relative;
-  overflow:hidden;
-  transition:transform .22s ease,border-color .22s ease,background .22s ease;
-}
-.app-card::before{
-  content:"";
-  position:absolute;
-  width:180px;
-  height:180px;
-  border-radius:50%;
-  right:-80px;
-  top:-80px;
-  background:radial-gradient(circle,rgba(114,170,255,.20),transparent 68%);
-}
-.app-card:hover{
-  transform:translateY(-6px);
-  border-color:rgba(124,240,207,.38);
-  background:rgba(19,34,59,.88);
-}
-.app-icon{
-  width:52px;
-  height:52px;
-  border-radius:17px;
-  display:grid;
-  place-items:center;
-  font-size:1.2rem;
-  font-weight:900;
-  color:#07111f;
-  background:linear-gradient(145deg,var(--blue),var(--mint));
-  box-shadow:0 12px 26px rgba(90,170,255,.22);
-}
-.app-card h3{
-  margin:26px 0 9px;
-  font-size:1.28rem;
-}
-.app-card p{
-  margin:0;
-  color:var(--muted);
-  line-height:1.7;
-  font-size:.9rem;
-}
-.app-meta{
-  margin-top:auto;
-  padding-top:24px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  color:#cbd8ea;
-  font-size:.78rem;
-}
-.arrow{
-  width:34px;
-  height:34px;
-  border:1px solid var(--line);
-  border-radius:50%;
-  display:grid;
-  place-items:center;
-  font-size:1rem;
-}
-.app-card.placeholder{
-  opacity:.58;
-  cursor:default;
-}
-.app-card.placeholder:hover{
-  transform:none;
-  border-color:var(--line);
-  background:var(--panel);
-}
-.placeholder .app-icon{
-  background:rgba(255,255,255,.09);
-  color:#b7c3d7;
-  box-shadow:none;
-}
-footer{
-  margin-top:42px;
-  color:#71829d;
-  font-size:.76rem;
-  text-align:center;
-}
-@media(max-width:850px){
-  .hero{grid-template-columns:1fr}
-  .hero-orbit{min-height:230px}
-  .apps{grid-template-columns:1fr}
-}
-@media(max-width:560px){
-  .shell{width:min(100% - 22px,1180px);padding-top:24px}
-  .topbar{margin-bottom:38px}
-  .top-note{display:none}
-  h1{font-size:clamp(3.2rem,20vw,5rem)}
-  .hero{gap:28px;margin-bottom:40px}
-  .section-head{align-items:start;flex-direction:column}
-}
-</style>
-</head>
-<body>
-  <main class="shell">
-    <header class="topbar">
-      <div class="brand">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>MONEY IF</span>
-      </div>
-      <div class="top-note">Personal decision dashboard</div>
-    </header>
+:root{--bg:#06101d;--panel:rgba(16,31,53,.84);--text:#f5f8ff;--muted:#96a8c1;--line:rgba(255,255,255,.1);--blue:#74a9ff;--mint:#76efcc;--violet:#b693ff;--orange:#ffb36c;--pink:#ff8eb0}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,"Hiragino Sans","Yu Gothic UI",system-ui,sans-serif;background:radial-gradient(circle at 12% 7%,rgba(90,147,227,.24),transparent 28%),radial-gradient(circle at 88% 10%,rgba(177,127,255,.18),transparent 24%),linear-gradient(155deg,#040b14,#081525 48%,#0b1930)}body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 92%)}button{font:inherit;cursor:pointer}.home{position:fixed;z-index:30;top:15px;left:15px;display:flex;align-items:center;gap:9px;padding:6px 15px 6px 7px;border-radius:999px;text-decoration:none;color:var(--text);border:1px solid var(--line);background:rgba(8,20,36,.82);backdrop-filter:blur(18px);box-shadow:0 15px 38px rgba(0,0,0,.3);font-size:.78rem;font-weight:850;letter-spacing:.08em}.home i{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,var(--blue),var(--mint))}.home i:before{content:"";width:9px;height:9px;border-left:2px solid #07131f;border-bottom:2px solid #07131f;transform:rotate(45deg);margin-left:4px}.shell{width:min(1180px,calc(100% - 30px));margin:auto;padding:86px 0 50px}.hero{display:flex;justify-content:space-between;gap:28px;align-items:end;margin-bottom:24px}.eyebrow{color:var(--mint);font-size:.72rem;font-weight:850;letter-spacing:.18em;text-transform:uppercase}h1{margin:7px 0 0;font-size:clamp(2.4rem,7vw,5.5rem);letter-spacing:-.07em;line-height:.95}.hero p{max-width:420px;color:var(--muted);line-height:1.75;font-size:.88rem;text-align:right}.panel{border:1px solid var(--line);border-radius:30px;background:var(--panel);box-shadow:0 28px 80px rgba(0,0,0,.3);backdrop-filter:blur(22px);overflow:hidden}.inner{padding:24px}.screen{display:none}.screen.active{display:block}.step-title{display:flex;justify-content:space-between;gap:15px;align-items:start;margin-bottom:20px}.step-title h2{margin:0;font-size:1.25rem}.step-title p{margin:6px 0 0;color:var(--muted);font-size:.8rem}.badge{padding:6px 10px;border-radius:999px;border:1px solid var(--line);color:var(--muted);font-size:.68rem}.group{margin-top:20px}.group h3{margin:0 0 10px;font-size:.9rem}.choice-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:9px}.choice{min-height:62px;padding:13px 14px;border-radius:16px;border:1px solid var(--line);background:rgba(255,255,255,.035);color:var(--text);text-align:left;font-weight:750;transition:.15s ease}.choice:hover{transform:translateY(-2px);background:rgba(255,255,255,.065)}.choice.selected{border-color:rgba(118,239,204,.6);background:rgba(118,239,204,.11);box-shadow:0 0 0 3px rgba(118,239,204,.07)}.footer-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:24px}.primary,.ghost{min-height:46px;padding:0 18px;border-radius:14px;border:0;font-weight:850}.primary{color:#06101d;background:linear-gradient(135deg,var(--blue),var(--mint))}.ghost{color:var(--text);background:rgba(255,255,255,.06);border:1px solid var(--line)}.primary:disabled{opacity:.35;cursor:not-allowed}.question-wrap{min-height:460px;display:grid;place-items:center;text-align:center;padding:28px}.question-card{width:min(760px,100%)}.progress-line{height:5px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden;margin-bottom:30px}.progress-line span{display:block;height:100%;width:10%;background:linear-gradient(90deg,var(--blue),var(--mint));transition:.3s ease}.question-kicker{color:var(--muted);font-size:.75rem;letter-spacing:.11em;text-transform:uppercase}.question{font-size:clamp(1.65rem,4vw,3.15rem);line-height:1.32;letter-spacing:-.04em;margin:14px auto 25px;max-width:760px}.answer-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.answer{min-width:150px;min-height:58px;border-radius:18px;border:1px solid var(--line);color:var(--text);background:rgba(255,255,255,.045);font-weight:850;font-size:1rem}.answer:hover{transform:translateY(-2px);background:rgba(255,255,255,.09)}.question-meta{display:flex;justify-content:center;gap:14px;margin-top:18px;color:var(--muted);font-size:.72rem}.result-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:16px}.result-main,.result-side{padding:22px;border-radius:22px;background:rgba(255,255,255,.035);border:1px solid var(--line)}.result-label{color:var(--mint);font-size:.72rem;font-weight:850;letter-spacing:.13em}.result-main h2{font-size:clamp(1.8rem,4vw,3.3rem);margin:8px 0 12px;letter-spacing:-.05em}.result-main>p{color:#d7e1ef;line-height:1.8}.action-list{display:grid;gap:10px;margin-top:20px}.action-item{display:grid;grid-template-columns:38px 1fr;gap:11px;align-items:start;padding:13px;border-radius:16px;background:rgba(255,255,255,.045)}.action-item b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:#07131f;background:linear-gradient(145deg,var(--blue),var(--mint))}.action-item strong{display:block;margin-bottom:4px}.action-item span{color:var(--muted);font-size:.8rem;line-height:1.55}.side-block{margin-bottom:18px}.side-block h3{font-size:.83rem;margin:0 0 9px;color:var(--muted)}.tag-wrap{display:flex;gap:7px;flex-wrap:wrap}.tag{padding:7px 10px;border-radius:999px;background:rgba(116,169,255,.11);color:#cfe1ff;font-size:.72rem}.warning{padding:13px 14px;border-radius:15px;background:rgba(255,179,108,.09);border-left:4px solid var(--orange);line-height:1.6;font-size:.8rem}.score-list{display:grid;gap:8px}.score-row{display:grid;grid-template-columns:110px 1fr 32px;gap:8px;align-items:center;font-size:.72rem;color:var(--muted)}.score-bar{height:7px;border-radius:999px;background:rgba(255,255,255,.06);overflow:hidden}.score-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--blue))}.history{margin-top:15px;padding-top:15px;border-top:1px solid var(--line);color:var(--muted);font-size:.72rem}@media(max-width:760px){.hero{display:block}.hero p{text-align:left}.result-layout{grid-template-columns:1fr}.question-wrap{padding:18px 8px}.answer{min-width:120px;flex:1}.home span{display:none}.shell{padding-top:74px}}
 
-    <section class="hero">
-      <div>
-        <div class="eyebrow">Your personal control center</div>
-        <h1><span>生活を、</span><span>数字で整える。</span></h1>
-        <p class="lead">
-          資産・消費・予定を、それぞれ別々に眺めるのではなく、
-          次の行動を決めるためのひとつの場所へまとめる。
-        </p>
-      </div>
-      <div class="hero-orbit" aria-hidden="true">
-        <div class="ring one"></div>
-        <div class="ring two"></div>
-        <div class="orbit-core"></div>
-        <span class="dot a"></span>
-        <span class="dot b"></span>
-        <span class="dot c"></span>
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <div>
-          <h2>ダッシュボード</h2>
-          <p>使いたい機能を選択</p>
-        </div>
-      </div>
-
-      <div class="apps">
-        <a class="app-card" href="assets.html">
-          <div class="app-icon">¥</div>
-          <h3>資産・消費管理</h3>
-          <p>
-            残高の推移、資産配分、予定支出、購入後の生活への影響までまとめて判断する。
-          </p>
-          <div class="app-meta">
-            <span>Money IF Auto</span>
-            <span class="arrow">→</span>
-          </div>
-        </a>
-
-        <a class="app-card" href="calendar.html">
-          <div class="app-icon">□</div>
-          <h3>カレンダー</h3>
-          <p>
-            左で予定を登録し、右の月間カレンダーで全体を確認する。日ごとの予定もすぐに開ける。
-          </p>
-          <div class="app-meta">
-            <span>Schedule</span>
-            <span class="arrow">→</span>
-          </div>
-        </a>
-        <a class="app-card" href="decision-lab.html">
-          <div class="app-icon">DL</div>
-          <h3>Decision Lab</h3>
-          <p>質問を一問ずつ分岐させ、問題の構造から次の一手を組み立てる。</p>
-          <div class="app-meta"><span>Problem solving</span><span class="arrow">→</span></div>
-        </a>
+.result-insights{display:grid;gap:12px;margin-top:18px}
+.insight-card{padding:15px 16px;border-radius:17px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.insight-card h3{margin:0 0 7px;font-size:.86rem}
+.insight-card p{margin:0;color:#c8d5e6;font-size:.8rem;line-height:1.7}
+.insight-card.danger{border-left:4px solid var(--pink);background:rgba(255,142,176,.07)}
+.insight-card.growth{border-left:4px solid var(--mint);background:rgba(118,239,204,.06)}
+.insight-card.later{border-left:4px solid var(--violet);background:rgba(182,147,255,.06)}
+.language-box{margin:16px 0;padding:16px 17px;border-radius:18px;background:linear-gradient(145deg,rgba(116,169,255,.12),rgba(118,239,204,.06));border:1px solid rgba(116,169,255,.2)}
+.language-box span{display:block;color:var(--muted);font-size:.7rem;font-weight:800;letter-spacing:.1em;margin-bottom:7px}
+.language-box strong{font-size:1rem;line-height:1.65}
+.secondary-actions{display:grid;gap:8px;margin-top:12px}
+.secondary-action{padding:11px 12px;border-radius:14px;background:rgba(255,255,255,.035);font-size:.78rem;line-height:1.6}
 
 
-        <div class="app-card placeholder">
-          <div class="app-icon">IF</div>
-          <h3>新しい判断ツール</h3>
-          <p>
-            資産管理以外の判断ツールも、同じデザインのホームへ追加できる。
-          </p>
-          <div class="app-meta">
-            <span>Reserved</span>
-            <span class="arrow">•</span>
-          </div>
-        </div>
-      </div>
-    </section>
+.question-toolbar{display:flex;justify-content:flex-start;margin-bottom:15px}
+.back-question{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);color:var(--text);background:rgba(255,255,255,.05);font-weight:800}
+.back-question:disabled{opacity:.3;cursor:not-allowed}
 
-    <footer>Money IF — personal dashboard</footer>
-  </main>
-</body>
-</html>
+</style></head>
+<body><a class="home" href="index.html"><i></i><span>HOME</span></a><main class="shell"><header class="hero"><div><div class="eyebrow">Adaptive problem solving</div><h1>Decision Lab</h1></div><p>問題文を読まずに、状況と答え方から「次に何をするか」を組み立てる。質問は一問ずつ、必要なものだけ。</p></header><section class="panel">
+<div id="setupScreen" class="screen active inner"><div class="step-title"><div><h2>最初に、問題の地形だけ教えて</h2><p>文章は使わない。選択肢だけで質問の入口を決めます。</p></div><span class="badge">STEP 1</span></div><div id="setupGroups"></div><div class="footer-actions"><button id="startBtn" class="primary" disabled>診断をはじめる</button></div></div>
+<div id="questionScreen" class="screen"><div class="question-wrap"><div class="question-card"><div class="question-toolbar"><button id="backQuestion" class="back-question" type="button">← 1問戻る</button></div><div class="progress-line"><span id="progressBar"></span></div><div id="questionKicker" class="question-kicker"></div><div id="questionText" class="question"></div><div class="answer-row"><button class="answer" data-answer="yes">YES</button><button class="answer" data-answer="no">NO</button><button class="answer" data-answer="unknown">わからない</button><button class="answer" data-answer="na">該当しない</button></div><div class="question-meta"><span id="questionCount"></span><span id="branchHint"></span></div></div></div></div>
+<div id="resultScreen" class="screen inner"><div class="step-title"><div><h2>いまの仮結論</h2><p>必要なら、追加質問で精度を上げられます。</p></div><span class="badge">RESULT</span></div><div id="resultContent"></div><div class="footer-actions"><button id="backFromResult" class="ghost">← 前の質問へ</button><button id="moreBtn" class="ghost">もう少し絞る</button><button id="restartBtn" class="primary">最初から</button></div></div>
+</section></main>
+<script>
+const setupConfig=[
+{id:'time',title:'いつまでに動く？',multi:false,options:[['today','今日〜3日'],['week','1週間くらい'],['month','1か月くらい'],['long','数か月以上'],['unknown','まだ分からない']]},
+{id:'people',title:'誰が関わる？',multi:false,options:[['self','自分だけ'],['one','特定の相手1人'],['group','少人数'],['org','学校・会社・組織'],['public','不特定多数']]},
+{id:'domains',title:'何が絡む？',multi:true,options:[['money','お金'],['time','時間'],['relation','人間関係'],['study','学業・能力'],['career','仕事・進路'],['health','健康・体力'],['emotion','感情'],['creative','創作'],['system','ルール・制度'],['risk','安全・リスク']]},
+{id:'stage',title:'どこで止まってる？',multi:true,max:2,options:[['unclear','問題がぼんやり'],['cause','原因が分からない'],['info','情報不足'],['ideas','案がない'],['choice','選べない'],['agreement','合意できない'],['action','動けない'],['stuck','動いても進まない'],['repeat','繰り返している'],['emotion','感情が強い']]},
+{id:'control',title:'自分で動かせる範囲は？',multi:false,options:[['high','ほぼ自分で動かせる'],['medium','相手の協力が少し必要'],['joint','合意が必要'],['authority','許可が必要'],['low','環境次第'],['unknown','分からない']]},
+{id:'reversibility',title:'失敗したら戻せる？',multi:false,options:[['easy','すぐ戻せる'],['some','少し損するが戻せる'],['hard','かなり損する'],['irreversible','ほぼ戻せない'],['unknown','分からない']]},
+{id:'mindset',title:'今の気分は？',multi:true,max:2,options:[['fast','早く決めたい'],['careful','慎重に進めたい'],['confirm','考えを確認したい'],['fear','失敗が怖い'],['avoid','避けている'],['logic','合理的に考えたい'],['values','納得感もほしい']]}
+];
+const vars=['clarity','information','options','decision','action','friction','fear','reversibility','urgency','conflict','trust','coordination','boundary','incentive','control','system','habit','energy','emotion','money','time','risk','learning','creative','stakeholder','feedback','experiment','uncertainty','repeat','alignment','communication','evidence','priority','scope','dependency','permission','tradeoff','overthinking','avoidance','rigidity','shortterm','ownership','measurement','sequencing','maintenance','socialguess','resourcegap','followthrough','adaptability','selfinterest','fairness'];
+const labels={clarity:'問題の輪郭',information:'情報不足',options:'選択肢',decision:'意思決定',action:'行動',friction:'摩擦',fear:'不安',reversibility:'戻しやすさ',urgency:'緊急度',conflict:'利害衝突',trust:'信頼',coordination:'調整',boundary:'境界線',incentive:'動機設計',control:'制御可能性',system:'構造',habit:'習慣',energy:'実行エネルギー',emotion:'感情負荷',money:'金銭',time:'時間',risk:'リスク',learning:'学習',creative:'発想',stakeholder:'関係者',feedback:'検証',experiment:'小さな実験',uncertainty:'不確実性',repeat:'再発',alignment:'方向一致',communication:'伝え方',evidence:'根拠',priority:'優先順位',scope:'問題範囲',dependency:'依存関係',permission:'許可',tradeoff:'トレードオフ',overthinking:'考えすぎ',avoidance:'回避傾向',rigidity:'固定化',shortterm:'短期偏重',ownership:'当事者意識',measurement:'測定',sequencing:'順序設計',maintenance:'維持設計',socialguess:'相手の推測',resourcegap:'資源不足',followthrough:'継続力',adaptability:'修正力',selfinterest:'自分の利害',fairness:'公平感'};
+const Q=[];let qn=0;const normalizeText=s=>String(s).replace(/[？?！!、。・\s]/g,'').toLowerCase();const add=(group,text,kicker,w,domain=null,stage=group,tags=[])=>Q.push({id:'q'+(++qn),group,text,kicker,w,domain,stage,tags,textKey:normalizeText(text)});
+const bank={
+clarity:[['解決したい状態は、頭の中ではっきりしてる？',{yes:{clarity:-2,action:1},no:{clarity:3,scope:2},unknown:{clarity:2}}],['問題を小さく一つに切れそう？',{yes:{scope:-2,action:1},no:{scope:3,clarity:1}}],['本当は別の問題が奥にある感じがする？',{yes:{clarity:3},no:{clarity:-1}}]],
+information:[['決めるために足りない事実がある？',{yes:{information:3,evidence:2},no:{information:-2,decision:1}}],['誰かに一度聞けば分かることが残ってる？',{yes:{information:2,communication:1},no:{information:-1}}],['推測を事実として扱ってる部分がある？',{yes:{evidence:3,information:2},no:{evidence:-1}}]],
+options:[['選択肢が二つしかないように見えてる？',{yes:{options:3,creative:2},no:{options:-1}}],['両方を少しずつ試す形にできる？',{yes:{experiment:3},no:{tradeoff:2}}],['逆のやり方を考えたことがある？',{yes:{creative:-1},no:{creative:2,options:1}}]],
+decision:[['選ぶ基準はもう決まってる？',{yes:{decision:-2,action:2},no:{decision:3,priority:2}}],['一番避けたい失敗ははっきりしてる？',{yes:{risk:-1},no:{risk:2,decision:2}}],['決定を先延ばしにするコストがある？',{yes:{urgency:2,action:1},no:{urgency:-1}}]],
+action:[['やること自体は、もう分かってる？',{yes:{action:2,clarity:-2},no:{clarity:2,options:1}}],['最初の15分でやることを言える？',{yes:{action:-1},no:{action:3,scope:1}}],['始めるための準備が足りない？',{yes:{friction:2,dependency:1},no:{friction:-1}}],['失敗より、始める瞬間が重い？',{yes:{friction:3},no:{fear:1}}]],
+relation:[['相手との関係が悪くなるのが気になる？',{yes:{fear:2,communication:2},no:{fear:-1}}],['相手と目指しているものは同じ？',{yes:{alignment:-2,coordination:2},no:{alignment:3,conflict:2}}],['相手の得たいものを説明できる？',{yes:{stakeholder:-1},no:{stakeholder:3,information:1}}],['直接言わずに動かせる余地がある？',{yes:{experiment:2,communication:1},no:{communication:2,boundary:1}}],['約束より、仕組みを変えた方が効きそう？',{yes:{system:2,incentive:2},no:{communication:1}}],['今必要なのは説得より、線引き？',{yes:{boundary:3},no:{coordination:1}}]],
+money:[['金額より、今後の余裕が読めないのが問題？',{yes:{uncertainty:2,money:2},no:{money:1}}],['失っても生活や予定に影響しない額？',{yes:{risk:-2},no:{risk:3,money:2}}],['将来の支出予定まで含めて考えた？',{yes:{money:-1},no:{money:3,dependency:1}}]],
+time:[['期限は自分で決められる？',{yes:{control:1,urgency:-1},no:{urgency:2,dependency:1}}],['重要だけど急がないことが押し出されてる？',{yes:{priority:3,time:2},no:{priority:-1}}],['予定を減らす方が、効率化より先？',{yes:{scope:2,priority:2},no:{time:1}}]],
+health:[['考える前に、休息や体調回復が必要？',{yes:{energy:3,emotion:1},no:{energy:-1}}],['今の判断力が普段より落ちてる感じがある？',{yes:{energy:2,risk:1},no:{energy:-1}}],['安全に関わる可能性がある？',{yes:{risk:4,urgency:2},no:{risk:-1}}]],
+study:[['分からないより、手を動かす量が足りない？',{yes:{action:2,learning:1},no:{information:2,learning:2}}],['練習結果をすぐ確認できる？',{yes:{feedback:2},no:{feedback:3,experiment:1}}],['完璧に理解してから進もうとしてる？',{yes:{friction:2,experiment:2},no:{friction:-1}}]],
+creative:[['評価する前に、案を増やす時間を取った？',{yes:{creative:-1},no:{creative:3,options:2}}],['完成品ではなく試作品を作れる？',{yes:{experiment:3,feedback:2},no:{scope:1}}],['他人に見せる前に整えすぎてる？',{yes:{friction:2,feedback:2},no:{friction:-1}}]],
+system:[['同じ問題が何度も起きてる？',{yes:{repeat:3,system:2},no:{repeat:-1}}],['誰か一人ではなく、ルールが原因？',{yes:{system:4,incentive:2},no:{system:-1}}],['みんな合理的に動いてるのに悪い結果になる？',{yes:{incentive:4,system:3},no:{incentive:-1}}]],
+risk:[['一度決めたら、元に戻しにくい？',{yes:{reversibility:4,risk:3},no:{reversibility:-2,experiment:1}}],['最悪の場合に耐えられる？',{yes:{risk:-1},no:{risk:4}}],['小さく試すことで損失を限定できる？',{yes:{experiment:3,risk:-1},no:{risk:1}}]]};
+Object.entries(bank).forEach(([g,arr])=>arr.forEach(([t,w])=>add(g,t,labels[g]||'診断',w,g)));
+const concrete=[
+['action','今日このあと実際に手を付ける時間を決めてある？','行動',{yes:{followthrough:-1,action:-1},no:{followthrough:3,friction:2}},null],
+['action','必要な道具や連絡先を、今すぐ取り出せる？','行動',{yes:{resourcegap:-1},no:{resourcegap:3,friction:2}},null],
+['action','最初の一歩が30分以上かかる形になってる？','行動',{yes:{scope:2,friction:2},no:{scope:-1}},null],
+['action','一度始めても、次に何をするか迷いそう？','行動',{yes:{sequencing:3,followthrough:2},no:{sequencing:-1}},null],
+['action','始めるより、途中で止まる方がいつもの問題？','行動',{yes:{maintenance:3,followthrough:3},no:{friction:1}},null],
+['decision','選んだあとに「別の方がよかった」と何度も見直しそう？','決め方',{yes:{overthinking:3,commitment:2},no:{overthinking:-1}},null],
+['decision','一番大事な条件より、目先の楽さを優先しそう？','決め方',{yes:{shortterm:3,priority:2},no:{shortterm:-1}},null],
+['decision','誰かに決めてもらえたら楽だと思う？','決め方',{yes:{ownership:3,avoidance:2},no:{ownership:-1}},null],
+['information','数字や事実を一つ取れば、かなり判断が変わる？','情報',{yes:{measurement:3,information:2},no:{measurement:-1}},null],
+['information','確認できるのに、相手の気持ちを想像だけで補ってる？','情報',{yes:{socialguess:4,evidence:2},no:{socialguess:-1}},'relation'],
+['information','情報を集めるほど、決めるのが遅くなってる？','情報',{yes:{overthinking:4,information:-1},no:{overthinking:-1}},null],
+['relation','自分の望みを、相手に合わせて小さくしすぎてる？','人との間',{yes:{selfinterest:3,boundary:2},no:{selfinterest:-1}},'relation'],
+['relation','相手に公平であることと、自分が我慢することを同じにしてる？','人との間',{yes:{fairness:3,boundary:2},no:{fairness:-1}},'relation'],
+['relation','相手の反応を確かめる前に、悪い展開を決めつけてる？','人との間',{yes:{socialguess:4,fear:2},no:{socialguess:-1}},'relation'],
+['relation','言う内容より、言った後の沈黙が嫌？','人との間',{yes:{communication:2,avoidance:2},no:{communication:-1}},'relation'],
+['relation','相手に変わってほしいが、自分のやり方は変えたくない？','人との間',{yes:{rigidity:4,control:1},no:{adaptability:1}},'relation'],
+['relation','一度の話し合いで全部解決しようとしてる？','人との間',{yes:{scope:2,overthinking:1},no:{experiment:1}},'relation'],
+['money','支払った直後より、翌月以降の負担が問題になりそう？','お金',{yes:{maintenance:3,money:2},no:{maintenance:-1}},'money'],
+['money','その支出をした後も、予定している出費を全部払える？','お金',{yes:{risk:-2},no:{risk:4,resourcegap:2}},'money'],
+['money','金額が小さいから、頻度を無視してる？','お金',{yes:{repeat:3,shortterm:2},no:{repeat:-1}},'money'],
+['money','買わない損より、買った後の維持費を軽く見てる？','お金',{yes:{maintenance:4,shortterm:2},no:{maintenance:-1}},'money'],
+['time','今週の予定に、予備時間がまったくない？','時間',{yes:{resourcegap:3,time:2},no:{resourcegap:-1}},'time'],
+['time','締切より前に、自分用の締切を置いてる？','時間',{yes:{sequencing:-1,followthrough:-1},no:{sequencing:3}},'time'],
+['time','やることを増やす前に、やめることを決めた？','時間',{yes:{priority:-1},no:{priority:3,scope:2}},'time'],
+['study','間違えた理由を、知識不足とミスに分けてる？','学び',{yes:{measurement:-1,learning:-1},no:{measurement:3,learning:2}},'study'],
+['study','できた問題ばかり繰り返して安心してる？','学び',{yes:{avoidance:3,feedback:2},no:{avoidance:-1}},'study'],
+['study','今日の勉強で何が改善したか測れる？','学び',{yes:{measurement:-1},no:{measurement:4,feedback:2}},'study'],
+['study','計画を守ること自体が目的になってる？','学び',{yes:{rigidity:3,learning:1},no:{adaptability:1}},'study'],
+['creative','案を人に見せる前に、完成度を上げすぎてる？','発想',{yes:{overthinking:2,feedback:3},no:{feedback:-1}},'creative'],
+['creative','最初のアイデアに愛着がありすぎる？','発想',{yes:{rigidity:3,creative:1},no:{adaptability:1}},'creative'],
+['creative','誰に向けたものかが曖昧なまま作ってる？','発想',{yes:{stakeholder:3,clarity:2},no:{stakeholder:-1}},'creative'],
+['system','問題が起きた後だけ対応して、前に防ぐ仕組みがない？','構造',{yes:{maintenance:4,system:2},no:{maintenance:-1}},'system'],
+['system','担当者が変わると、同じ問題がまた起きる？','構造',{yes:{system:4,ownership:2},no:{system:-1}},'system'],
+['system','誰が最後に責任を持つか曖昧？','構造',{yes:{ownership:4,coordination:2},no:{ownership:-1}},'system'],
+['risk','うまくいく条件より、失敗する条件を先に考えた？','リスク',{yes:{risk:-1},no:{risk:3}},'risk'],
+['risk','途中で止める基準を、始める前に決めてある？','リスク',{yes:{reversibility:-1,measurement:-1},no:{reversibility:3,measurement:2}},'risk'],
+['risk','失敗した時に助けを求める先がある？','リスク',{yes:{resourcegap:-1},no:{resourcegap:3,risk:2}},'risk'],
+['health','体調が戻れば、結論も変わる可能性がある？','コンディション',{yes:{energy:3,uncertainty:2},no:{energy:-1}},'health'],
+['health','いま必要なのは改善より、悪化を止めること？','コンディション',{yes:{risk:3,maintenance:2},no:{risk:-1}},'health']
+];
+concrete.forEach(([g,t,k,w,d])=>add(g,t,k,w,d));
+
+const processBank=[
+// 問題の定義・境界
+['clarity','その問題は、起きた出来事と自分の解釈を分けて考えられてる？','問題を切る',{yes:{evidence:-1,clarity:-1},no:{clarity:3,evidence:2}},null,'frame',['fact']],
+['clarity','誰が見ても確認できる形で、困っていることを言える？','問題を切る',{yes:{clarity:-2},no:{clarity:3,measurement:1}},null,'frame',['observable']],
+['clarity','解決したいことが二つ以上、混ざってる？','問題を切る',{yes:{scope:4,priority:2},no:{scope:-1}},null,'frame',['scope']],
+['clarity','問題の原因を、最初から特定の人や物に決めてる？','問題を切る',{yes:{rigidity:3,evidence:2},no:{rigidity:-1}},null,'frame',['assumption']],
+['clarity','うまくいった状態を、行動や数字で判定できる？','問題を切る',{yes:{measurement:-2,clarity:-1},no:{measurement:3,clarity:2}},null,'frame',['success']],
+['clarity','この問題を解決しなくても、目的を達成する別ルートがある？','問題を切る',{yes:{options:3,creative:2},no:{options:-1}},null,'frame',['reframe']],
+['clarity','問題が消えた日や、軽かった場面が一度でもある？','問題を切る',{yes:{information:2,experiment:2},no:{system:1}},null,'frame',['exception']],
+['clarity','困っている原因より、困った結果への対応ばかり考えてる？','問題を切る',{yes:{system:3,repeat:2},no:{system:-1}},null,'frame',['symptom']],
+['clarity','本当の目的と、今こだわっている手段を分けられてる？','問題を切る',{yes:{clarity:-1,adaptability:1},no:{rigidity:3,clarity:2}},null,'frame',['means']],
+['clarity','この問題の範囲を半分にしても、意味のある改善になる？','問題を切る',{yes:{scope:-2,experiment:2},no:{scope:1}},null,'frame',['scope']],
+
+// 観察・情報・仮説
+['information','結論を変える可能性がある情報を、一つに絞れてる？','確かめる',{yes:{information:-2,priority:1},no:{information:3,scope:1}},null,'observe',['critical-info']],
+['information','自分に都合の悪い事実も探した？','確かめる',{yes:{evidence:-2},no:{evidence:4,rigidity:1}},null,'observe',['bias']],
+['information','一人の意見を、全体の傾向だと思ってる？','確かめる',{yes:{evidence:3,uncertainty:2},no:{evidence:-1}},null,'observe',['sample']],
+['information','記憶より、記録を見た方が正確な問題？','確かめる',{yes:{measurement:3,evidence:2},no:{measurement:-1}},null,'observe',['record']],
+['information','原因の候補を三つ以上、並べた？','確かめる',{yes:{information:-1,options:1},no:{rigidity:2,information:3}},null,'observe',['hypothesis']],
+['information','原因と結果の順番を、逆に考えたことがある？','確かめる',{yes:{clarity:-1},no:{creative:2,system:1}},null,'observe',['causality']],
+['information','今の説明では説明できない例がある？','確かめる',{yes:{evidence:3,clarity:2},no:{evidence:-1}},null,'observe',['counterexample']],
+['information','現場を直接見るより、伝聞だけで判断してる？','確かめる',{yes:{information:3,evidence:3},no:{information:-1}},null,'observe',['observation']],
+['information','分からないことを、分からないまま一覧にした？','確かめる',{yes:{uncertainty:-1},no:{uncertainty:3,information:1}},null,'observe',['unknowns']],
+['information','追加情報がなくても、もう十分に決められる状態？','確かめる',{yes:{action:2,information:-3},no:{information:2}},null,'observe',['stop-rule']],
+
+// 発散・代替案
+['options','いまの案を禁止されたら、別案を作れる？','案を広げる',{yes:{options:-1},no:{options:3,creative:3}},null,'ideate',['constraint']],
+['options','お金を使わない案も考えた？','案を広げる',{yes:{options:-1},no:{options:2,creative:1}},'money','ideate',['zero-cost']],
+['options','時間を半分しか使えない前提で考えた？','案を広げる',{yes:{creative:-1},no:{creative:2,scope:1}},'time','ideate',['time-box']],
+['options','誰かに任せる案を、最初から除外してる？','案を広げる',{yes:{dependency:2,options:2},no:{options:-1}},null,'ideate',['delegate']],
+['options','一時的にやめる案も、選択肢に入ってる？','案を広げる',{yes:{options:-1},no:{options:2,avoidance:1}},null,'ideate',['pause']],
+['options','最も極端な案から、使える一部分だけ取れそう？','案を広げる',{yes:{creative:2,experiment:1},no:{creative:1}},null,'ideate',['extreme']],
+['options','他人が同じ問題を持っていたら、別の案を出せそう？','案を広げる',{yes:{creative:2},no:{creative:1}},null,'ideate',['distance']],
+['options','今ある案を組み合わせて、第三案を作れる？','案を広げる',{yes:{options:-1,creative:1},no:{options:2}},null,'ideate',['combine']],
+['options','成功例をそのまま真似るのでなく、一部だけ借りられる？','案を広げる',{yes:{adaptability:2},no:{rigidity:2}},null,'ideate',['analogy']],
+['options','解決策ではなく、問題を起こりにくくする案もある？','案を広げる',{yes:{system:2,maintenance:2},no:{system:1}},null,'ideate',['prevention']],
+
+// 評価・意思決定
+['decision','選択肢ごとの最悪の結果を、同じ基準で比べた？','決める',{yes:{risk:-1,decision:-1},no:{risk:2,decision:2}},null,'decide',['worst-case']],
+['decision','良い結果の大きさと、起こりやすさを分けて考えた？','決める',{yes:{decision:-1},no:{decision:3,risk:1}},null,'decide',['probability']],
+['decision','一番大切な条件を満たさない案を、まだ残してる？','決める',{yes:{priority:3,decision:2},no:{priority:-1}},null,'decide',['must-have']],
+['decision','選ばなかった案の損失まで考えた？','決める',{yes:{tradeoff:-1},no:{tradeoff:3,decision:1}},null,'decide',['opportunity-cost']],
+['decision','今決める価値と、待って情報を得る価値を比べた？','決める',{yes:{decision:-1,uncertainty:-1},no:{uncertainty:3,urgency:1}},null,'decide',['wait-value']],
+['decision','判断期限を過ぎたら自動的に選ぶルールがある？','決める',{yes:{followthrough:-1},no:{overthinking:2,followthrough:2}},null,'decide',['deadline']],
+['decision','気分が違う日に考えても、同じ結論になりそう？','決める',{yes:{emotion:-1},no:{emotion:3,uncertainty:1}},null,'decide',['state-dependence']],
+['decision','一度決めた後、見直す条件を先に決めた？','決める',{yes:{adaptability:-1,maintenance:-1},no:{adaptability:3,maintenance:2}},null,'decide',['review-rule']],
+['decision','自分が得るものと失うものを、別々に書ける？','決める',{yes:{selfinterest:-1,tradeoff:-1},no:{selfinterest:2,tradeoff:2}},null,'decide',['self-interest']],
+['decision','公平そうに見える案より、目的に合う案を選べてる？','決める',{yes:{fairness:-1,priority:1},no:{fairness:3,priority:2}},null,'decide',['fairness']],
+
+// 実験・試作
+['experiment','一番危ない前提だけを、小さく試せる？','試す',{yes:{experiment:3,risk:-1},no:{experiment:1,scope:1}},null,'prototype',['assumption-test']],
+['experiment','試す前に、成功と失敗の判定を決めた？','試す',{yes:{measurement:-2,experiment:1},no:{measurement:3,feedback:2}},null,'prototype',['metric']],
+['experiment','試した結果が悪くても、すぐ元に戻せる？','試す',{yes:{reversibility:-2,experiment:2},no:{risk:2}},null,'prototype',['reversible']],
+['experiment','本番の十分の一の規模で、同じことを確かめられる？','試す',{yes:{scope:-1,experiment:3},no:{scope:1}},null,'prototype',['scale']],
+['experiment','一回の試行で結論を出しすぎそう？','試す',{yes:{measurement:2,uncertainty:2},no:{measurement:-1}},null,'prototype',['sample']],
+['experiment','試す期間を、先に区切ってある？','試す',{yes:{sequencing:-1,maintenance:-1},no:{sequencing:2,maintenance:1}},null,'prototype',['timebox']],
+['experiment','相手に大きな約束を求めず、反応だけ見られる？','試す',{yes:{experiment:3,coordination:1},no:{dependency:1}},'relation','prototype',['low-commitment']],
+['experiment','失敗しても学びが残る設計になってる？','試す',{yes:{feedback:2,risk:-1},no:{feedback:3,risk:1}},null,'prototype',['learning-value']],
+['experiment','同時に変える要素を、一つに絞れてる？','試す',{yes:{measurement:-1},no:{measurement:3,scope:2}},null,'prototype',['isolation']],
+['experiment','結果を見た後、次に何を変えるか候補がある？','試す',{yes:{adaptability:2,sequencing:-1},no:{adaptability:2,sequencing:2}},null,'prototype',['iteration']],
+
+// 実行・順序
+['action','今日やる一歩が、他人の返事待ちになってる？','動かす',{yes:{dependency:3,action:1},no:{control:1}},null,'act',['dependency']],
+['action','最初に一番重い作業から始めようとしてる？','動かす',{yes:{friction:3,sequencing:2},no:{friction:-1}},null,'act',['sequence']],
+['action','完了ではなく、着手を記録できる？','動かす',{yes:{measurement:1,followthrough:-1},no:{measurement:2,friction:1}},null,'act',['start-metric']],
+['action','やる場所と時刻が、具体的に決まってる？','動かす',{yes:{followthrough:-2},no:{followthrough:3,friction:1}},null,'act',['implementation-intention']],
+['action','始める直前に別の選択肢を開いてしまう？','動かす',{yes:{avoidance:3,friction:2},no:{avoidance:-1}},null,'act',['distraction']],
+['action','一人で抱えるより、途中報告を置いた方が続きそう？','動かす',{yes:{coordination:2,followthrough:2},no:{control:1}},null,'act',['accountability']],
+['action','終わった後の片付けや記録まで、作業に含めてる？','動かす',{yes:{maintenance:-1},no:{maintenance:2,sequencing:1}},null,'act',['closure']],
+['action','次の行動が、今の行動の結果次第で決まる？','動かす',{yes:{feedback:2,sequencing:2},no:{sequencing:-1}},null,'act',['branch']],
+['action','作業を始めるまでに、三つ以上の準備が必要？','動かす',{yes:{resourcegap:2,friction:3},no:{friction:-1}},null,'act',['setup-cost']],
+['action','途中で迷った時の仮ルールを決めてある？','動かす',{yes:{decision:-1,followthrough:-1},no:{decision:2,followthrough:2}},null,'act',['default-rule']],
+
+// 振り返り・学習
+['feedback','実行前と実行後で、何が変わったか比べられる？','振り返る',{yes:{feedback:-2,measurement:-1},no:{feedback:3,measurement:2}},null,'learn',['before-after']],
+['feedback','結果が悪かった時、方法と前提を分けて見直せる？','振り返る',{yes:{adaptability:2},no:{rigidity:3,feedback:2}},null,'learn',['diagnose-failure']],
+['feedback','うまくいった理由を、運と方法に分けて考えた？','振り返る',{yes:{evidence:-1},no:{evidence:2,repeat:1}},null,'learn',['attribution']],
+['feedback','一回の成功を、いつでも再現できると思ってる？','振り返る',{yes:{uncertainty:2,repeat:2},no:{uncertainty:-1}},null,'learn',['generalize']],
+['feedback','次回も使える形で、学びを一行残してる？','振り返る',{yes:{maintenance:-1,learning:-1},no:{maintenance:2,learning:2}},null,'learn',['capture']],
+['feedback','結果だけでなく、途中の兆候も見てる？','振り返る',{yes:{feedback:-1},no:{feedback:3,measurement:1}},null,'learn',['leading-indicator']],
+['feedback','失敗を避けるために、挑戦の難度を下げすぎてる？','振り返る',{yes:{avoidance:3,learning:2},no:{avoidance:-1}},null,'learn',['challenge']],
+['feedback','改善が止まった時、やり方を変える条件がある？','振り返る',{yes:{adaptability:-1},no:{adaptability:3,maintenance:1}},null,'learn',['pivot']],
+['feedback','自分の評価と、相手や利用者の評価がずれてる？','振り返る',{yes:{stakeholder:3,feedback:2},no:{stakeholder:-1}},null,'learn',['external-feedback']],
+['feedback','うまくいかなかった原因を、一つに決めつけてる？','振り返る',{yes:{rigidity:3,information:2},no:{rigidity:-1}},null,'learn',['multi-cause']],
+
+// 維持・再発防止
+['maintenance','一度うまくいっても、元に戻るきっかけが残ってる？','続ける',{yes:{maintenance:4,repeat:2},no:{maintenance:-1}},null,'sustain',['relapse']],
+['maintenance','続けるための負担が、時間とともに増えそう？','続ける',{yes:{maintenance:3,resourcegap:2},no:{maintenance:-1}},null,'sustain',['burden']],
+['maintenance','担当者がいなくても回る形になってる？','続ける',{yes:{system:-1,maintenance:-1},no:{system:3,ownership:2}},null,'sustain',['handoff']],
+['maintenance','例外が起きた時のルールを決めてある？','続ける',{yes:{maintenance:-1,adaptability:1},no:{maintenance:3}},null,'sustain',['exception']],
+['maintenance','定期的に見直す日が決まってる？','続ける',{yes:{maintenance:-2},no:{maintenance:3,followthrough:1}},null,'sustain',['review']],
+['maintenance','続けるほど得をする仕組みがある？','続ける',{yes:{incentive:-1,habit:1},no:{incentive:3,habit:2}},null,'sustain',['incentive']],
+['maintenance','やめたくなった時の最低ラインを決めてる？','続ける',{yes:{habit:-1,followthrough:-1},no:{habit:3,followthrough:2}},null,'sustain',['minimum']],
+['maintenance','改善を誰か一人の善意に頼ってる？','続ける',{yes:{system:3,ownership:2},no:{system:-1}},null,'sustain',['single-point']],
+['maintenance','問題が再発した時、早く気づけるサインがある？','続ける',{yes:{measurement:-1,maintenance:-1},no:{measurement:3,maintenance:2}},null,'sustain',['early-warning']],
+['maintenance','成功した方法を、状況が変わっても続けるつもり？','続ける',{yes:{rigidity:3,adaptability:2},no:{adaptability:-1}},null,'sustain',['context-change']],
+
+// 人間関係・交渉・ゲーム理論
+['relation','相手の立場と、本当に欲しいものを分けて考えた？','人との間',{yes:{stakeholder:-1,conflict:-1},no:{stakeholder:3,conflict:2}},'relation','stakeholder',['interest-position']],
+['relation','相手が断っても困らない代替案が、自分にある？','人との間',{yes:{boundary:-1,control:1},no:{dependency:3,boundary:2}},'relation','stakeholder',['batna']],
+['relation','一度きりの関係として考えるより、次回もある関係？','人との間',{yes:{trust:2,incentive:2},no:{trust:-1}},'relation','stakeholder',['repeated-game']],
+['relation','相手が協力しなくても、自分だけ守れるものがある？','人との間',{yes:{boundary:2,control:2},no:{dependency:2}},'relation','stakeholder',['self-protection']],
+['relation','相手にも、こちらを信じにくい理由がある？','人との間',{yes:{trust:3,stakeholder:2},no:{trust:-1}},'relation','stakeholder',['trust']],
+['relation','約束を破った方が得になる状況を、そのままにしてる？','人との間',{yes:{incentive:4,system:2},no:{incentive:-1}},'relation','stakeholder',['incentive']],
+['relation','話し合いの前に、合意できる小さな点がある？','人との間',{yes:{coordination:2,alignment:1},no:{conflict:2}},'relation','stakeholder',['common-ground']],
+['relation','相手のNOを、関係全体の否定として受け取りそう？','人との間',{yes:{emotion:2,socialguess:2},no:{emotion:-1}},'relation','stakeholder',['rejection']],
+['relation','その場で答えを求めず、考える時間を渡せる？','人との間',{yes:{communication:1,conflict:-1},no:{urgency:1,communication:2}},'relation','stakeholder',['cooling-off']],
+['relation','第三者を入れると、事実確認や公平性が上がる？','人との間',{yes:{coordination:3,fairness:2},no:{coordination:-1}},'relation','stakeholder',['mediator']],
+['relation','相手に変化を求める前に、自分が提供できるものを示した？','人との間',{yes:{coordination:-1},no:{coordination:3,selfinterest:1}},'relation','stakeholder',['reciprocity']],
+['relation','相手の行動を責めるより、影響を伝えた方が通じそう？','人との間',{yes:{communication:2,conflict:-1},no:{communication:1}},'relation','stakeholder',['impact']],
+['relation','守ってほしいことを、具体的な行動で伝えられる？','人との間',{yes:{boundary:-1,communication:-1},no:{boundary:3,communication:2}},'relation','stakeholder',['request']],
+['relation','公平さを、全員同じにすることだと思ってる？','人との間',{yes:{fairness:3,stakeholder:1},no:{fairness:-1}},'relation','stakeholder',['equity']],
+['relation','相手の反応を見て、自分の案を修正する余地がある？','人との間',{yes:{adaptability:2,coordination:1},no:{rigidity:3}},'relation','stakeholder',['adapt']],
+
+// お金
+['money','初期費用だけでなく、毎月の費用も合計した？','お金',{yes:{maintenance:-1,money:-1},no:{maintenance:3,money:3}},'money','resource',['total-cost']],
+['money','その金額を失った時、予定を一つ諦める必要がある？','お金',{yes:{tradeoff:3,risk:2},no:{risk:-1}},'money','resource',['opportunity-cost']],
+['money','安いことが、必要であることの代わりになってる？','お金',{yes:{shortterm:3,priority:2},no:{shortterm:-1}},'money','resource',['cheap-bias']],
+['money','将来の収入を、すでに使えるお金として数えてる？','お金',{yes:{risk:4,uncertainty:2},no:{risk:-1}},'money','resource',['future-income']],
+['money','一回あたりでなく、一年分の合計を見た？','お金',{yes:{money:-1},no:{money:3,repeat:2}},'money','resource',['annualize']],
+['money','売れることを前提に、損失を小さく見積もってる？','お金',{yes:{risk:3,uncertainty:2},no:{risk:-1}},'money','resource',['resale']],
+['money','払った後に残る現金で、直近の予定をこなせる？','お金',{yes:{risk:-2},no:{risk:4,resourcegap:3}},'money','resource',['cashflow']],
+['money','金額以外の維持時間や手間も、費用として考えた？','お金',{yes:{maintenance:-1},no:{maintenance:3,time:2}},'money','resource',['hidden-cost']],
+['money','今買う理由が、値上がりや売り切れへの焦りだけ？','お金',{yes:{urgency:3,shortterm:2},no:{urgency:-1}},'money','resource',['scarcity']],
+['money','同じ目的を、借りる・試す・中古で満たせる？','お金',{yes:{options:2,experiment:2},no:{options:-1}},'money','resource',['alternatives']],
+
+// 時間・優先順位
+['time','締切が近いものより、重要なものに時間を置けてる？','時間',{yes:{priority:-1},no:{priority:4,urgency:2}},'time','resource',['important-not-urgent']],
+['time','予定に入れた時間より、実際は長くかかる傾向がある？','時間',{yes:{measurement:3,time:2},no:{measurement:-1}},'time','resource',['planning-fallacy']],
+['time','中断される前提で、作業を小さく分けてる？','時間',{yes:{sequencing:-1},no:{sequencing:3,friction:1}},'time','resource',['interruptions']],
+['time','移動・準備・片付けの時間を予定に入れてる？','時間',{yes:{time:-1},no:{time:3,resourcegap:1}},'time','resource',['transition-time']],
+['time','今週やらないことを、明確に決めた？','時間',{yes:{priority:-2},no:{priority:3,scope:2}},'time','resource',['not-do']],
+['time','余白がなくても回る計画を作ってる？','時間',{yes:{risk:2,time:3},no:{risk:-1}},'time','resource',['buffer']],
+['time','集中が必要な作業を、疲れる時間帯に置いてる？','時間',{yes:{energy:2,time:2},no:{energy:-1}},'time','resource',['energy-match']],
+['time','細かい用事が、大きな一つを避ける口実になってる？','時間',{yes:{avoidance:3,priority:2},no:{avoidance:-1}},'time','resource',['busywork']],
+['time','同じ種類の作業をまとめると、切替時間を減らせる？','時間',{yes:{time:2,friction:-1},no:{time:-1}},'time','resource',['batching']],
+['time','予定変更が起きた時、何を削るか決めてある？','時間',{yes:{adaptability:-1,priority:-1},no:{adaptability:3,priority:2}},'time','resource',['contingency']],
+
+// 学習
+['study','分からない箇所を、用語・手順・考え方に分けた？','学び',{yes:{clarity:-1,learning:-1},no:{clarity:2,learning:3}},'study','learn-domain',['diagnose']],
+['study','問題を解く前に、答えを見て分かった気になってる？','学び',{yes:{avoidance:3,feedback:2},no:{avoidance:-1}},'study','learn-domain',['illusion']],
+['study','翌日にも解けるか、確認した？','学び',{yes:{measurement:-1,learning:-1},no:{measurement:3,learning:2}},'study','learn-domain',['retention']],
+['study','間違えた問題を、理由を変えてもう一度解いた？','学び',{yes:{feedback:-1,adaptability:1},no:{feedback:3,learning:2}},'study','learn-domain',['retry']],
+['study','難しい問題ばかりで、基礎の穴を見逃してる？','学び',{yes:{scope:2,learning:3},no:{scope:-1}},'study','learn-domain',['foundation']],
+['study','時間を測る前に、正確さを安定させた？','学び',{yes:{sequencing:-1},no:{sequencing:3,learning:1}},'study','learn-domain',['accuracy-speed']],
+['study','似た問題だけでなく、形式の違う問題でも使えた？','学び',{yes:{learning:-1},no:{learning:3,adaptability:2}},'study','learn-domain',['transfer']],
+['study','できなかった原因を、次の練習内容に反映した？','学び',{yes:{feedback:-1,sequencing:-1},no:{feedback:3,sequencing:2}},'study','learn-domain',['adjust']],
+['study','学習時間ではなく、できるようになった量を見てる？','学び',{yes:{measurement:-1},no:{measurement:4,learning:1}},'study','learn-domain',['outcome']],
+['study','忘れる前提で、復習日を置いてる？','学び',{yes:{maintenance:-1},no:{maintenance:3,learning:2}},'study','learn-domain',['spacing']],
+
+// 創作・デザイン思考
+['creative','作り手の好みより、使う人の困り方を観察した？','発想',{yes:{stakeholder:-1},no:{stakeholder:4,creative:1}},'creative','design',['empathy']],
+['creative','一番重要な体験を、一文で決めてる？','発想',{yes:{clarity:-1,priority:-1},no:{clarity:3,priority:2}},'creative','design',['experience']],
+['creative','機能を足す前に、なくても成立するか試した？','発想',{yes:{scope:-1},no:{scope:3,creative:1}},'creative','design',['minimal']],
+['creative','完成形の説明より、触れる試作品を見せた？','発想',{yes:{experiment:-1,feedback:1},no:{experiment:3,feedback:2}},'creative','design',['prototype']],
+['creative','批判された案と、自分自身を分けて考えられる？','発想',{yes:{emotion:-1,adaptability:1},no:{emotion:3,rigidity:2}},'creative','design',['detach']],
+['creative','一番無難な案だけを残してる？','発想',{yes:{avoidance:3,creative:3},no:{avoidance:-1}},'creative','design',['safe-idea']],
+['creative','利用者が言った要望より、実際の行動も見た？','発想',{yes:{evidence:-1,stakeholder:-1},no:{evidence:3,stakeholder:2}},'creative','design',['behavior']],
+['creative','制約を敵ではなく、発想の条件として使えてる？','発想',{yes:{creative:-1,adaptability:1},no:{creative:2,rigidity:1}},'creative','design',['constraint']],
+['creative','一つの案を磨く前に、方向の違う案を出した？','発想',{yes:{options:-1},no:{options:3,creative:2}},'creative','design',['diverge']],
+['creative','試作品で確かめたい問いが、一つに絞れてる？','発想',{yes:{experiment:-1,measurement:-1},no:{experiment:2,measurement:2}},'creative','design',['question']],
+
+// システム・組織
+['system','問題を減らす行動より、問題を報告しない方が得になってる？','構造',{yes:{incentive:4,system:3},no:{incentive:-1}},'system','systems',['reporting']],
+['system','目標の数字を上げるために、本来の目的が損なわれてる？','構造',{yes:{incentive:4,measurement:3},no:{incentive:-1}},'system','systems',['gaming']],
+['system','短期の成果を出すほど、長期の負担が増える仕組み？','構造',{yes:{shortterm:4,system:3},no:{shortterm:-1}},'system','systems',['shifting-burden']],
+['system','一つの部署の改善が、別の部署の負担を増やしてる？','構造',{yes:{system:4,dependency:3},no:{system:-1}},'system','systems',['local-optimum']],
+['system','問題が起きるまで、悪化を見つける指標がない？','構造',{yes:{measurement:4,maintenance:2},no:{measurement:-1}},'system','systems',['lag']],
+['system','権限がない人に、責任だけ集まってる？','構造',{yes:{permission:4,ownership:3},no:{permission:-1}},'system','systems',['authority']],
+['system','同じ情報を、複数人が別々に管理してる？','構造',{yes:{coordination:3,system:2},no:{coordination:-1}},'system','systems',['duplication']],
+['system','例外対応が増えすぎて、元のルールが機能してない？','構造',{yes:{system:3,scope:2},no:{system:-1}},'system','systems',['exceptions']],
+['system','忙しい人ほど、さらに仕事が集まる構造？','構造',{yes:{incentive:3,resourcegap:3},no:{resourcegap:-1}},'system','systems',['load']],
+['system','改善策が、問題の原因を一時的に隠すだけ？','構造',{yes:{system:4,repeat:3},no:{system:-1}},'system','systems',['symptomatic-fix']],
+
+// U理論・内省・価値
+['emotion','すぐ答えを出す前に、実際に起きていることを観察した？','立ち止まる',{yes:{emotion:-1,information:1},no:{emotion:2,information:2}},null,'reflect',['observe']],
+['emotion','自分が正しいことを証明するより、状況を良くしたい？','立ち止まる',{yes:{conflict:-1,alignment:1},no:{conflict:3,rigidity:2}},null,'reflect',['intent']],
+['emotion','過去の失敗を、今の状況にもそのまま当てはめてる？','立ち止まる',{yes:{fear:3,rigidity:2},no:{fear:-1}},null,'reflect',['past-pattern']],
+['emotion','自分が失いたくないものを、はっきり言える？','立ち止まる',{yes:{values:1,clarity:-1},no:{clarity:2,emotion:2}},null,'reflect',['loss']],
+['emotion','本音と、周囲に期待される答えがずれてる？','立ち止まる',{yes:{alignment:3,selfinterest:2},no:{alignment:-1}},null,'reflect',['authenticity']],
+['emotion','結論ではなく、どんな状態でありたいかを考えた？','立ち止まる',{yes:{values:1,clarity:-1},no:{clarity:2}},null,'reflect',['future-self']],
+['emotion','不安が消えることを、決断の条件にしてる？','立ち止まる',{yes:{fear:3,avoidance:2},no:{fear:-1}},null,'reflect',['uncertainty-tolerance']],
+['emotion','今の感情が落ち着いたら、同じ選択をすると思う？','立ち止まる',{yes:{emotion:-1},no:{emotion:3,uncertainty:2}},null,'reflect',['state']],
+['emotion','相手や環境を変える前に、自分の見方を一度保留できる？','立ち止まる',{yes:{adaptability:2},no:{rigidity:3}},null,'reflect',['suspend']],
+['emotion','一番避けたい未来だけでなく、望む未来も具体的に考えた？','立ち止まる',{yes:{clarity:-1,options:1},no:{fear:2,clarity:2}},null,'reflect',['future']],
+
+// リスク・安全
+['risk','起きやすい小さな損失と、まれな大損失を分けて考えた？','安全に進める',{yes:{risk:-1},no:{risk:3,uncertainty:2}},'risk','risk',['frequency-severity']],
+['risk','最悪の結果が起きる前に、途中で気づける？','安全に進める',{yes:{measurement:1,risk:-1},no:{measurement:3,risk:3}},'risk','risk',['detectability']],
+['risk','一つの失敗で全部失う形になってる？','安全に進める',{yes:{risk:4,reversibility:3},no:{risk:-1}},'risk','risk',['single-point']],
+['risk','他人にも損失や危険が及ぶ可能性がある？','安全に進める',{yes:{risk:4,stakeholder:2},no:{risk:-1}},'risk','risk',['externality']],
+['risk','専門知識がないまま、自分だけで判断しようとしてる？','安全に進める',{yes:{permission:3,risk:3},no:{permission:-1}},'risk','risk',['expert']],
+['risk','成功した場合より、失敗した場合の回復方法を決めた？','安全に進める',{yes:{reversibility:-2},no:{reversibility:3,risk:2}},'risk','risk',['recovery']],
+['risk','急いでいることで、確認手順を省こうとしてる？','安全に進める',{yes:{urgency:3,risk:3},no:{urgency:-1}},'risk','risk',['rush']],
+['risk','安全側に倒すことで失うものも、比較した？','安全に進める',{yes:{tradeoff:-1},no:{tradeoff:2,risk:1}},'risk','risk',['overcaution']],
+['risk','一度に全額・全時間・全信用を賭けずに済む？','安全に進める',{yes:{experiment:2,risk:-1},no:{risk:4}},'risk','risk',['exposure']],
+['risk','中止を決める人と、続行を決める人が同じ？','安全に進める',{yes:{risk:1,ownership:1},no:{coordination:2}},'risk','risk',['governance']]
+];
+processBank.forEach(([g,t,k,w,d,s,tags])=>add(g,t,k,w,d,s,tags));
+
+const results=[
+{need:['experiment'],title:'まず、小さく試す',summary:'考え切ってから動くより、戻せる形で一度試した方が情報が増える状態です。',actions:[['試す範囲を半分以下にする','期限・金額・人数・時間のどれかを小さくする。'],['一回だけ実行する','継続を約束せず、反応を見るための一回にする。'],['見るポイントを一つ決める','成功か失敗かではなく、次の修正材料を集める。']],warn:'最初から完成形を作ろうとすると、判断も実行も重くなります。',methods:['デザイン思考','仮説検証','可逆的意思決定']},
+{need:['clarity','scope'],title:'答えより先に、問題を小さくする',summary:'いまは解決策不足より、扱っている問題の範囲が広すぎる可能性があります。',actions:[['困っている現象を一つ選ぶ','原因や人物ではなく、観察できる出来事に絞る。'],['変えたいものを一つにする','全部を直さず、最初に変化させる一点を決める。'],['解決期限を仮置きする','永久解決ではなく、次の確認日までの目標にする。']],warn:'大きな問題名のまま考え続けると、何をしても不十分に見えます。',methods:['問題再定義','システム思考','デザイン思考']},
+{need:['information','evidence'],title:'いまは決めず、事実を一つ取りに行く',summary:'重要な一点が推測のまま残っています。',actions:[['結論を変える情報を一つ決める','何が分かればYESとNOが入れ替わるか考える。'],['最短の取り方を選ぶ','検索、確認、観察、質問のうち一番早い方法を使う。'],['情報収集の終了条件を決める','全部分かるまで調べず、一つ取れたら再判断する。']],warn:'調べること自体が先延ばしになっていないかだけ確認します。',methods:['仮説検証','エビデンス思考','U理論']},
+{need:['decision','priority','tradeoff'],title:'選択肢ではなく、選ぶ基準を決める',summary:'案が足りないのではなく、比較軸が定まっていないため結論が動いています。',actions:[['絶対条件を一つ決める','満たさない案はここで除外する。'],['重視する順番を三つまで決める','全部を同じ重さで比べない。'],['同点なら戻しやすい方を選ぶ','結果が近いなら、後から修正できる方を優先する。']],warn:'基準を増やしすぎると決まりません。',methods:['多基準意思決定','機会費用','可逆性']},
+{need:['action','friction'],title:'考える工程を減らして、最初の15分だけ動く',summary:'やることは見えていて、問題は選択ではなく開始時の摩擦にあります。',actions:[['準備を一つだけ残す','開始前に必要な作業を最小限にする。'],['15分で終わる単位に切る','成果ではなく開始を完了条件にする。'],['次にやる時刻を決める','気分ではなく予定に接続する。']],warn:'やる気が出るまで待つ方法は再現性が低いです。',methods:['実行意図','行動設計','習慣化']},
+{need:['communication','fear','coordination'],title:'正面衝突せず、小さな変更から',summary:'関係そのものより、やり取りが気まずくなる瞬間が行動を止めています。',actions:[['自分の動きを少し変える','頻度、時間、距離、参加方法のどれかを調整する。'],['仕組みで伝える','予定、ルール、役割分担など個人攻撃に見えない形にする。'],['反応を見て次を決める','一度で結論を出さず、小さい変化への反応を確認する。']],warn:'相手の気持ちを細かく予想し続けても気まずさは減りません。',methods:['ゲーム理論','小さな実験','非対立的調整']},
+{need:['boundary','conflict'],title:'説得より、線を引く',summary:'相手を変えることより、自分が受け入れる範囲を決める方が早い状態です。',actions:[['受け入れられない条件を一つ決める','理由を増やさず境界だけ明確にする。'],['代替案を一つ添える','拒否だけで終わらず可能な範囲を示す。'],['反応ではなく運用を見る','相手が納得するかより境界が守られるかを見る。']],warn:'説明を増やしすぎると境界線が交渉材料になります。',methods:['境界線設計','交渉論','ゲーム理論']},
+{need:['system','repeat','incentive'],title:'人ではなく、繰り返す仕組みを直す',summary:'誰かの性格より、同じ結果を生むルールや報酬構造に原因がありそうです。',actions:[['問題が起きる直前の流れを書く','人名ではなく手順と条件を見る。'],['得をする行動を確認する','望ましくない行動が合理的になる理由を探す。'],['一つのルールを変えて試す','全体改革ではなく再発ポイント一つを変える。']],warn:'個人への注意だけでは構造が同じなら再発します。',methods:['システム思考','ゲーム理論','インセンティブ設計']},
+{need:['risk','reversibility','uncertainty'],title:'決める前に、失敗の上限を作る',summary:'成功確率より、失敗した時に戻れないことが判断を重くしています。',actions:[['失える上限を決める','金額、時間、信用、健康のどこまでなら耐えられるか決める。'],['段階を分ける','一括で決めず確認点を入れる。'],['中止条件を先に決める','悪化してから悩まず撤退基準を置く。']],warn:'期待利益だけで不可逆な判断を正当化しないようにします。',methods:['リスク管理','リアルオプション','プレモータム']},
+{need:['energy','emotion'],title:'結論を出す前に、判断できる状態へ戻す',summary:'問題そのものより、今の疲労や感情負荷が判断を歪める可能性があります。',actions:[['決定を一度保留する','緊急でない限り判断の質が戻るまで待つ。'],['負荷を一つ減らす','睡眠、予定、情報、人との接触のどれかを減らす。'],['次の確認時刻を決める','無期限に逃げず再判断する日時を置く。']],warn:'強い疲労や感情の最中に取り返しのつかない判断をしないようにします。',methods:['U理論','認知負荷管理','意思決定衛生']},
+{need:['learning','feedback'],title:'理解より、短い練習と即確認を回す',summary:'知識不足だけでなく、試した結果が返ってくる速度が遅い状態です。',actions:[['一問・一操作まで小さくする','長い学習単位をやめる。'],['すぐ答え合わせする','間違いを溜めずその場で原因を分類する。'],['次の一回だけ修正する','全体計画より直近の失敗を一つ改善する。']],warn:'理解してから練習するのではなく練習で理解を作ります。',methods:['フィードバック学習','意図的練習','反復改善']},
+{need:['creative','options'],title:'評価を止めて、案を増やす',summary:'良い案がないというより、案を出す段階で評価が入りすぎています。',actions:[['10分だけ量を出す','良し悪しを決めず数を優先する。'],['制約を一つ置く','時間、予算、形式のどれかを固定する。'],['一番雑な案を試作する','完成度ではなく反応を見るために形にする。']],warn:'最初の案を完成させようとすると発想の幅が狭くなります。',methods:['デザイン思考','発散と収束','プロトタイピング']}
+];
+const state={setup:{},scores:{},asked:[],askedTexts:new Set(),answers:{},lastGroups:[],lastStages:[],lastTags:[],history:[],questionNo:0,maxQuestions:20};vars.forEach(v=>state.scores[v]=0);const $=id=>document.getElementById(id);
+function renderSetup(){const root=$('setupGroups');root.innerHTML=setupConfig.map(g=>`<div class="group" data-group="${g.id}"><h3>${g.title}</h3><div class="choice-grid">${g.options.map(([v,l])=>`<button class="choice" data-value="${v}">${l}</button>`).join('')}</div></div>`).join('');document.querySelectorAll('.group').forEach(group=>{const cfg=setupConfig.find(x=>x.id===group.dataset.group);group.querySelectorAll('.choice').forEach(btn=>btn.onclick=()=>{if(cfg.multi){btn.classList.toggle('selected');let a=[...group.querySelectorAll('.choice.selected')].map(x=>x.dataset.value);if(cfg.max&&a.length>cfg.max){btn.classList.remove('selected');a=a.filter(x=>x!==btn.dataset.value)}state.setup[cfg.id]=a}else{group.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');state.setup[cfg.id]=btn.dataset.value}validate()})})}
+function validate(){$('startBtn').disabled=!setupConfig.every(g=>g.multi?(state.setup[g.id]||[]).length:state.setup[g.id])}
+function bump(k,n){state.scores[k]=(state.scores[k]||0)+n}function seed(){const s=state.setup;if(s.stage.includes('unclear')){bump('clarity',4);bump('scope',2)}if(s.stage.includes('cause'))bump('clarity',2);if(s.stage.includes('info')){bump('information',4);bump('evidence',2)}if(s.stage.includes('ideas')){bump('options',4);bump('creative',2)}if(s.stage.includes('choice')){bump('decision',4);bump('priority',2)}if(s.stage.includes('agreement')){bump('conflict',3);bump('coordination',3)}if(s.stage.includes('action')){bump('action',4);bump('friction',2)}if(s.stage.includes('stuck')){bump('feedback',3);bump('system',2)}if(s.stage.includes('repeat')){bump('repeat',4);bump('system',3)}if(s.stage.includes('emotion')){bump('emotion',4);bump('energy',1)}s.domains.forEach(d=>bump(d,3));if(['one','group','org'].includes(s.people)){bump('stakeholder',2);bump('communication',2)}if(s.control==='high')bump('control',2);if(['low','authority'].includes(s.control)){bump('dependency',2);bump('permission',2)}if(s.reversibility==='unknown')bump('uncertainty',2);if(s.reversibility==='hard')bump('risk',3);if(s.reversibility==='irreversible'){bump('risk',5);bump('reversibility',5)}if(s.time==='today')bump('urgency',4);if(s.time==='unknown')bump('uncertainty',2);if(s.mindset.includes('fear'))bump('fear',3);if(s.mindset.includes('avoid'))bump('friction',2)}
+function setupAlreadyAnswers(q){
+  const s=state.setup;
+  const k=q.textKey;
+  if(k===normalizeText('一度決めたら、元に戻しにくい？')&&s.reversibility!=='unknown')return true;
+  if(k===normalizeText('期限は自分で決められる？')&&s.time!=='unknown')return true;
+  if(k===normalizeText('安全に関わる可能性がある？')&&!s.domains.includes('risk')&&!s.domains.includes('health'))return true;
+  return false;
+}
+function applicable(q){
+  if(state.asked.includes(q.id)||state.askedTexts.has(q.textKey)||setupAlreadyAnswers(q))return false;
+  if(q.domain&&['money','time','relation','study','health','creative','system','risk'].includes(q.domain)&&!state.setup.domains.includes(q.domain))return false;
+  if(q.group==='relation'&&!['one','group','org','public'].includes(state.setup.people))return false;
+  return true
+}
+function informationGain(q){
+  const branches=['yes','no','unknown','na'].map(a=>q.w[a]||{});
+  const keys=new Set(branches.flatMap(x=>Object.keys(x)));
+  let gain=0;
+  keys.forEach(k=>{
+    const vals=branches.map(b=>b[k]||0);
+    gain+=Math.max(...vals)-Math.min(...vals);
+    if(Math.abs(state.scores[k]||0)<2)gain+=1.2;
+  });
+  return gain;
+}
+function semanticPenalty(q){
+  let p=0;
+  if(state.lastGroups.slice(-2).includes(q.group))p+=32;
+  if(state.lastStages.slice(-2).includes(q.stage))p+=24;
+  if(q.tags?.some(tag=>state.lastTags.slice(-5).includes(tag)))p+=28;
+  return p;
+}
+function qscore(q){
+  let n=informationGain(q)*5;
+  Object.values(q.w).forEach(a=>Object.entries(a).forEach(([k,v])=>n+=Math.max(0,state.scores[k]||0)*Math.abs(v)*.7));
+  n-=semanticPenalty(q);
+  if(q.group==='action'&&state.setup.stage.includes('action'))n+=10;
+  if(q.group==='relation'&&state.setup.domains.includes('relation'))n+=8;
+  if(q.group==='information'&&state.setup.stage.includes('info'))n+=8;
+  if(q.group==='decision'&&state.setup.stage.includes('choice'))n+=8;
+  if(q.group==='system'&&state.setup.stage.includes('repeat'))n+=8;
+  return n+Math.random()*1.5
+}
+function pick(){
+  const pool=Q.filter(applicable);
+  pool.sort((a,b)=>qscore(b)-qscore(a));
+  return pool[0]
+}
+function makeSnapshot(){
+  return {
+    scores:{...state.scores},
+    asked:[...state.asked],
+    askedTexts:[...state.askedTexts],
+    answers:{...state.answers},
+    lastGroups:[...state.lastGroups],
+    lastStages:[...state.lastStages],
+    lastTags:[...state.lastTags],
+    questionNo:state.questionNo,
+    currentId:state.current?.id||null
+  };
+}
+function restoreSnapshot(snapshot){
+  state.scores={...snapshot.scores};
+  state.asked=[...snapshot.asked];
+  state.askedTexts=new Set(snapshot.askedTexts);
+  state.answers={...snapshot.answers};
+  state.lastGroups=[...snapshot.lastGroups];
+  state.lastStages=[...snapshot.lastStages];
+  state.lastTags=[...snapshot.lastTags];
+  state.questionNo=snapshot.questionNo;
+  state.current=Q.find(q=>q.id===snapshot.currentId)||null;
+}
+function updateBackButton(){
+  const button=$('backQuestion');
+  if(button)button.disabled=state.history.length===0;
+}
+function goBackQuestion(){
+  const snapshot=state.history.pop();
+  if(!snapshot)return;
+  restoreSnapshot(snapshot);
+  if(state.current){
+    $('questionKicker').textContent=state.current.kicker;
+    $('questionText').textContent=state.current.text;
+    $('questionCount').textContent=`${state.questionNo+1}問目くらい`;
+    $('branchHint').textContent=state.questionNo<4?'問題の地形を確認中':'前の答えから分岐中';
+    $('progressBar').style.width=`${Math.min(94,12+(state.questionNo/state.maxQuestions)*82)}%`;
+    show('questionScreen');
+    updateBackButton();
+  }else{
+    showQuestion();
+  }
+}
+function showQuestion(){const q=pick();if(!q)return showResult();state.current=q;$('questionKicker').textContent=q.kicker;$('questionText').textContent=q.text;$('questionCount').textContent=`${state.questionNo+1}問目くらい`;$('branchHint').textContent=state.questionNo<4?'問題の地形を確認中':'前の答えから分岐中';$('progressBar').style.width=`${Math.min(94,12+(state.questionNo/state.maxQuestions)*82)}%`;show('questionScreen');updateBackButton()}
+function answer(a){
+  const q=state.current;
+  state.history.push(makeSnapshot());
+  state.asked.push(q.id);state.askedTexts.add(q.textKey);state.answers[q.id]=a;state.questionNo++;
+  Object.entries(q.w[a]||{}).forEach(([k,v])=>bump(k,v));
+  state.lastGroups=[...state.lastGroups.slice(-2),q.group];
+  state.lastStages=[...state.lastStages.slice(-2),q.stage];
+  state.lastTags=[...state.lastTags.slice(-5),...(q.tags||[])];
+  state.questionNo>=state.maxQuestions?showResult():showQuestion()
+}
+function chooseResult(){return results.map(r=>[r,r.need.reduce((s,k)=>s+(state.scores[k]||0),0)]).sort((a,b)=>b[1]-a[1])[0][0]}
+function scoreOf(k){return state.scores[k]||0}
+function topEntries(limit=8){return Object.entries(state.scores).sort((a,b)=>b[1]-a[1]).slice(0,limit)}
+function lowRelevant(){
+  const relevant=['feedback','measurement','maintenance','adaptability','ownership','followthrough','evidence','priority','experiment','communication'];
+  return relevant.map(k=>[k,scoreOf(k)]).sort((a,b)=>a[1]-b[1]).slice(0,3)
+}
+function languageSummary(){
+  const high=topEntries(5).map(([k])=>labels[k]);
+  const parts=[];
+  if(scoreOf('clarity')>3&&scoreOf('action')>2)parts.push('やることは見えているのに、問題の切り方が大きくて動き出しにくい');
+  else if(scoreOf('action')>4&&scoreOf('friction')>2)parts.push('答え不足ではなく、始める瞬間と続ける仕組みで止まりやすい');
+  else if(scoreOf('information')>4)parts.push('判断そのものより、まだ事実と推測が混ざっている');
+  else if(scoreOf('decision')>4)parts.push('選択肢より、何を優先して選ぶかが定まっていない');
+  else if(scoreOf('communication')>3)parts.push('内容より、伝えた後の空気や反応を気にして動きにくい');
+  else parts.push(`${high.slice(0,2).join('と')}が中心になっている`);
+  if(scoreOf('overthinking')>3)parts.push('考えるほど精度が上がる段階を越えて、判断が重くなり始めている');
+  if(scoreOf('avoidance')>3)parts.push('失敗回避が、必要な確認や実験まで避ける方向に働いている');
+  return parts.join('。')+'。';
+}
+function dangerInsight(){
+  const candidates=[
+    ['overthinking','考え続ければ安全になると思い、実際には判断材料が増えていないのに結論を遅らせやすいです。'],
+    ['socialguess','相手へ確認する前に反応を予測し、その予測に合わせて自分の選択肢を狭めやすいです。'],
+    ['shortterm','目先の負担を減らす選択が、後の維持費・再発・締切負担を増やしやすいです。'],
+    ['rigidity','最初に決めた案や計画を守ることが目的になり、途中で修正すべきサインを無視しやすいです。'],
+    ['avoidance','失敗を避けるための慎重さが、必要な確認や小さな行動まで止めやすいです。'],
+    ['fear','悪い結果の可能性を大きく見積もり、戻せる小さな選択まで重く扱いやすいです。'],
+    ['system','目の前の人や出来事だけを直して、同じ問題を生む仕組みを残しやすいです。']
+  ].sort((a,b)=>scoreOf(b[0])-scoreOf(a[0]));
+  return candidates[0];
+}
+function missingInsight(){
+  const map={
+    feedback:'行動後の確認が弱いので、実行できても「効いたか分からない」状態になりやすいです。次の段階では確認指標が必要です。',
+    measurement:'感覚で改善を判断しやすいため、後から同じ迷いが戻る可能性があります。小さな数値か観察項目を一つ置く必要があります。',
+    maintenance:'始め方は考えられても、続け方や再発防止が薄いです。最初の一歩の後に、維持方法を追加する必要があります。',
+    adaptability:'計画変更の余地が少ないと、最初の案が外れた時に全停止しやすくなります。途中修正を前提にした方が安全です。',
+    ownership:'誰が最後に動くかが曖昧になりやすいです。後で責任の所在を一人に決める必要があります。',
+    followthrough:'開始後の次の一手が弱く、単発で終わる可能性があります。二回目の行動を先に予約しておく必要があります。',
+    evidence:'推測と事実の区別が弱いままだと、結論に自信が出ません。後で一つだけ確認可能な根拠を足す必要があります。',
+    priority:'重要なものを同列に扱うと、実行段階で再び迷います。後で捨てる条件を決める必要があります。',
+    experiment:'一度で正解を当てる形になりやすいです。後で小さく試せる部分を作る必要があります。',
+    communication:'自分の中で整理できても、他者が関わる段階で詰まりやすいです。後で短く共有する形が必要です。'
+  };
+  const chosen=lowRelevant().find(([k])=>map[k])||['feedback',0];
+  return [chosen[0],map[chosen[0]]];
+}
+function secondaryDirection(primary){
+  const ranked=results.map(r=>[r,r.need.reduce((s,k)=>s+scoreOf(k),0)]).sort((a,b)=>b[1]-a[1]);
+  return ranked.find(([r])=>r.title!==primary.title)?.[0]||primary;
+}
+function showResult(){
+  const r=chooseResult(),secondary=secondaryDirection(r),tops=topEntries(7).filter(x=>x[1]>0);
+  const max=Math.max(1,...tops.map(x=>x[1]));
+  const danger=dangerInsight(),missing=missingInsight();
+  $('resultContent').innerHTML=`<div class="result-layout"><div class="result-main">
+    <div class="result-label">YOUR PROBLEM, IN WORDS</div>
+    <div class="language-box"><span>いま起きていること</span><strong>${languageSummary()}</strong></div>
+    <div class="result-label">NEXT MOVE</div><h2>${r.title}</h2><p>${r.summary}</p>
+    <div class="action-list">${r.actions.map((a,i)=>`<div class="action-item"><b>${i+1}</b><div><strong>${a[0]}</strong><span>${a[1]}</span></div></div>`).join('')}</div>
+    <div class="result-insights">
+      <div class="insight-card danger"><h3>このままだと走りやすい間違い</h3><p>${danger[1]}</p></div>
+      <div class="insight-card growth"><h3>低く出た要素から見る、次の弱点</h3><p>${missing[1]}</p></div>
+      <div class="insight-card later"><h3>今すぐではないが、後で必要になる方向</h3><p>まず「${r.title}」を優先し、その後に「${secondary.title}」へ進むと、応急処置だけで終わりにくくなります。</p></div>
+    </div>
+  </div><aside class="result-side">
+    <div class="side-block"><h3>裏で使った考え方</h3><div class="tag-wrap">${r.methods.map(x=>`<span class="tag">${x}</span>`).join('')}</div></div>
+    <div class="side-block"><h3>今は避けること</h3><div class="warning">${r.warn}</div></div>
+    <div class="side-block"><h3>診断で強く出た要素</h3><div class="score-list">${tops.map(([k,v])=>`<div class="score-row"><span>${labels[k]||k}</span><div class="score-bar"><span style="width:${Math.max(10,v/max*100)}%"></span></div><b>${v}</b></div>`).join('')}</div></div>
+    <div class="side-block"><h3>次の確認ポイント</h3><div class="secondary-actions">
+      <div class="secondary-action">実行後に、何が変わったか一つだけ記録する。</div>
+      <div class="secondary-action">結果が悪ければ、失敗ではなく質問の前提を一つ修正する。</div>
+    </div></div>
+    <div class="history">${state.questionNo}問で仮結論。自由文は診断に使用していません。質問バンク ${Q.length}件、内部変数 ${vars.length}個。</div>
+  </aside></div>`;show('resultScreen')
+}
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id))}function reset(){state.setup={};state.scores={};vars.forEach(v=>state.scores[v]=0);state.asked=[];state.askedTexts=new Set();state.answers={};state.lastGroups=[];state.lastStages=[];state.lastTags=[];state.history=[];state.questionNo=0;state.maxQuestions=20;renderSetup();show('setupScreen')}
+$('startBtn').onclick=()=>{seed();state.history=[];showQuestion()};document.querySelectorAll('.answer').forEach(b=>b.onclick=()=>answer(b.dataset.answer));$('backQuestion').onclick=goBackQuestion;$('backFromResult').onclick=goBackQuestion;$('moreBtn').onclick=()=>{state.maxQuestions=state.questionNo+8;showQuestion()};$('restartBtn').onclick=reset;renderSetup();
+</script></body></html>

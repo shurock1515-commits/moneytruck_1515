@@ -2929,6 +2929,70 @@ input[type="number"]{
   appearance:textfield;
 }
 
+
+/* =========================================================
+   ALWAYS-ON VIEW ANIMATIONS
+   ASSETS: count from 0 every time the file is opened.
+   CHART: reveal left-to-right every time the file is opened.
+   ========================================================= */
+
+.money-if-counting{
+  display:inline-block;
+  font-variant-numeric:tabular-nums;
+  will-change:transform,opacity;
+}
+.money-if-counting.counting-now{
+  animation:moneyIfCountPulse .72s cubic-bezier(.22,.8,.24,1);
+}
+@keyframes moneyIfCountPulse{
+  0%{opacity:.45;transform:translateY(5px)}
+  55%{opacity:1;transform:translateY(-1px)}
+  100%{opacity:1;transform:none}
+}
+
+#chart-section .canvas-wrap,
+#chart-section .chart-scroll{
+  position:relative;
+  overflow:hidden;
+}
+
+.money-if-chart-curtain{
+  position:absolute;
+  inset:0;
+  z-index:50;
+  pointer-events:none;
+  background:var(--mi-surface,#121722);
+  transform-origin:right center;
+}
+.money-if-chart-curtain.run{
+  animation:moneyIfChartReveal .82s cubic-bezier(.22,.8,.24,1) forwards;
+}
+@keyframes moneyIfChartReveal{
+  0%{transform:scaleX(1)}
+  100%{transform:scaleX(0)}
+}
+
+body.theme-morning .money-if-chart-curtain,
+body.theme-day .money-if-chart-curtain{
+  background:#fff;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .money-if-counting.counting-now,
+  .money-if-chart-curtain.run{
+    animation-duration:.001ms !important;
+  }
+}
+
+
+/* True line drawing now replaces the old chart curtain. */
+.money-if-chart-curtain{
+  display:none !important;
+}
+#chart-section canvas{
+  opacity:1 !important;
+}
+
 </style>
 </head>
 <body>
@@ -4603,35 +4667,54 @@ function aggregateRecords(records, period){
   });
 }
 
+let __moneyIfChartAnimationFrame=null;
+let __moneyIfChartAnimationToken=0;
+
 function draw(records){
   const plotted=aggregateRecords(records,chartPeriod);
   const c=$("chart");
   const wrap=$("canvasWrap");
   const scroll=$("chartScroll");
 
+  if(!c||!wrap||!scroll)return;
+
   const pointWidth=chartPeriod==="daily" ? 82 : chartPeriod==="weekly" ? 100 : 115;
   const minWidth=scroll.clientWidth || 600;
-  const desiredWidth=Math.max(minWidth, 130 + plotted.length*pointWidth);
+  const desiredWidth=Math.max(minWidth,130+plotted.length*pointWidth);
   wrap.style.width=desiredWidth+"px";
 
-  const ctx=c.getContext("2d");
   const rect=wrap.getBoundingClientRect();
+  if(rect.width<=1 || rect.height<=1)return;
+
   const ratio=devicePixelRatio||1;
   c.style.width=rect.width+"px";
   c.style.height=rect.height+"px";
   c.width=Math.round(rect.width*ratio);
   c.height=Math.round(rect.height*ratio);
-  ctx.setTransform(ratio,0,0,ratio,0,0);
 
-  const w=rect.width, h=rect.height;
-  ctx.clearRect(0,0,w,h);
-  if(!plotted.length)return;
+  const ctx=c.getContext("2d");
+  const w=rect.width;
+  const h=rect.height;
+
+  cancelAnimationFrame(__moneyIfChartAnimationFrame);
+  const token=++__moneyIfChartAnimationToken;
+
+  if(!plotted.length){
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.clearRect(0,0,w,h);
+    return;
+  }
 
   const keys=Object.keys(config).filter(k=>visible[k]);
-  if(!keys.length)return;
+  if(!keys.length){
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.clearRect(0,0,w,h);
+    return;
+  }
 
   const p={l:72,r:22,t:24,b:52};
-  const pw=w-p.l-p.r, ph=h-p.t-p.b;
+  const pw=w-p.l-p.r;
+  const ph=h-p.t-p.b;
 
   let max=1;
   plotted.forEach(r=>keys.forEach(k=>max=Math.max(max,+r[k]||0)));
@@ -4642,74 +4725,152 @@ function draw(records){
                 document.body.classList.contains("theme-day");
   const gridColor=isLight ? "rgba(28,47,79,.10)" : "rgba(255,255,255,.08)";
   const labelColor=isLight ? "rgba(70,86,110,.82)" : "rgba(196,213,240,.80)";
-
-  ctx.font="12px Inter, system-ui, sans-serif";
-  ctx.textBaseline="middle";
-
-  for(let i=0;i<=5;i++){
-    const y=p.t+ph*i/5;
-    const val=nice*(1-i/5);
-    ctx.strokeStyle=gridColor;
-    ctx.lineWidth=1;
-    ctx.beginPath();
-    ctx.moveTo(p.l,y);
-    ctx.lineTo(w-p.r,y);
-    ctx.stroke();
-
-    ctx.fillStyle=labelColor;
-    ctx.textAlign="right";
-    ctx.fillText(
-      val>=10000 ? Math.round(val/10000)+"万" : Math.round(val).toLocaleString("ja-JP"),
-      p.l-10,
-      y
-    );
-  }
-
   const x=i=>plotted.length===1 ? p.l+pw/2 : p.l+pw*i/(plotted.length-1);
+  const yFor=(record,key)=>p.t+ph-((+record[key]||0)/nice)*ph;
   const labelStep=Math.max(1,Math.ceil(plotted.length/12));
 
-  plotted.forEach((r,i)=>{
-    if(i%labelStep!==0 && i!==plotted.length-1)return;
-    const d=new Date(r.date+"T00:00:00");
-    let label=r.displayDate;
-    if(!label){
-      label=chartPeriod==="monthly"
-        ? `${d.getFullYear()}/${d.getMonth()+1}`
-        : `${d.getMonth()+1}/${d.getDate()}`;
-    }
-    ctx.fillStyle=labelColor;
-    ctx.textAlign="center";
-    ctx.fillText(label,x(i),h-24);
-  });
+  function drawStatic(){
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.clearRect(0,0,w,h);
+    ctx.font="12px Inter, system-ui, sans-serif";
+    ctx.textBaseline="middle";
 
-  keys.forEach(k=>{
-    const color=config[k].color;
-    ctx.strokeStyle=color;
-    ctx.lineWidth=3;
-    ctx.lineJoin="round";
-    ctx.lineCap="round";
+    for(let i=0;i<=5;i++){
+      const y=p.t+ph*i/5;
+      const val=nice*(1-i/5);
 
-    ctx.beginPath();
-    plotted.forEach((r,i)=>{
-      const y=p.t+ph-(r[k]/nice)*ph;
-      if(i===0)ctx.moveTo(x(i),y);
-      else ctx.lineTo(x(i),y);
-    });
-    ctx.stroke();
-
-    plotted.forEach((r,i)=>{
-      const y=p.t+ph-(r[k]/nice)*ph;
+      ctx.strokeStyle=gridColor;
+      ctx.lineWidth=1;
       ctx.beginPath();
-      ctx.fillStyle=color;
-      ctx.shadowColor=color;
-      ctx.shadowBlur=10;
-      ctx.arc(x(i),y,3.8,0,Math.PI*2);
-      ctx.fill();
-      ctx.shadowBlur=0;
-    });
-  });
-}
+      ctx.moveTo(p.l,y);
+      ctx.lineTo(w-p.r,y);
+      ctx.stroke();
 
+      ctx.fillStyle=labelColor;
+      ctx.textAlign="right";
+      ctx.fillText(
+        val>=10000 ? Math.round(val/10000)+"万" : Math.round(val).toLocaleString("ja-JP"),
+        p.l-10,
+        y
+      );
+    }
+
+    plotted.forEach((r,i)=>{
+      if(i%labelStep!==0 && i!==plotted.length-1)return;
+      const d=new Date(r.date+"T00:00:00");
+      let label=r.displayDate;
+      if(!label){
+        label=chartPeriod==="monthly"
+          ? `${d.getFullYear()}/${d.getMonth()+1}`
+          : `${d.getMonth()+1}/${d.getDate()}`;
+      }
+      ctx.fillStyle=labelColor;
+      ctx.textAlign="center";
+      ctx.fillText(label,x(i),h-24);
+    });
+  }
+
+  function drawSeriesProgress(progress){
+    keys.forEach(k=>{
+      const color=config[k].color;
+      ctx.strokeStyle=color;
+      ctx.lineWidth=3;
+      ctx.lineJoin="round";
+      ctx.lineCap="round";
+
+      if(plotted.length===1){
+        const px=x(0);
+        const py=yFor(plotted[0],k);
+        ctx.beginPath();
+        ctx.fillStyle=color;
+        ctx.shadowColor=color;
+        ctx.shadowBlur=10;
+        ctx.arc(px,py,3.8*progress,0,Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur=0;
+        return;
+      }
+
+      const maxSegment=plotted.length-1;
+      const position=progress*maxSegment;
+      const whole=Math.floor(position);
+      const fraction=position-whole;
+
+      ctx.beginPath();
+      ctx.moveTo(x(0),yFor(plotted[0],k));
+
+      for(let i=1;i<=whole && i<plotted.length;i++){
+        ctx.lineTo(x(i),yFor(plotted[i],k));
+      }
+
+      if(whole<maxSegment && fraction>0){
+        const i=whole;
+        const x1=x(i);
+        const y1=yFor(plotted[i],k);
+        const x2=x(i+1);
+        const y2=yFor(plotted[i+1],k);
+        ctx.lineTo(
+          x1+(x2-x1)*fraction,
+          y1+(y2-y1)*fraction
+        );
+      }
+      ctx.stroke();
+
+      const visiblePointCount=Math.min(plotted.length,whole+1);
+      for(let i=0;i<visiblePointCount;i++){
+        const py=yFor(plotted[i],k);
+        ctx.beginPath();
+        ctx.fillStyle=color;
+        ctx.shadowColor=color;
+        ctx.shadowBlur=10;
+        ctx.arc(x(i),py,3.8,0,Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur=0;
+      }
+
+      // The point currently being reached fades/scales in.
+      if(whole<maxSegment && fraction>.72){
+        const appear=(fraction-.72)/.28;
+        const py=yFor(plotted[whole+1],k);
+        ctx.beginPath();
+        ctx.fillStyle=color;
+        ctx.globalAlpha=Math.min(1,appear);
+        ctx.arc(x(whole+1),py,3.8*Math.min(1,appear),0,Math.PI*2);
+        ctx.fill();
+        ctx.globalAlpha=1;
+      }
+    });
+  }
+
+  const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if(reduced){
+    drawStatic();
+    drawSeriesProgress(1);
+    return;
+  }
+
+  const started=performance.now();
+  const duration=900;
+
+  function frame(now){
+    if(token!==__moneyIfChartAnimationToken)return;
+
+    const raw=Math.min(1,(now-started)/duration);
+    const eased=1-Math.pow(1-raw,3);
+
+    drawStatic();
+    drawSeriesProgress(eased);
+
+    if(raw<1){
+      __moneyIfChartAnimationFrame=requestAnimationFrame(frame);
+    }else{
+      drawStatic();
+      drawSeriesProgress(1);
+    }
+  }
+
+  __moneyIfChartAnimationFrame=requestAnimationFrame(frame);
+}
 function renderHistory(records){
   if(!records.length){
     $("history").innerHTML='<div class="note">まだ記録がありません。</div>';
@@ -5830,6 +5991,207 @@ window.onresize=()=>{
       el.blur();
     }
   }, {passive:true});
+})();
+</script>
+
+
+<script>
+(() => {
+  if(window.__moneyIfAlwaysAnimationInstalled)return;
+  window.__moneyIfAlwaysAnimationInstalled=true;
+
+  const reduceMotion =
+    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
+
+  const moneyIds=[
+    "total",
+    "liquid",
+    "protected",
+    "investStat",
+    "debtStat",
+    "gross",
+    "net",
+    "usable"
+  ];
+
+  function parseMoney(text){
+    const normalized=String(text??"")
+      .replace(/,/g,"")
+      .replace(/[^\d.-]/g,"");
+    const value=Number(normalized);
+    return Number.isFinite(value)?value:null;
+  }
+
+  function yen(value){
+    return new Intl.NumberFormat("ja-JP",{
+      style:"currency",
+      currency:"JPY",
+      maximumFractionDigits:0
+    }).format(Math.round(value));
+  }
+
+  function animateElementFromZero(el){
+    if(!el)return;
+
+    const target=parseMoney(el.textContent);
+    if(target===null)return;
+
+    el.classList.add("money-if-counting");
+    el.classList.remove("counting-now");
+    void el.offsetWidth;
+    el.classList.add("counting-now");
+
+    if(reduceMotion){
+      el.textContent=yen(target);
+      return;
+    }
+
+    const start=performance.now();
+    const duration=760;
+
+    function tick(now){
+      const progress=Math.min(1,(now-start)/duration);
+      const eased=1-Math.pow(1-progress,4);
+      el.textContent=yen(target*eased);
+
+      if(progress<1){
+        requestAnimationFrame(tick);
+      }else{
+        el.textContent=yen(target);
+        setTimeout(()=>el.classList.remove("counting-now"),100);
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  function runAssetCountUp(){
+    // Wait until the app's normal render has finished writing current values.
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        const seen=new Set();
+
+        moneyIds.forEach(id=>{
+          const el=document.getElementById(id);
+          if(el && !seen.has(el)){
+            seen.add(el);
+            animateElementFromZero(el);
+          }
+        });
+
+        // User-created assets.
+        document
+          .querySelectorAll("#customAssetSnapshot strong, .custom-asset-tile strong")
+          .forEach(el=>{
+            if(!seen.has(el)){
+              seen.add(el);
+              animateElementFromZero(el);
+            }
+          });
+      });
+    });
+  }
+
+  function ensureChartCurtain(){
+    const chart=document.getElementById("chart-section");
+    if(!chart)return null;
+
+    const host=
+      chart.querySelector(".canvas-wrap") ||
+      chart.querySelector(".chart-scroll");
+
+    if(!host)return null;
+
+    let curtain=host.querySelector(":scope > .money-if-chart-curtain");
+    if(!curtain){
+      curtain=document.createElement("div");
+      curtain.className="money-if-chart-curtain";
+      host.appendChild(curtain);
+    }
+    return curtain;
+  }
+
+  function runChartReveal(){
+    try{
+      if(typeof window.render==="function"){
+        window.render();
+      }else if(typeof window.draw==="function"){
+        const records=typeof window.load==="function"
+          ? window.load().sort((a,b)=>String(a.date).localeCompare(String(b.date)))
+          : [];
+        window.draw(records);
+      }
+    }catch(e){}
+  }
+
+  function onViewActivated(id){
+    if(id==="snapshot")runAssetCountUp();
+    if(id==="chart-section")runChartReveal();
+  }
+
+  // Works for direct tabs.
+  document.addEventListener("click",event=>{
+    const tab=event.target.closest?.(".file-tab-button[data-target]");
+    if(tab){
+      const id=tab.dataset.target;
+      setTimeout(()=>onViewActivated(id),40);
+    }
+
+    // Works for hamburger menu navigation too.
+    const link=event.target.closest?.('#sideMenu a[href^="#"]');
+    if(link){
+      const id=link.getAttribute("href")?.slice(1);
+      if(id)setTimeout(()=>onViewActivated(id),80);
+    }
+  });
+
+  // Most reliable fallback:
+  // watch the panels themselves. Any code that makes ASSETS/CHART active
+  // automatically triggers its animation, regardless of which control did it.
+  ["snapshot","chart-section"].forEach(id=>{
+    const panel=document.getElementById(id);
+    if(!panel)return;
+
+    let wasActive=panel.classList.contains("file-active");
+
+    const observer=new MutationObserver(()=>{
+      const active=panel.classList.contains("file-active");
+      if(active && !wasActive){
+        onViewActivated(id);
+      }
+      wasActive=active;
+    });
+
+    observer.observe(panel,{
+      attributes:true,
+      attributeFilter:["class"]
+    });
+  });
+
+  // Initial visible view.
+  requestAnimationFrame(()=>{
+    if(document.getElementById("snapshot")?.classList.contains("file-active")){
+      runAssetCountUp();
+    }
+    if(document.getElementById("chart-section")?.classList.contains("file-active")){
+      runChartReveal();
+    }
+  });
+
+  // After saving a record, replay count-up if ASSETS is currently open.
+  document.getElementById("form")?.addEventListener("submit",()=>{
+    setTimeout(()=>{
+      if(document.getElementById("snapshot")?.classList.contains("file-active")){
+        runAssetCountUp();
+      }
+      if(document.getElementById("chart-section")?.classList.contains("file-active")){
+        runChartReveal();
+      }
+    },120);
+  });
+
+  window.moneyIfRunAssetCountUp=runAssetCountUp;
+  window.moneyIfRunChartReveal=runChartReveal;
 })();
 </script>
 

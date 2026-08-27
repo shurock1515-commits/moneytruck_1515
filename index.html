@@ -2451,6 +2451,202 @@ body.theme-day .celebration-toast{
   }
 }
 
+
+
+/* =========================================================
+   LAYOUT V2 — main workspace + persistent record dock
+   ========================================================= */
+
+html,body{
+  max-width:100%;
+  overflow-x:hidden !important;
+}
+
+.wrap{
+  width:min(1500px,100%) !important;
+  overflow:visible;
+}
+
+/* Main working area + permanent record dock */
+.file-workspace{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 340px !important;
+  gap:20px !important;
+  align-items:start !important;
+  margin-top:44px;
+}
+
+.main-file-column{
+  min-width:0;
+  width:100%;
+}
+
+/* Record is now always visible at right */
+.record-dock{
+  display:block !important;
+  position:sticky !important;
+  top:84px !important;
+  height:max-content;
+  max-height:calc(100vh - 100px);
+  overflow:auto !important;
+  margin:0 !important;
+  border-top:3px solid var(--mi-cyan) !important;
+  z-index:10;
+}
+.record-dock::before{
+  content:"RECORD";
+  display:flex !important;
+  position:absolute;
+  top:-28px;
+  right:18px;
+  left:auto !important;
+  height:28px;
+  min-width:104px;
+  padding:0 14px;
+  align-items:center;
+  justify-content:center;
+  background:var(--mi-cyan);
+  color:#08101a;
+  border-radius:3px 3px 0 0;
+  font-size:.58rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  z-index:2;
+}
+.record-dock::after{
+  content:"";
+}
+
+/* Record form returns to a compact one-column dock */
+.record-dock form{
+  display:block !important;
+}
+.record-dock form > *{
+  width:100%;
+}
+.record-dock .panel-inner{
+  padding:20px !important;
+}
+
+/* Tabs fit viewport: no horizontal website movement */
+.file-tab-switcher{
+  width:100%;
+  min-width:0;
+  overflow:visible !important;
+  display:grid !important;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:3px;
+  padding:0 8px !important;
+}
+
+.file-tab-button{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  padding:8px 7px 9px !important;
+}
+
+.file-tab-button small{
+  font-size:.48rem;
+}
+
+.file-tab-button strong{
+  font-size:clamp(.5rem,.72vw,.66rem);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
+}
+
+/* New use-order color mapping */
+.file-tab-button:nth-child(1){--tab-color:#62c9d9}
+.file-tab-button:nth-child(2){--tab-color:var(--mi-blue)}
+.file-tab-button:nth-child(3){--tab-color:var(--mi-violet)}
+.file-tab-button:nth-child(4){--tab-color:var(--mi-green)}
+.file-tab-button:nth-child(5){--tab-color:var(--mi-coral)}
+.file-tab-button:nth-child(6){--tab-color:var(--mi-amber)}
+.file-tab-button:nth-child(7){--tab-color:#98a4b8}
+
+/* Intentional stagger without changing total layout width */
+.file-tab-button:nth-child(1){transform:translateY(10px)}
+.file-tab-button:nth-child(2){transform:translateY(4px)}
+.file-tab-button:nth-child(3){transform:translateY(12px)}
+.file-tab-button:nth-child(4){transform:translateY(7px)}
+.file-tab-button:nth-child(5){transform:translateY(1px)}
+.file-tab-button:nth-child(6){transform:translateY(11px)}
+.file-tab-button:nth-child(7){transform:translateY(6px)}
+.file-tab-button.active{
+  transform:translateY(0) !important;
+}
+
+/* Main sheet never exceeds its column */
+.dashboard-content,
+.dashboard-content > [data-file-view]{
+  width:100%;
+  min-width:0;
+  max-width:100%;
+}
+
+canvas{
+  max-width:100%;
+}
+
+/* Disable any accidental wide inner overflow */
+.panel,
+.panel-inner,
+.analysis,
+.ai-analysis-panel,
+.ai-analysis-result,
+.chart-scroll,
+.canvas-wrap{
+  max-width:100%;
+  box-sizing:border-box;
+}
+.chart-scroll{
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+}
+
+/* Mobile / tablet: record moves below content instead of crushing width */
+@media(max-width:1100px){
+  .file-workspace{
+    grid-template-columns:1fr !important;
+  }
+  .record-dock{
+    position:relative !important;
+    top:auto !important;
+    max-height:none;
+    margin-top:24px !important;
+  }
+}
+
+@media(max-width:760px){
+  html,body{overflow-x:hidden !important}
+
+  .file-tab-switcher{
+    grid-template-columns:repeat(4,1fr);
+    gap:4px;
+    min-height:auto;
+    padding:0 !important;
+    margin-bottom:12px;
+  }
+
+  .file-tab-button,
+  .file-tab-button:nth-child(n){
+    transform:none !important;
+    height:44px !important;
+    border-bottom:1px solid rgba(255,255,255,.12) !important;
+    border-radius:3px !important;
+  }
+
+  .file-tab-button.active{
+    height:44px !important;
+    transform:translateY(-2px) !important;
+  }
+
+  .file-tab-button:nth-child(7){
+    grid-column:span 2;
+  }
+}
 </style>
 </head>
 <body>
@@ -2477,14 +2673,14 @@ body.theme-day .celebration-toast{
 <strong>Money IF</strong>
 </div>
 <button aria-label="メニューを閉じる" class="menu-close" id="menuClose" type="button">×</button>
-</div>
-<a href="#overview"><span>01</span> Overview</a>
-<a href="#entry"><span>02</span> 記録する</a>
-<a href="#ai"><span>03</span> AI分析</a>
-<a href="#plans"><span>04</span> 予定支出</a>
-<a href="#purchase"><span>05</span> 購入判定</a>
-<a href="#chart-section"><span>06</span> 資産推移</a>
-<a href="#history-section"><span>07</span> 履歴</a>
+</div><a href="#chart-section"><span>01</span> 資産推移</a><a href="#snapshot"><span>02</span>資産</a><a href="#ai"><span>03</span> AI分析</a><a href="#plans"><span>04</span> 予定支出</a><a href="#purchase"><span>05</span> 購入判定</a><a href="#rules"><span>06</span>ルール</a><a href="#history-section"><span>07</span> 履歴</a><a href="#entry"><span>R</span> 記録する</a>
+
+
+
+
+
+
+
 <div class="side-menu-foot">
 <span>MORE FEATURES</span>
 <p>ここは今後の機能追加用。設定・AI相談・通知などを増やせます。</p>
@@ -2518,7 +2714,198 @@ body.theme-day .celebration-toast{
 </section>
 <section class="layout app-shell file-workspace">
 
-<nav aria-label="Money IF セクション切り替え" class="file-tab-switcher"><button aria-selected="true" class="file-tab-button active" data-target="entry" title="記録" type="button"><small>01</small><strong>RECORD</strong></button><button aria-selected="false" class="file-tab-button" data-target="snapshot" title="資産" type="button"><small>02</small><strong>ASSETS</strong></button><button aria-selected="false" class="file-tab-button" data-target="ai" title="AI分析" type="button"><small>03</small><strong>AI REPORT</strong></button><button aria-selected="false" class="file-tab-button" data-target="rules" title="ルール" type="button"><small>04</small><strong>RULES</strong></button><button aria-selected="false" class="file-tab-button" data-target="plans" title="予定" type="button"><small>05</small><strong>PLANS</strong></button><button aria-selected="false" class="file-tab-button" data-target="purchase" title="購入判定" type="button"><small>06</small><strong>DECISION</strong></button><button aria-selected="false" class="file-tab-button" data-target="chart-section" title="推移" type="button"><small>07</small><strong>CHART</strong></button><button aria-selected="false" class="file-tab-button" data-target="history-section" title="履歴" type="button"><small>08</small><strong>ARCHIVE</strong></button></nav><div class="dashboard-content"><aside class="panel sticky entry-panel file-sheet" data-file-view="entry" data-tab="RECORD" id="entry">
+<div class="main-file-column"><nav aria-label="Money IF セクション切り替え" class="file-tab-switcher"><button aria-selected="true" class="file-tab-button active" data-target="chart-section" title="推移" type="button"><small>01</small><strong>CHART</strong></button><button aria-selected="false" class="file-tab-button" data-target="snapshot" title="資産" type="button"><small>02</small><strong>ASSETS</strong></button><button aria-selected="false" class="file-tab-button" data-target="ai" title="AI分析" type="button"><small>03</small><strong>AI</strong></button><button aria-selected="false" class="file-tab-button" data-target="plans" title="予定" type="button"><small>04</small><strong>PLANS</strong></button><button aria-selected="false" class="file-tab-button" data-target="purchase" title="購入判定" type="button"><small>05</small><strong>DECISION</strong></button><button aria-selected="false" class="file-tab-button" data-target="rules" title="ルール" type="button"><small>06</small><strong>RULES</strong></button><button aria-selected="false" class="file-tab-button" data-target="history-section" title="履歴" type="button"><small>07</small><strong>ARCHIVE</strong></button></nav><div class="dashboard-content">
+
+
+
+
+
+
+
+<section class="panel chart-panel file-sheet file-active" data-file-view="chart-section" data-tab="CHART" id="chart-section">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">資産推移</h2>
+<span class="badge">Line Graph</span>
+</div>
+<div class="chart-controls">
+<div class="segmented" id="periodControl">
+<button class="active" data-period="daily" type="button">日足</button>
+<button data-period="weekly" type="button">週足</button>
+<button data-period="monthly" type="button">月足</button>
+</div>
+<div class="chart-hint">データが多いと横にスクロールできます</div>
+</div>
+<div class="legend" id="legend"></div>
+<div class="chart-scroll" id="chartScroll">
+<div class="canvas-wrap" id="canvasWrap"><canvas id="chart"></canvas></div>
+</div>
+</div>
+</section><section class="panel snapshot-panel file-sheet" data-file-view="snapshot" data-tab="ASSETS" id="snapshot">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">いまの資産スナップショット</h2>
+<span class="badge">Live Summary</span>
+</div>
+<div class="stats-grid">
+<div class="stat">
+<span>純資産</span>
+<strong id="total">¥0</strong>
+<small>資産−借金</small>
+</div>
+<div class="stat">
+<span>使えるお金</span>
+<strong id="liquid">¥0</strong>
+<small>現金＋カード残高</small>
+</div>
+<div class="stat">
+<span>守るお金</span>
+<strong id="protected">¥0</strong>
+<small>貯金（現金＋銀行）</small>
+</div>
+<div class="stat">
+<span>投資</span>
+<strong id="investStat">¥0</strong>
+<small>運用資産</small>
+</div>
+<div class="stat">
+<span>借金</span>
+<strong id="debtStat">¥0</strong>
+<small>現在の借金総額</small>
+</div>
+</div>
+</div>
+</section><section class="panel analysis-panel-main file-sheet" data-file-view="ai" data-tab="AI REPORT" id="ai">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">自動分析</h2>
+<span class="badge">Trend Reading</span>
+</div>
+<div class="analysis" id="analysis">
+<h3>まだ判定できません</h3>
+            2件以上の記録が必要です。
+          </div>
+<div class="ai-analysis-panel">
+<div class="ai-analysis-head">
+<strong>AI分析</strong>
+<span class="badge">Gemini API</span>
+</div>
+<p class="ai-analysis-note">
+              記録した資産履歴・予定支出・直近の変化をGeminiへ送り、数値の読み上げではなく生活への影響まで分析します。
+              AIはボタンを押した時だけ実行します。
+            </p>
+<div class="ai-analysis-actions">
+<button class="primary" id="aiAnalyzeButton" type="button">AIで詳しく分析する</button>
+</div>
+<div class="ai-analysis-result" id="aiAnalysisResult">
+              まだAI分析は実行していません。
+            </div>
+<div class="ai-analysis-meta" id="aiAnalysisMeta"></div>
+</div>
+</div>
+</section><section class="panel plans-panel file-sheet" data-file-view="plans" data-tab="PLANS" id="plans">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">これからの予定支出</h2>
+<span class="badge">Planned Expenses</span>
+</div>
+<div class="purchase-grid">
+<label>
+              予定
+              <input id="plannedName" placeholder="例：旅行、交通費、飲み会" type="text"/>
+</label>
+<label>
+              金額
+              <input id="plannedAmount" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<label>
+              期限
+              <input id="plannedDate" type="date"/>
+</label>
+<label>
+              優先度
+              <select id="plannedPriority">
+<option value="essential">必ず必要</option>
+<option value="important">できれば守る</option>
+<option value="optional">削ってもよい</option>
+</select>
+</label>
+<button class="primary" id="plannedAdd" style="margin-top:0" type="button">追加</button>
+</div>
+<div class="planned-expense-list" id="plannedExpenseList"></div>
+</div>
+</section><section class="panel purchase-panel-main file-sheet" data-file-view="purchase" data-tab="DECISION" id="purchase">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">購入判定</h2>
+<span class="badge">Purchase Check</span>
+</div>
+<div class="purchase-grid">
+<label>
+              商品・予定
+              <input id="purchaseName" placeholder="例：ギター機材、旅行、飲み会" type="text"/>
+</label>
+<label>
+              金額
+              <input id="purchasePrice" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<label>
+              種類
+              <select id="purchaseType">
+<option value="want">趣味・欲しい物</option>
+<option value="experience">旅行・交際・経験</option>
+<option value="study">学業・資格・制作</option>
+<option value="need">生活必需品</option>
+</select>
+</label>
+<label>
+              貯金の使い方
+              <select id="savingsUseMode">
+<option value="none">貯金は使わない</option>
+<option value="surplus">最近の最低額を超えた分まで</option>
+<option value="custom">上限を自分で指定</option>
+</select>
+</label>
+<label id="savingsLimitWrap" style="display:none">
+              貯金から使う上限
+              <input id="savingsUseLimit" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<button class="primary" id="purchaseJudge" style="margin-top:0" type="button">判定する</button>
+</div>
+<div class="purchase-result plan-message" id="purchaseResult">
+            予定支出・普段の消費ペース・貯金・借金を見て、購入後の生活に支障が出るか判定します。
+          </div>
+</div>
+</section><section class="panel rules-panel file-sheet" data-file-view="rules" data-tab="RULES" id="rules">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">今日のIFルール</h2>
+<span class="badge">Behavior Guide</span>
+</div>
+<div class="rule-grid" id="ifRuleGrid">
+<div class="rule">
+<small id="ifRule1Label">IF データ不足</small>
+<strong id="ifRule1Text">記録を3件以上ためる</strong>
+</div>
+<div class="rule">
+<small id="ifRule2Label">IF 次の記録まで</small>
+<strong id="ifRule2Text">大きな判断は保留する</strong>
+</div>
+<div class="rule">
+<small id="ifRule3Label">IF 確認すること</small>
+<strong id="ifRule3Text">資産の置き場所と残高を確認する</strong>
+</div>
+</div>
+</div>
+</section><section class="panel history-panel file-sheet" data-file-view="history-section" data-tab="ARCHIVE" id="history-section">
+<div class="panel-inner history">
+<div class="section-head">
+<h2 class="section-title">記録一覧</h2>
+<span class="badge">History</span>
+</div>
+<div id="history"></div>
+</div>
+</section></div></div><aside class="panel sticky entry-panel file-sheet record-dock" data-tab="RECORD" id="entry">
 <div class="panel-inner">
 <div class="section-head">
 <h2 class="section-title">資産残高を記録</h2>
@@ -2566,199 +2953,7 @@ body.theme-day .celebration-toast{
           保存先はこのブラウザ内です。同じ日付で入力すると上書きされます。
         </div>
 </div>
-</aside>
-<section class="panel snapshot-panel file-sheet" data-file-view="snapshot" data-tab="ASSETS" id="snapshot">
-<div class="panel-inner">
-<div class="section-head">
-<h2 class="section-title">いまの資産スナップショット</h2>
-<span class="badge">Live Summary</span>
-</div>
-<div class="stats-grid">
-<div class="stat">
-<span>純資産</span>
-<strong id="total">¥0</strong>
-<small>資産−借金</small>
-</div>
-<div class="stat">
-<span>使えるお金</span>
-<strong id="liquid">¥0</strong>
-<small>現金＋カード残高</small>
-</div>
-<div class="stat">
-<span>守るお金</span>
-<strong id="protected">¥0</strong>
-<small>貯金（現金＋銀行）</small>
-</div>
-<div class="stat">
-<span>投資</span>
-<strong id="investStat">¥0</strong>
-<small>運用資産</small>
-</div>
-<div class="stat">
-<span>借金</span>
-<strong id="debtStat">¥0</strong>
-<small>現在の借金総額</small>
-</div>
-</div>
-</div>
-</section>
-<section class="panel analysis-panel-main file-sheet" data-file-view="ai" data-tab="AI REPORT" id="ai">
-<div class="panel-inner">
-<div class="section-head">
-<h2 class="section-title">自動分析</h2>
-<span class="badge">Trend Reading</span>
-</div>
-<div class="analysis" id="analysis">
-<h3>まだ判定できません</h3>
-            2件以上の記録が必要です。
-          </div>
-<div class="ai-analysis-panel">
-<div class="ai-analysis-head">
-<strong>AI分析</strong>
-<span class="badge">Gemini API</span>
-</div>
-<p class="ai-analysis-note">
-              記録した資産履歴・予定支出・直近の変化をGeminiへ送り、数値の読み上げではなく生活への影響まで分析します。
-              AIはボタンを押した時だけ実行します。
-            </p>
-<div class="ai-analysis-actions">
-<button class="primary" id="aiAnalyzeButton" type="button">AIで詳しく分析する</button>
-</div>
-<div class="ai-analysis-result" id="aiAnalysisResult">
-              まだAI分析は実行していません。
-            </div>
-<div class="ai-analysis-meta" id="aiAnalysisMeta"></div>
-</div>
-</div>
-</section>
-<section class="panel rules-panel file-sheet" data-file-view="rules" data-tab="RULES" id="rules">
-<div class="panel-inner">
-<div class="section-head">
-<h2 class="section-title">今日のIFルール</h2>
-<span class="badge">Behavior Guide</span>
-</div>
-<div class="rule-grid" id="ifRuleGrid">
-<div class="rule">
-<small id="ifRule1Label">IF データ不足</small>
-<strong id="ifRule1Text">記録を3件以上ためる</strong>
-</div>
-<div class="rule">
-<small id="ifRule2Label">IF 次の記録まで</small>
-<strong id="ifRule2Text">大きな判断は保留する</strong>
-</div>
-<div class="rule">
-<small id="ifRule3Label">IF 確認すること</small>
-<strong id="ifRule3Text">資産の置き場所と残高を確認する</strong>
-</div>
-</div>
-</div>
-</section>
-<section class="panel plans-panel file-sheet" data-file-view="plans" data-tab="PLANS" id="plans">
-<div class="panel-inner">
-<div class="section-head">
-<h2 class="section-title">これからの予定支出</h2>
-<span class="badge">Planned Expenses</span>
-</div>
-<div class="purchase-grid">
-<label>
-              予定
-              <input id="plannedName" placeholder="例：旅行、交通費、飲み会" type="text"/>
-</label>
-<label>
-              金額
-              <input id="plannedAmount" min="0" placeholder="10000" step="100" type="number"/>
-</label>
-<label>
-              期限
-              <input id="plannedDate" type="date"/>
-</label>
-<label>
-              優先度
-              <select id="plannedPriority">
-<option value="essential">必ず必要</option>
-<option value="important">できれば守る</option>
-<option value="optional">削ってもよい</option>
-</select>
-</label>
-<button class="primary" id="plannedAdd" style="margin-top:0" type="button">追加</button>
-</div>
-<div class="planned-expense-list" id="plannedExpenseList"></div>
-</div>
-</section>
-<section class="panel purchase-panel-main file-sheet" data-file-view="purchase" data-tab="DECISION" id="purchase">
-<div class="panel-inner">
-<div class="section-head">
-<h2 class="section-title">購入判定</h2>
-<span class="badge">Purchase Check</span>
-</div>
-<div class="purchase-grid">
-<label>
-              商品・予定
-              <input id="purchaseName" placeholder="例：ギター機材、旅行、飲み会" type="text"/>
-</label>
-<label>
-              金額
-              <input id="purchasePrice" min="0" placeholder="10000" step="100" type="number"/>
-</label>
-<label>
-              種類
-              <select id="purchaseType">
-<option value="want">趣味・欲しい物</option>
-<option value="experience">旅行・交際・経験</option>
-<option value="study">学業・資格・制作</option>
-<option value="need">生活必需品</option>
-</select>
-</label>
-<label>
-              貯金の使い方
-              <select id="savingsUseMode">
-<option value="none">貯金は使わない</option>
-<option value="surplus">最近の最低額を超えた分まで</option>
-<option value="custom">上限を自分で指定</option>
-</select>
-</label>
-<label id="savingsLimitWrap" style="display:none">
-              貯金から使う上限
-              <input id="savingsUseLimit" min="0" placeholder="10000" step="100" type="number"/>
-</label>
-<button class="primary" id="purchaseJudge" style="margin-top:0" type="button">判定する</button>
-</div>
-<div class="purchase-result plan-message" id="purchaseResult">
-            予定支出・普段の消費ペース・貯金・借金を見て、購入後の生活に支障が出るか判定します。
-          </div>
-</div>
-</section>
-<section class="panel chart-panel file-sheet" data-file-view="chart-section" data-tab="CHART" id="chart-section">
-<div class="panel-inner">
-<div class="section-head">
-<h2 class="section-title">資産推移</h2>
-<span class="badge">Line Graph</span>
-</div>
-<div class="chart-controls">
-<div class="segmented" id="periodControl">
-<button class="active" data-period="daily" type="button">日足</button>
-<button data-period="weekly" type="button">週足</button>
-<button data-period="monthly" type="button">月足</button>
-</div>
-<div class="chart-hint">データが多いと横にスクロールできます</div>
-</div>
-<div class="legend" id="legend"></div>
-<div class="chart-scroll" id="chartScroll">
-<div class="canvas-wrap" id="canvasWrap"><canvas id="chart"></canvas></div>
-</div>
-</div>
-</section>
-<section class="panel history-panel file-sheet" data-file-view="history-section" data-tab="ARCHIVE" id="history-section">
-<div class="panel-inner history">
-<div class="section-head">
-<h2 class="section-title">記録一覧</h2>
-<span class="badge">History</span>
-</div>
-<div id="history"></div>
-</div>
-</section>
-</div>
-</section>
+</aside></section>
 </main>
 <div class="dev-toast" id="devToast"></div>
 <div aria-hidden="true" class="dev-modal" id="devModal">
@@ -4758,12 +4953,11 @@ window.onresize=()=>{
 
   const initial = location.hash.slice(1);
   activateFile(
-    panels.some(p => p.dataset.fileView === initial) ? initial : "entry",
+    panels.some(p => p.dataset.fileView === initial) ? initial : "chart-section",
     false
   );
 })();
-</script><div id="celebrationLayer" class="celebration-layer" aria-hidden="true"></div>
-
+</script><div aria-hidden="true" class="celebration-layer" id="celebrationLayer"></div>
 <script>
 (() => {
   const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
@@ -5063,6 +5257,17 @@ window.onresize=()=>{
   window.moneyIfCelebrate=celebrate;
 })();
 </script>
-
-</body>
+<script>
+(() => {
+  document.querySelectorAll('#sideMenu a[href="#entry"]').forEach(link=>{
+    link.addEventListener("click", e=>{
+      e.preventDefault();
+      document.getElementById("entry")?.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+    });
+  });
+})();
+</script></body>
 </html>

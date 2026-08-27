@@ -2183,6 +2183,274 @@ body.theme-day .dashboard-content > .file-sheet::after{
   .entry-panel form > *{grid-column:1 !important}
   .dashboard-content > [data-file-view]{min-height:0}
 }
+
+/* =========================================================
+   MOTION SYSTEM
+   Meaningful, restrained application animation.
+   ========================================================= */
+
+:root{
+  --motion-fast:160ms;
+  --motion-normal:320ms;
+  --motion-slow:680ms;
+  --motion-ease:cubic-bezier(.22,.8,.24,1);
+}
+
+/* Buttons / interactive surfaces */
+button,
+.file-tab-button,
+.side-menu a{
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    opacity var(--motion-fast) ease,
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease !important;
+}
+button:active{transform:translateY(1px) scale(.985)}
+
+/* File page transition */
+.dashboard-content > [data-file-view].file-entering{
+  animation:fileSheetEnter 420ms var(--motion-ease) both;
+}
+.dashboard-content > [data-file-view].file-leaving{
+  display:block !important;
+  position:absolute !important;
+  inset:0;
+  pointer-events:none;
+  animation:fileSheetLeave 180ms ease both;
+}
+@keyframes fileSheetEnter{
+  0%{opacity:0;transform:translate3d(24px,9px,0) scale(.992);filter:blur(2px)}
+  55%{opacity:1;filter:blur(0)}
+  100%{opacity:1;transform:none}
+}
+@keyframes fileSheetLeave{
+  from{opacity:1;transform:none}
+  to{opacity:0;transform:translate3d(-10px,3px,0) scale(.995)}
+}
+
+/* Animated number */
+.motion-number{
+  display:inline-block;
+  transform-origin:50% 70%;
+}
+.motion-number.number-bump{
+  animation:numberBump 420ms var(--motion-ease);
+}
+@keyframes numberBump{
+  0%{transform:translateY(3px);opacity:.62}
+  60%{transform:translateY(-1px) scale(1.025);opacity:1}
+  100%{transform:none}
+}
+
+/* Change flash */
+.stat.value-up{
+  animation:flashUp 820ms ease both;
+}
+.stat.value-down{
+  animation:flashDown 820ms ease both;
+}
+@keyframes flashUp{
+  0%{background:#111722}
+  25%{background:rgba(101,212,154,.18);box-shadow:inset 0 0 0 1px rgba(101,212,154,.38)}
+  100%{background:#111722}
+}
+@keyframes flashDown{
+  0%{background:#111722}
+  25%{background:rgba(255,142,122,.16);box-shadow:inset 0 0 0 1px rgba(255,142,122,.35)}
+  100%{background:#111722}
+}
+body.theme-morning .stat.value-up,
+body.theme-day .stat.value-up{animation-name:flashUpLight}
+body.theme-morning .stat.value-down,
+body.theme-day .stat.value-down{animation-name:flashDownLight}
+@keyframes flashUpLight{
+  0%{background:#fff}
+  25%{background:#e9fbf1}
+  100%{background:#fff}
+}
+@keyframes flashDownLight{
+  0%{background:#fff}
+  25%{background:#fff0ed}
+  100%{background:#fff}
+}
+
+/* AI progress */
+.ai-motion-status{
+  display:none;
+  margin:14px 0 0;
+  padding:14px 0 2px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.ai-motion-status.active{display:block}
+.ai-progress-track{
+  height:2px;
+  width:100%;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+  position:relative;
+}
+.ai-progress-track::after{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:32%;
+  background:linear-gradient(90deg,var(--mi-violet),var(--mi-blue),var(--mi-cyan));
+  animation:aiScan 1.25s ease-in-out infinite;
+}
+@keyframes aiScan{
+  0%{transform:translateX(-115%)}
+  100%{transform:translateX(420%)}
+}
+.ai-progress-step{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:9px;
+  color:var(--mi-muted);
+  font-size:.73rem;
+  letter-spacing:.02em;
+}
+.ai-progress-step::before{
+  content:"";
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--mi-violet);
+  box-shadow:0 0 10px rgba(167,139,250,.7);
+  animation:aiPulse .9s ease-in-out infinite alternate;
+}
+@keyframes aiPulse{
+  to{opacity:.3;transform:scale(.65)}
+}
+
+/* AI report prints/unfolds in */
+.ai-analysis-result.ai-report-reveal{
+  transform-origin:top center;
+  animation:reportReveal 620ms var(--motion-ease) both;
+}
+@keyframes reportReveal{
+  0%{opacity:0;transform:scaleY(.08) translateY(-6px);clip-path:inset(0 0 92% 0)}
+  55%{opacity:1;transform:scaleY(1);clip-path:inset(0 0 0 0)}
+  100%{opacity:1;transform:none}
+}
+
+/* Chart draw overlay to make redraw feel intentional */
+.chart-panel.chart-opening .canvas-wrap,
+.chart-panel.chart-opening .chart-scroll{
+  animation:chartStageIn 520ms var(--motion-ease);
+}
+@keyframes chartStageIn{
+  from{opacity:.35;transform:translateX(-10px)}
+  to{opacity:1;transform:none}
+}
+canvas.chart-drawing{
+  animation:chartGlow 720ms ease;
+}
+@keyframes chartGlow{
+  0%{opacity:.12}
+  100%{opacity:1}
+}
+
+/* Hamburger */
+.menu-button span:nth-child(1),
+.menu-button span:nth-child(2),
+.menu-button span:nth-child(3){
+  transform-origin:center;
+}
+body.menu-open .menu-button span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+body.menu-open .menu-button span:nth-child(2){opacity:0;transform:scaleX(.2)}
+body.menu-open .menu-button span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.side-menu>a{
+  opacity:0;
+  transform:translateX(18px);
+}
+body.menu-open .side-menu>a{
+  animation:menuItemIn 320ms var(--motion-ease) forwards;
+}
+body.menu-open .side-menu>a:nth-of-type(1){animation-delay:50ms}
+body.menu-open .side-menu>a:nth-of-type(2){animation-delay:85ms}
+body.menu-open .side-menu>a:nth-of-type(3){animation-delay:120ms}
+body.menu-open .side-menu>a:nth-of-type(4){animation-delay:155ms}
+body.menu-open .side-menu>a:nth-of-type(5){animation-delay:190ms}
+body.menu-open .side-menu>a:nth-of-type(6){animation-delay:225ms}
+body.menu-open .side-menu>a:nth-of-type(7){animation-delay:260ms}
+@keyframes menuItemIn{
+  to{opacity:1;transform:none}
+}
+
+/* Celebration */
+.celebration-layer{
+  position:fixed;
+  inset:0;
+  z-index:3000;
+  pointer-events:none;
+  overflow:hidden;
+}
+.celebration-toast{
+  position:absolute;
+  top:88px;
+  left:50%;
+  transform:translate(-50%,-14px);
+  min-width:min(420px,calc(100vw - 32px));
+  padding:15px 18px;
+  background:rgba(13,18,27,.94);
+  border:1px solid rgba(101,212,154,.35);
+  border-left:3px solid var(--mi-green);
+  box-shadow:0 16px 48px rgba(0,0,0,.28);
+  color:var(--mi-text);
+  opacity:0;
+  animation:celebrateToast 3s var(--motion-ease) both;
+}
+.celebration-toast strong{
+  display:block;
+  font-size:.92rem;
+  margin-bottom:3px;
+}
+.celebration-toast span{
+  color:var(--mi-muted);
+  font-size:.74rem;
+}
+@keyframes celebrateToast{
+  0%{opacity:0;transform:translate(-50%,-14px)}
+  12%,78%{opacity:1;transform:translate(-50%,0)}
+  100%{opacity:0;transform:translate(-50%,-6px)}
+}
+.confetti-piece{
+  --drift:0px;
+  position:absolute;
+  top:-22px;
+  width:7px;height:16px;
+  border-radius:1px;
+  opacity:0;
+  background:var(--piece-color,var(--mi-blue));
+  animation:confettiFall var(--fall-duration,1800ms) cubic-bezier(.18,.67,.37,1) forwards;
+}
+@keyframes confettiFall{
+  0%{opacity:0;transform:translate3d(0,-15px,0) rotate(0deg)}
+  10%{opacity:.92}
+  100%{opacity:0;transform:translate3d(var(--drift),105vh,0) rotate(620deg)}
+}
+body.theme-morning .celebration-toast,
+body.theme-day .celebration-toast{
+  background:rgba(255,255,255,.96);
+  color:#172033;
+  box-shadow:0 16px 48px rgba(34,54,82,.18);
+}
+
+/* Respect OS accessibility preference */
+@media (prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -4494,5 +4762,307 @@ window.onresize=()=>{
     false
   );
 })();
-</script></body>
+</script><div id="celebrationLayer" class="celebration-layer" aria-hidden="true"></div>
+
+<script>
+(() => {
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+  // -------------------------------
+  // Animated numeric values + flash
+  // -------------------------------
+  const watchedIds = ["gross","net","usable","protected","investStat","debtStat"];
+  const lastNumbers = new Map();
+
+  function parseDisplayedNumber(text){
+    const cleaned = String(text ?? "").replace(/[^\d.-]/g,"");
+    const value = Number(cleaned);
+    return Number.isFinite(value) ? value : null;
+  }
+
+  function formatLikeOriginal(el, value){
+    const current = el.dataset.motionOriginal || el.textContent || "";
+    if(current.includes("¥") || current.includes("￥")){
+      return new Intl.NumberFormat("ja-JP",{
+        style:"currency",
+        currency:"JPY",
+        maximumFractionDigits:0
+      }).format(Math.round(value));
+    }
+    return new Intl.NumberFormat("ja-JP",{maximumFractionDigits:0}).format(Math.round(value));
+  }
+
+  function animateNumber(el, from, to){
+    if(reduceMotion || from === null || to === null || from === to){
+      el.textContent = formatLikeOriginal(el,to);
+      return;
+    }
+
+    const duration = 480;
+    const start = performance.now();
+    el.classList.add("motion-number","number-bump");
+
+    function frame(now){
+      const t = Math.min(1,(now-start)/duration);
+      const eased = 1-Math.pow(1-t,3);
+      const value = from + (to-from)*eased;
+      el.textContent = formatLikeOriginal(el,value);
+
+      if(t < 1){
+        requestAnimationFrame(frame);
+      }else{
+        el.textContent = formatLikeOriginal(el,to);
+        setTimeout(()=>el.classList.remove("number-bump"),120);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function processNumberChanges(){
+    watchedIds.forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+
+      const next=parseDisplayedNumber(el.textContent);
+      if(next===null)return;
+
+      const prev=lastNumbers.has(id) ? lastNumbers.get(id) : next;
+      lastNumbers.set(id,next);
+      el.dataset.motionOriginal=el.textContent;
+
+      if(prev!==next){
+        animateNumber(el,prev,next);
+
+        const box=el.closest(".stat");
+        if(box){
+          box.classList.remove("value-up","value-down");
+          void box.offsetWidth;
+          box.classList.add(next>prev ? "value-up":"value-down");
+          setTimeout(()=>box.classList.remove("value-up","value-down"),900);
+        }
+      }
+    });
+  }
+
+  // Let the existing render finish, then animate changed values.
+  const originalRender = window.render;
+  if(typeof originalRender === "function"){
+    window.render = function(...args){
+      const result=originalRender.apply(this,args);
+      requestAnimationFrame(processNumberChanges);
+      return result;
+    };
+  }
+  requestAnimationFrame(processNumberChanges);
+
+  // --------------------------------
+  // File switching transition upgrade
+  // --------------------------------
+  const tabs=[...document.querySelectorAll(".file-tab-button")];
+  const filePanels=[...document.querySelectorAll("[data-file-view]")];
+
+  tabs.forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const targetId=btn.dataset.target;
+      const target=document.querySelector(`[data-file-view="${targetId}"]`);
+      if(!target)return;
+      requestAnimationFrame(()=>{
+        target.classList.remove("file-entering");
+        void target.offsetWidth;
+        target.classList.add("file-entering");
+        setTimeout(()=>target.classList.remove("file-entering"),480);
+      });
+
+      if(targetId==="chart-section"){
+        const chartPanel=document.getElementById("chart-section");
+        chartPanel?.classList.add("chart-opening");
+        document.querySelectorAll("#chart-section canvas").forEach(c=>{
+          c.classList.remove("chart-drawing");
+          void c.offsetWidth;
+          c.classList.add("chart-drawing");
+        });
+        setTimeout(()=>chartPanel?.classList.remove("chart-opening"),800);
+      }
+    });
+  });
+
+  // -------------------------------
+  // AI generation staged animation
+  // -------------------------------
+  const aiButton=document.getElementById("aiAnalyzeButton");
+  const aiMotion=document.getElementById("aiMotionStatus");
+  const aiStep=document.getElementById("aiProgressStep");
+  const aiResult=document.getElementById("aiAnalysisResult");
+
+  let aiTimer=null;
+  const aiSteps=[
+    "資産履歴を読み込んでいます",
+    "最近の増減を照合しています",
+    "予定支出との影響を確認しています",
+    "資産バランスを整理しています",
+    "Geminiがレポートを作成しています"
+  ];
+
+  function beginAiMotion(){
+    if(!aiMotion || !aiStep)return;
+    clearInterval(aiTimer);
+    aiMotion.classList.add("active");
+    let index=0;
+    aiStep.textContent=aiSteps[index];
+    aiTimer=setInterval(()=>{
+      index=Math.min(aiSteps.length-1,index+1);
+      aiStep.textContent=aiSteps[index];
+    },900);
+  }
+
+  function endAiMotion(){
+    clearInterval(aiTimer);
+    aiTimer=null;
+    aiMotion?.classList.remove("active");
+    if(aiResult){
+      aiResult.classList.remove("ai-report-reveal");
+      void aiResult.offsetWidth;
+      aiResult.classList.add("ai-report-reveal");
+      setTimeout(()=>aiResult.classList.remove("ai-report-reveal"),750);
+    }
+  }
+
+  if(aiButton){
+    aiButton.addEventListener("click",()=>{
+      beginAiMotion();
+
+      // Observe result/meta because requestAiAnalysis owns the network call.
+      const observer=new MutationObserver(()=>{
+        const txt=(aiResult?.textContent||"").trim();
+        const meta=(document.getElementById("aiAnalysisMeta")?.textContent||"").trim();
+
+        if(
+          txt &&
+          !txt.includes("読み込んでいます") &&
+          !txt.includes("まだAI分析は実行していません") &&
+          !aiButton.disabled
+        ){
+          observer.disconnect();
+          endAiMotion();
+
+          // AI praise/celebration only for clearly positive completed reports.
+          const positiveSignals=[
+            "非常に良い",
+            "良い傾向",
+            "着実に資産",
+            "安定している",
+            "財務基盤は比較的安定",
+            "順調",
+            "健全"
+          ];
+          const negativeSignals=[
+            "危険",
+            "深刻",
+            "大きく悪化",
+            "継続的な減少",
+            "返済が困難",
+            "不足"
+          ];
+
+          const positive=positiveSignals.some(s=>txt.includes(s));
+          const negative=negativeSignals.some(s=>txt.includes(s));
+
+          if(positive && !negative && /終了理由\s*STOP/i.test(meta)){
+            celebrate("いい流れです","AI分析でも資産状態にポジティブな傾向が確認できました。");
+          }
+        }
+      });
+      observer.observe(aiResult,{childList:true,subtree:true,characterData:true});
+      setTimeout(()=>{
+        if(aiButton.disabled===false){
+          observer.disconnect();
+          endAiMotion();
+        }
+      },30000);
+    });
+  }
+
+  // -------------------------------
+  // Celebration animation
+  // -------------------------------
+  let celebrationCooldown=0;
+
+  function celebrate(title,subtitle){
+    const now=Date.now();
+    if(now-celebrationCooldown<5000)return;
+    celebrationCooldown=now;
+
+    const layer=document.getElementById("celebrationLayer");
+    if(!layer)return;
+    layer.innerHTML="";
+
+    const toast=document.createElement("div");
+    toast.className="celebration-toast";
+    toast.innerHTML=`<strong>${escapeCelebration(title)}</strong><span>${escapeCelebration(subtitle)}</span>`;
+    layer.appendChild(toast);
+
+    if(!reduceMotion){
+      const colors=[
+        "var(--mi-blue)",
+        "var(--mi-violet)",
+        "var(--mi-green)",
+        "var(--mi-amber)",
+        "var(--mi-coral)",
+        "var(--mi-cyan)"
+      ];
+
+      for(let i=0;i<30;i++){
+        const piece=document.createElement("i");
+        piece.className="confetti-piece";
+        piece.style.left=`${Math.random()*100}%`;
+        piece.style.setProperty("--piece-color",colors[i%colors.length]);
+        piece.style.setProperty("--drift",`${(Math.random()-.5)*180}px`);
+        piece.style.setProperty("--fall-duration",`${1300+Math.random()*900}ms`);
+        piece.style.animationDelay=`${Math.random()*240}ms`;
+        piece.style.transform=`rotate(${Math.random()*180}deg)`;
+        layer.appendChild(piece);
+      }
+    }
+    setTimeout(()=>{layer.innerHTML=""},3300);
+  }
+
+  function escapeCelebration(value){
+    return String(value).replace(/[&<>"']/g,ch=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    })[ch]);
+  }
+
+  // Detect a genuinely improved saved record:
+  // net worth must rise from the previous record, not merely any field.
+  const form=document.getElementById("form");
+  if(form){
+    form.addEventListener("submit",()=>{
+      try{
+        const records=JSON.parse(localStorage.getItem("money-if-auto-records-v2")||"[]")
+          .slice()
+          .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+
+        if(records.length<2)return;
+        const latest=records.at(-1);
+        const previous=records.at(-2);
+        const net=r=>
+          (+r.cash||0)+(+r.card||0)+(+r.savingsCash||0)+(+r.savingsBank||0)+(+r.investment||0)-(+r.debt||0);
+
+        const delta=net(latest)-net(previous);
+        if(delta>0){
+          setTimeout(()=>celebrate(
+            "おめでとう",
+            `前回記録より純資産が ${new Intl.NumberFormat("ja-JP").format(Math.round(delta))}円 増えています。`
+          ),550);
+        }
+      }catch(e){}
+    });
+  }
+
+  // Expose for future app features / manual testing.
+  window.moneyIfCelebrate=celebrate;
+})();
+</script>
+
+</body>
 </html>

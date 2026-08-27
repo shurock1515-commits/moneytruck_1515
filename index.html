@@ -1315,6 +1315,38 @@ body.theme-day .ai-analysis-meta{
   color:#46566d !important;
 }
 
+
+.ai-analysis-result{
+  overflow-wrap:anywhere;
+}
+.ai-analysis-result h3{
+  margin:20px 0 8px;
+  font-size:1rem;
+  line-height:1.5;
+}
+.ai-analysis-result h3:first-child{margin-top:0}
+.ai-analysis-result p{
+  margin:0 0 12px;
+  line-height:1.9;
+}
+.ai-analysis-result ol{
+  margin:8px 0 4px 1.4em;
+  padding:0;
+}
+.ai-analysis-result li{
+  margin:7px 0;
+  line-height:1.75;
+}
+.ai-analysis-warning{
+  margin-top:12px;
+  padding:11px 13px;
+  border-radius:12px;
+  border:1px solid rgba(255,184,77,.5);
+  background:rgba(255,184,77,.09);
+  font-size:.82rem;
+  line-height:1.65;
+}
+
 </style>
 </head>
 <body>
@@ -1453,10 +1485,10 @@ body.theme-day .ai-analysis-meta{
           <div class="ai-analysis-panel">
             <div class="ai-analysis-head">
               <strong>AI分析</strong>
-              <span class="badge">Workers AI</span>
+              <span class="badge">Gemini API</span>
             </div>
             <p class="ai-analysis-note">
-              記録した資産履歴と予定支出をAIへ送り、数値だけでは分かりにくい生活への影響や注意点を文章で読み解きます。
+              記録した資産履歴・予定支出・直近の変化をGeminiへ送り、数値の読み上げではなく生活への影響まで分析します。
               AIはボタンを押した時だけ実行します。
             </p>
             <div class="ai-analysis-actions">
@@ -2967,7 +2999,7 @@ function renderHistory(records){
 
 
 function buildAiAnalysisPayload(){
-  const records=load();
+  const records=load().sort((a,b)=>a.date.localeCompare(b.date));
   if(!records.length)return null;
 
   const latest=records.at(-1);
@@ -2997,7 +3029,9 @@ function buildAiAnalysisPayload(){
   const first=records[0];
   const firstTotals=totals(first);
 
-  const latestVsPrevious=previous ? {
+  const latestChange=previous ? {
+    previousDate:previous.date,
+    latestDate:latest.date,
     daysBetween:Math.max(1,Math.round(
       (new Date(latest.date+"T00:00:00")-new Date(previous.date+"T00:00:00"))/86400000
     )),
@@ -3009,6 +3043,11 @@ function buildAiAnalysisPayload(){
     debtChange:latest.debt-previous.debt
   } : null;
 
+  const salaryRecords=records
+    .filter(r=>r.salaryDay===true)
+    .slice(-4)
+    .map(compactRecord);
+
   return {
     app:"Money IF",
     dataMeaning:{
@@ -3017,21 +3056,27 @@ function buildAiAnalysisPayload(){
       savingsCash:"貯金として分けている現金。資産。",
       savingsBank:"貯金として分けている銀行残高。資産。",
       investment:"現在記録している投資資産額。",
-      debt:"借金総額。資産とは別に負債として扱う。",
+      debt:"借金総額。負債。",
       grossAssets:"cash + cardBalance + savingsCash + savingsBank + investment。",
       netWorth:"grossAssets - debt。",
+      dynamicMoney:"cash + cardBalance。普段動かしやすい資金。",
       plannedExpenses:"今後予定している支出。priorityはessential=必須、important=できれば守る、optional=削ってもよい。"
     },
     current:compactRecord(latest),
-    latestChange:latestVsPrevious,
+    latestChange,
     recentHistory,
+    salaryRecords,
     longTerm:{
       recordCount:records.length,
       firstDate:first.date,
       latestDate:latest.date,
       grossAssetsChangeSinceFirst:latestTotals.gross-firstTotals.gross,
       netWorthChangeSinceFirst:latestTotals.net-firstTotals.net,
-      debtChangeSinceFirst:latest.debt-first.debt
+      debtChangeSinceFirst:latest.debt-first.debt,
+      savingsChangeSinceFirst:
+        (latest.savingsCash+latest.savingsBank)-
+        (first.savingsCash+first.savingsBank),
+      investmentChangeSinceFirst:latest.investment-first.investment
     },
     plannedExpenses:planned.map(item=>({
       name:item.name,
@@ -3044,9 +3089,94 @@ function buildAiAnalysisPayload(){
       doNotTreatCardBalanceAsSpendingOrDebt:true,
       doNotCreateArbitrarySafetyReserve:true,
       evaluateImpactOnPlannedExpenses:true,
-      distinguishGrossAssetsAndNetWorth:true
+      distinguishGrossAssetsAndNetWorth:true,
+      distinguishSnapshotFromTrend:true,
+      doNotRecommendSpecificFinancialProducts:true
     }
   };
+}
+
+function escapeAiHtml(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[ch]);
+}
+
+function formatAiAnalysis(text){
+  const safe=escapeAiHtml(text)
+    .replace(/\r\n/g,"\n")
+    .replace(/\r/g,"\n");
+
+  const lines=safe.split("\n");
+  let html="";
+  let inList=false;
+
+  const closeList=()=>{
+    if(inList){
+      html+="</ol>";
+      inList=false;
+    }
+  };
+
+  for(const raw of lines){
+    const line=raw.trim();
+
+    if(!line){
+      closeList();
+      continue;
+    }
+
+    const heading=line.match(/^#{1,4}\s+(.+)$/);
+    if(heading){
+      closeList();
+      html+=`<h3>${heading[1]}</h3>`;
+      continue;
+    }
+
+    const plainHeading=line.match(/^(現在の状態|最近の変化|良い点|気になる点|予定支出への影響|貯金と借金|今後1〜2か月|今後支障が出そうな部分|具体的にやること|次にやること)：?$/);
+    if(plainHeading){
+      closeList();
+      html+=`<h3>${plainHeading[1]}</h3>`;
+      continue;
+    }
+
+    const numbered=line.match(/^(\d+)[\.\．]\s*(.+)$/);
+    if(numbered){
+      if(!inList){
+        html+="<ol>";
+        inList=true;
+      }
+      html+=`<li>${numbered[2]}</li>`;
+      continue;
+    }
+
+    closeList();
+    html+=`<p>${line}</p>`;
+  }
+
+  closeList();
+  return html || "<p>分析結果を表示できませんでした。</p>";
+}
+
+function looksTruncatedAnalysis(text,finishReason){
+  const value=String(text||"").trim();
+  if(!value)return true;
+
+  const normalized=String(finishReason||"").toUpperCase();
+  if(normalized && !["STOP","STOPPED","COMPLETE","COMPLETED"].includes(normalized)){
+    return true;
+  }
+
+  if(/[、・（(：:]$/.test(value))return true;
+  if(/[^。！？!?」』）)\d]$/.test(value) && value.length>80)return true;
+
+  const expected=["現在の状態","最近の変化","気になる点"];
+  const hitCount=expected.filter(label=>value.includes(label)).length;
+  return value.length<180 || hitCount<2;
 }
 
 async function requestAiAnalysis(){
@@ -3063,9 +3193,9 @@ async function requestAiAnalysis(){
   }
 
   button.disabled=true;
-  button.textContent="分析中…";
+  button.textContent="Geminiが分析中…";
   result.className="ai-analysis-result loading";
-  result.textContent="資産履歴と予定支出をAIが読んでいます…";
+  result.textContent="資産履歴・予定支出・最近の変化を読み込んでいます…";
   meta.textContent=`送信対象：直近${payload.recentHistory.length}件 / 予定支出${payload.plannedExpenses.length}件`;
 
   const started=performance.now();
@@ -3085,19 +3215,33 @@ async function requestAiAnalysis(){
     }
 
     if(!response.ok){
-      throw new Error(data?.error||data?.detail||`HTTP ${response.status}`);
+      throw new Error(data?.detail||data?.error||`HTTP ${response.status}`);
     }
 
     const analysis=String(data?.analysis||"").trim();
     if(!analysis){
-      throw new Error("AIから分析本文が返りませんでした。");
+      throw new Error("Geminiから分析本文が返りませんでした。");
     }
 
-    result.className="ai-analysis-result";
-    result.textContent=analysis;
-
     const elapsed=((performance.now()-started)/1000).toFixed(1);
-    meta.textContent=`直近${payload.recentHistory.length}件と予定支出${payload.plannedExpenses.length}件を分析・${elapsed}秒`;
+    const finishReason=data?.finishReason ?? data?.finish_reason ?? null;
+    const outputLength=data?.outputLength ?? analysis.length;
+    const truncated=looksTruncatedAnalysis(analysis,finishReason);
+
+    result.className="ai-analysis-result";
+    result.innerHTML=formatAiAnalysis(analysis);
+
+    if(truncated){
+      const warning=document.createElement("div");
+      warning.className="ai-analysis-warning";
+      warning.textContent="この回答は途中で終了した可能性があります。Gemini側の出力上限や終了理由を確認してください。";
+      result.appendChild(warning);
+    }
+
+    const finishLabel=finishReason?` / 終了理由 ${finishReason}`:"";
+    meta.textContent=
+      `Gemini API・直近${payload.recentHistory.length}件＋予定支出${payload.plannedExpenses.length}件・`+
+      `${outputLength}文字・${elapsed}秒${finishLabel}`;
   }catch(error){
     result.className="ai-analysis-result error";
     result.textContent=`AI分析に失敗しました。\n${error.message||String(error)}`;

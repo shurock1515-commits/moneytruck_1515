@@ -2993,6 +2993,60 @@ body.theme-day .money-if-chart-curtain{
   opacity:1 !important;
 }
 
+
+/* =========================================================
+   FILE SWITCH STABILITY
+   Disable page transition motion. File tabs now switch instantly.
+   ========================================================= */
+
+.dashboard-content > [data-file-view],
+.dashboard-content > [data-file-view].file-entering,
+.dashboard-content > [data-file-view].file-leaving,
+.dashboard-content > [data-file-view].file-active{
+  animation:none !important;
+  transition:none !important;
+  transform:none !important;
+  filter:none !important;
+}
+
+.dashboard-content > [data-file-view].file-leaving{
+  position:relative !important;
+  inset:auto !important;
+  pointer-events:auto !important;
+}
+
+.file-tab-button{
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease !important;
+}
+
+/* Active tab should not jump vertically or resize. */
+.file-tab-button,
+.file-tab-button.active,
+.file-tab-button:nth-child(1),
+.file-tab-button:nth-child(2),
+.file-tab-button:nth-child(3),
+.file-tab-button:nth-child(4),
+.file-tab-button:nth-child(5),
+.file-tab-button:nth-child(6),
+.file-tab-button:nth-child(7){
+  transform:none !important;
+  translate:none !important;
+  height:48px !important;
+}
+
+.file-tab-button:hover{
+  transform:none !important;
+}
+
+/* Prevent stacked pseudo/file effects from appearing doubled during switching. */
+.dashboard-content > .file-sheet::after{
+  transition:none !important;
+  animation:none !important;
+}
+
 </style>
 </head>
 <body>
@@ -5706,10 +5760,7 @@ window.onresize=()=>{
       const target=document.querySelector(`[data-file-view="${targetId}"]`);
       if(!target)return;
       requestAnimationFrame(()=>{
-        target.classList.remove("file-entering");
         void target.offsetWidth;
-        target.classList.add("file-entering");
-        setTimeout(()=>target.classList.remove("file-entering"),480);
       });
 
       if(targetId==="chart-section"){

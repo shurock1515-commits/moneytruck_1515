@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Money IF Auto</title>
 <style>
 :root{
@@ -1774,387 +1775,767 @@ body.theme-day .rule{background:#fbfcfe!important;color:#172033!important}
   .side-menu{padding:22px}
 }
 
+
+/* =========================================================
+   PHYSICAL FILE / INDEX-TAB LAYER
+   Paper-file inspired tabs: offset, protruding, asymmetric.
+   ========================================================= */
+
+.dashboard-content{
+  gap:30px 18px !important;
+  padding-top:13px;
+}
+
+.file-sheet{
+  position:relative;
+  overflow:visible !important;
+  isolation:isolate;
+}
+
+/* The physical protruding index tab */
+.file-sheet::before{
+  content:attr(data-tab);
+  position:absolute;
+  top:-25px;
+  height:25px;
+  min-width:94px;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:-1;
+
+  font-size:.59rem;
+  font-weight:850;
+  letter-spacing:.16em;
+  line-height:1;
+  color:#0a101a;
+
+  background:var(--folder-tab,#72a7ff);
+  border:1px solid rgba(255,255,255,.11);
+  border-bottom:0;
+  border-radius:3px 3px 0 0;
+  box-shadow:0 -5px 18px rgba(0,0,0,.13);
+}
+
+/* Tabs intentionally "walk" across the sheet like real index files */
+.tab-left::before{left:20px}
+.tab-a::before{left:34px}
+.tab-b::before{left:18%}
+.tab-c::before{right:24px}
+.tab-d::before{left:42%}
+.tab-e::before{right:14%}
+.tab-f::before{left:12%}
+.tab-g::before{right:18px}
+
+/* Category tab colors */
+.entry-panel{--folder-tab:var(--mi-cyan)}
+.snapshot-panel{--folder-tab:var(--mi-blue)}
+.analysis-panel-main{--folder-tab:var(--mi-violet)}
+.rules-panel{--folder-tab:var(--mi-amber)}
+.plans-panel{--folder-tab:var(--mi-green)}
+.purchase-panel-main{--folder-tab:var(--mi-coral)}
+.chart-panel{--folder-tab:#62c9d9}
+.history-panel{--folder-tab:#98a4b8}
+
+/* Make the body of each section read more like a stacked document */
+.file-sheet::after{
+  content:"";
+  position:absolute;
+  left:7px;
+  right:-7px;
+  bottom:-7px;
+  height:100%;
+  z-index:-2;
+  pointer-events:none;
+  border:1px solid rgba(255,255,255,.055);
+  background:rgba(255,255,255,.018);
+}
+
+/* Staggered paper edges create the impression of multiple files */
+.snapshot-panel::after,
+.plans-panel::after,
+.chart-panel::after{
+  left:-6px;
+  right:6px;
+}
+
+.file-sheet{
+  border-radius:1px !important;
+}
+
+/* Give section heads a document-title feeling rather than floating card heading */
+.file-sheet > .panel-inner > .section-head{
+  position:relative;
+  padding-bottom:13px;
+  border-bottom:1px solid rgba(255,255,255,.075);
+}
+.file-sheet > .panel-inner > .section-head::after{
+  content:"";
+  position:absolute;
+  bottom:-1px;
+  left:0;
+  width:42px;
+  height:1px;
+  background:var(--folder-tab);
+}
+
+.file-sheet .section-title{
+  text-transform:none;
+  letter-spacing:-.01em !important;
+}
+
+/* The record file at left gets a slightly larger physical label */
+.entry-panel::before{
+  min-width:112px;
+  height:28px;
+  top:-28px;
+}
+.entry-panel{
+  margin-top:15px;
+}
+
+/* Hero gets a small filing-index motif */
+.hero{
+  overflow:visible !important;
+}
+.hero::before{
+  content:"CURRENT FILE";
+  position:absolute;
+  top:-22px;
+  left:36px;
+  height:22px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  background:#dbe6ff;
+  color:#182236;
+  border-radius:3px 3px 0 0;
+  font-size:.55rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  z-index:2;
+}
+
+/* Make nested AI box less "card inside card"; more like an inserted report page */
+.ai-analysis-panel{
+  position:relative;
+  margin-left:10px !important;
+  border-left:1px solid rgba(167,139,250,.42) !important;
+}
+.ai-analysis-panel::before{
+  content:"GEMINI";
+  position:absolute;
+  right:15px;
+  top:-1px;
+  transform:translateY(-55%);
+  padding:4px 9px;
+  background:var(--mi-violet);
+  color:#0b0e14;
+  font-size:.52rem;
+  letter-spacing:.13em;
+  font-weight:900;
+  border-radius:2px;
+}
+
+/* History rows imitate clipped sheets */
+.history-panel #history > *{
+  border-radius:0 !important;
+}
+
+/* Light modes: paper becomes literal */
+body.theme-morning .file-sheet::after,
+body.theme-day .file-sheet::after{
+  border-color:rgba(25,42,66,.09);
+  background:rgba(255,255,255,.72);
+}
+body.theme-morning .file-sheet > .panel-inner > .section-head,
+body.theme-day .file-sheet > .panel-inner > .section-head{
+  border-bottom-color:rgba(25,42,66,.09);
+}
+body.theme-morning .hero::before,
+body.theme-day .hero::before{
+  background:#273551;
+  color:#fff;
+}
+
+/* Mobile: keep file tabs but reduce offset collisions */
+@media (max-width:760px){
+  .dashboard-content{
+    gap:34px !important;
+    padding-top:12px;
+  }
+  .file-sheet::before{
+    left:16px !important;
+    right:auto !important;
+    min-width:86px;
+    padding:0 12px;
+  }
+  .file-sheet:nth-child(even)::before{
+    left:auto !important;
+    right:16px !important;
+  }
+  .entry-panel{
+    margin-top:18px;
+  }
+}
+
+
+
+/* =========================================================
+   INTERACTIVE FILE CABINET
+   The protruding index tabs are now real controls.
+   ========================================================= */
+
+/* The old decorative pseudo tabs are no longer needed */
+.file-sheet::before{display:none !important;}
+
+.file-workspace{
+  display:block !important;
+  position:relative;
+  margin-top:44px;
+}
+
+/* Physical tab rail */
+.file-tab-switcher{
+  display:flex;
+  align-items:flex-end;
+  gap:4px;
+  min-height:66px;
+  padding:0 18px;
+  margin:0 0 -1px;
+  overflow-x:auto;
+  overflow-y:visible;
+  scrollbar-width:none;
+  position:relative;
+  z-index:20;
+}
+.file-tab-switcher::-webkit-scrollbar{display:none}
+
+.file-tab-button{
+  --tab-color:var(--mi-blue);
+  position:relative;
+  flex:0 0 auto;
+  min-width:112px;
+  height:48px !important;
+  margin:0 !important;
+  padding:8px 14px 9px !important;
+  display:flex !important;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  gap:3px;
+  border:1px solid rgba(255,255,255,.12) !important;
+  border-bottom:0 !important;
+  border-radius:4px 4px 0 0 !important;
+  background:color-mix(in srgb,var(--tab-color) 72%,#111722) !important;
+  color:#09111d !important;
+  box-shadow:none !important;
+  transform:translateY(8px);
+  transition:transform .18s ease, filter .18s ease, height .18s ease;
+  cursor:pointer;
+  z-index:1;
+}
+.file-tab-button:nth-child(1){--tab-color:var(--mi-cyan)}
+.file-tab-button:nth-child(2){--tab-color:var(--mi-blue);transform:translateY(13px)}
+.file-tab-button:nth-child(3){--tab-color:var(--mi-violet);transform:translateY(5px)}
+.file-tab-button:nth-child(4){--tab-color:var(--mi-amber);transform:translateY(15px)}
+.file-tab-button:nth-child(5){--tab-color:var(--mi-green);transform:translateY(9px)}
+.file-tab-button:nth-child(6){--tab-color:var(--mi-coral);transform:translateY(2px)}
+.file-tab-button:nth-child(7){--tab-color:#62c9d9;transform:translateY(12px)}
+.file-tab-button:nth-child(8){--tab-color:#98a4b8;transform:translateY(7px)}
+
+.file-tab-button small{
+  font-size:.52rem;
+  line-height:1;
+  letter-spacing:.13em;
+  opacity:.62;
+}
+.file-tab-button strong{
+  font-size:.67rem;
+  line-height:1;
+  letter-spacing:.1em;
+  white-space:nowrap;
+}
+.file-tab-button:hover{
+  filter:brightness(1.08);
+  transform:translateY(2px) !important;
+}
+.file-tab-button.active{
+  height:58px !important;
+  transform:translateY(0) !important;
+  filter:brightness(1.08);
+  z-index:5;
+}
+.file-tab-button.active::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:-2px;height:3px;
+  background:var(--tab-color);
+}
+
+/* One physical "file" shown at a time */
+.dashboard-content{
+  display:block !important;
+  position:relative;
+  padding-top:0 !important;
+}
+.dashboard-content > [data-file-view]{
+  display:none !important;
+  width:100%;
+  min-height:540px;
+  animation:fileIn .22s ease both;
+}
+.dashboard-content > [data-file-view].file-active{
+  display:block !important;
+}
+
+@keyframes fileIn{
+  from{opacity:0;transform:translateY(7px)}
+  to{opacity:1;transform:none}
+}
+
+/* Main sheet beneath tabs */
+.dashboard-content > .file-sheet{
+  border-radius:2px !important;
+  border-top-width:1px !important;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.20),
+    8px 8px 0 rgba(255,255,255,.018) !important;
+}
+
+/* Remove old two-column sizing constraints when panels become pages */
+.analysis-panel-main,
+.rules-panel,
+.plans-panel,
+.purchase-panel-main,
+.chart-panel,
+.history-panel,
+.snapshot-panel,
+.entry-panel{
+  grid-column:auto !important;
+  margin-top:0 !important;
+  position:relative !important;
+  top:auto !important;
+}
+
+/* Make record page less narrow now that it occupies the full file */
+.entry-panel .panel-inner{
+  max-width:980px;
+}
+.entry-panel form{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px 18px;
+}
+.entry-panel form > button,
+.entry-panel form > .salary-toggle,
+.entry-panel form > .debt-section{
+  grid-column:1/-1;
+}
+
+/* Page label within active sheet */
+.dashboard-content > .file-sheet::after{
+  content:attr(data-tab);
+  position:absolute;
+  right:22px;
+  bottom:18px;
+  left:auto !important;
+  width:auto;
+  height:auto !important;
+  border:0 !important;
+  background:transparent !important;
+  color:rgba(255,255,255,.035);
+  font-size:clamp(3rem,8vw,7rem);
+  font-weight:950;
+  letter-spacing:-.07em;
+  line-height:.8;
+  z-index:-1;
+  pointer-events:none;
+}
+
+/* Light theme */
+body.theme-morning .file-tab-button,
+body.theme-day .file-tab-button{
+  border-color:rgba(23,32,51,.13) !important;
+  color:#101725 !important;
+}
+body.theme-morning .dashboard-content > .file-sheet::after,
+body.theme-day .dashboard-content > .file-sheet::after{
+  color:rgba(22,39,64,.035);
+}
+
+/* Mobile keeps the file-tab metaphor horizontally */
+@media(max-width:760px){
+  .file-workspace{margin-top:34px}
+  .file-tab-switcher{
+    padding:0 8px;
+    min-height:59px;
+    gap:3px;
+  }
+  .file-tab-button{
+    min-width:92px;
+    height:43px !important;
+    padding:7px 10px !important;
+  }
+  .file-tab-button.active{height:51px !important}
+  .entry-panel form{grid-template-columns:1fr}
+  .entry-panel form > *{grid-column:1 !important}
+  .dashboard-content > [data-file-view]{min-height:0}
+}
 </style>
 </head>
 <body>
-
 <header class="app-header">
-  <a class="brand-lockup" href="#overview" aria-label="Money IF Auto top">
-    <span class="brand-mark">M</span>
-    <span class="brand-copy">
-      <strong>Money IF</strong>
-      <small>AI MONEY OS</small>
-    </span>
-  </a>
-
-  <div class="header-actions">
-    <span class="ai-status-dot"><i></i> Gemini connected</span>
-    <button id="menuButton" class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
+<a aria-label="Money IF Auto top" class="brand-lockup" href="#overview">
+<span class="brand-mark">M</span>
+<span class="brand-copy">
+<strong>Money IF</strong>
+<small>AI MONEY OS</small>
+</span>
+</a>
+<div class="header-actions">
+<span class="ai-status-dot"><i></i> Gemini connected</span>
+<button aria-expanded="false" aria-label="メニューを開く" class="menu-button" id="menuButton" type="button">
+<span></span><span></span><span></span>
+</button>
+</div>
 </header>
-
-<div id="menuBackdrop" class="menu-backdrop"></div>
-<nav id="sideMenu" class="side-menu" aria-hidden="true">
-  <div class="side-menu-top">
-    <div>
-      <small>NAVIGATION</small>
-      <strong>Money IF</strong>
-    </div>
-    <button id="menuClose" class="menu-close" type="button" aria-label="メニューを閉じる">×</button>
-  </div>
-
-  <a href="#overview"><span>01</span> Overview</a>
-  <a href="#entry"><span>02</span> 記録する</a>
-  <a href="#ai"><span>03</span> AI分析</a>
-  <a href="#plans"><span>04</span> 予定支出</a>
-  <a href="#purchase"><span>05</span> 購入判定</a>
-  <a href="#chart-section"><span>06</span> 資産推移</a>
-  <a href="#history-section"><span>07</span> 履歴</a>
-
-  <div class="side-menu-foot">
-    <span>MORE FEATURES</span>
-    <p>ここは今後の機能追加用。設定・AI相談・通知などを増やせます。</p>
-  </div>
+<div class="menu-backdrop" id="menuBackdrop"></div>
+<nav aria-hidden="true" class="side-menu" id="sideMenu">
+<div class="side-menu-top">
+<div>
+<small>NAVIGATION</small>
+<strong>Money IF</strong>
+</div>
+<button aria-label="メニューを閉じる" class="menu-close" id="menuClose" type="button">×</button>
+</div>
+<a href="#overview"><span>01</span> Overview</a>
+<a href="#entry"><span>02</span> 記録する</a>
+<a href="#ai"><span>03</span> AI分析</a>
+<a href="#plans"><span>04</span> 予定支出</a>
+<a href="#purchase"><span>05</span> 購入判定</a>
+<a href="#chart-section"><span>06</span> 資産推移</a>
+<a href="#history-section"><span>07</span> 履歴</a>
+<div class="side-menu-foot">
+<span>MORE FEATURES</span>
+<p>ここは今後の機能追加用。設定・AI相談・通知などを増やせます。</p>
+</div>
 </nav>
-
 <main class="wrap" id="top">
-  <section class="hero" id="overview">
-    <div class="hero-grid">
-      <div>
-        <div class="eyebrow">Money Signal Dashboard</div>
-        <h1 id="devTrigger" aria-label="Money IF Auto">Money IF Auto</h1>
-        <p class="lead">
+<section class="hero" id="overview">
+<div class="hero-grid">
+<div>
+<div class="eyebrow">PERSONAL MONEY ARCHIVE</div>
+<h1 aria-label="Money IF Auto" id="devTrigger">Money IF Auto</h1>
+<p class="lead">
           残高を記録すると、直近3件・直近8件・全履歴・月次推移を組み合わせ、資金移動や資産悪化まで自動で読み取る、
           自分専用のお金ダッシュボード。
         </p>
-        <div id="themeIndicator" class="theme-indicator">時間帯テーマを読み込み中</div>
-      </div>
-      <div class="hero-side">
-        <div class="status-card">
-          <small>自動判定モード</small>
-          <strong id="modeTitle">データ不足</strong>
-          <div id="modeDetail" class="status-detail">2件以上記録すると傾向を判定します。</div>
-        </div>
-        <div class="mini-strip">
-          <div class="mini"><span>判定軸</span><strong>総資産</strong></div>
-          <div class="mini"><span>判定軸</span><strong>使えるお金</strong></div>
-          <div class="mini"><span>判定軸</span><strong>貯金比率</strong></div>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="theme-indicator" id="themeIndicator">時間帯テーマを読み込み中</div>
+</div>
+<div class="hero-side">
+<div class="status-card">
+<small>自動判定モード</small>
+<strong id="modeTitle">データ不足</strong>
+<div class="status-detail" id="modeDetail">2件以上記録すると傾向を判定します。</div>
+</div>
+<div class="mini-strip">
+<div class="mini"><span>判定軸</span><strong>総資産</strong></div>
+<div class="mini"><span>判定軸</span><strong>使えるお金</strong></div>
+<div class="mini"><span>判定軸</span><strong>貯金比率</strong></div>
+</div>
+</div>
+</div>
+</section>
+<section class="layout app-shell file-workspace">
 
-  <section class="layout app-shell">
-    <aside class="panel sticky entry-panel" id="entry">
-      <div class="panel-inner">
-        <div class="section-head">
-          <h2 class="section-title">資産残高を記録</h2>
-          <span class="badge">Auto Analyze</span>
-        </div>
-        <p class="section-sub">
+<nav aria-label="Money IF セクション切り替え" class="file-tab-switcher"><button aria-selected="true" class="file-tab-button active" data-target="entry" title="記録" type="button"><small>01</small><strong>RECORD</strong></button><button aria-selected="false" class="file-tab-button" data-target="snapshot" title="資産" type="button"><small>02</small><strong>ASSETS</strong></button><button aria-selected="false" class="file-tab-button" data-target="ai" title="AI分析" type="button"><small>03</small><strong>AI REPORT</strong></button><button aria-selected="false" class="file-tab-button" data-target="rules" title="ルール" type="button"><small>04</small><strong>RULES</strong></button><button aria-selected="false" class="file-tab-button" data-target="plans" title="予定" type="button"><small>05</small><strong>PLANS</strong></button><button aria-selected="false" class="file-tab-button" data-target="purchase" title="購入判定" type="button"><small>06</small><strong>DECISION</strong></button><button aria-selected="false" class="file-tab-button" data-target="chart-section" title="推移" type="button"><small>07</small><strong>CHART</strong></button><button aria-selected="false" class="file-tab-button" data-target="history-section" title="履歴" type="button"><small>08</small><strong>ARCHIVE</strong></button></nav><div class="dashboard-content"><aside class="panel sticky entry-panel file-sheet" data-file-view="entry" data-tab="RECORD" id="entry">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">資産残高を記録</h2>
+<span class="badge">Auto Analyze</span>
+</div>
+<p class="section-sub">
           支出を逐一入力しなくても大丈夫。現金・カード・貯金・投資の残高だけ記録して、
           傾向を自動判定します。
         </p>
-
-        <form id="form">
-          <label for="date">日付</label>
-          <input id="date" type="date" required>
-
-          <div class="row">
-            <div>
-              <label for="cash">現金</label>
-              <div class="input-wrap"><input id="cash" type="number" min="0" required></div>
-            </div>
-            <div>
-              <label for="card">カード残高</label>
-              <div class="input-wrap"><input id="card" type="number" min="0" required></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="savingsCash">貯金（現金）</label>
-              <div class="input-wrap"><input id="savingsCash" type="number" min="0" required></div>
-            </div>
-            <div>
-              <label for="savingsBank">貯金（銀行）</label>
-              <div class="input-wrap"><input id="savingsBank" type="number" min="0" required></div>
-            </div>
-          </div>
-
-          <label for="investment">投資</label>
-          <div class="input-wrap"><input id="investment" type="number" min="0" required></div>
-          <div class="debt-section">
-            <label for="debt">借金総額</label>
-            <div class="input-wrap"><input id="debt" type="number" min="0" value="0"></div>
-            <div class="debt-note">現在残っている借金の合計額を入力します。</div>
-          </div>
-
-          <div class="salary-toggle"><div><span>給料日として記録</span><small>増加分を収入として扱い、貯金目安を提案します</small></div><label class="switch" aria-label="給料日として記録"><input id="salaryDay" type="checkbox"><span class="slider"></span></label></div>
-          <button class="primary" type="submit">記録して自動分析</button>
-                    <button class="danger" id="clear" type="button">全データ削除</button>
-        </form>
-
-        <div class="note">
+<form id="form">
+<label for="date">日付</label>
+<input id="date" required="" type="date"/>
+<div class="row">
+<div>
+<label for="cash">現金</label>
+<div class="input-wrap"><input id="cash" min="0" required="" type="number"/></div>
+</div>
+<div>
+<label for="card">カード残高</label>
+<div class="input-wrap"><input id="card" min="0" required="" type="number"/></div>
+</div>
+</div>
+<div class="row">
+<div>
+<label for="savingsCash">貯金（現金）</label>
+<div class="input-wrap"><input id="savingsCash" min="0" required="" type="number"/></div>
+</div>
+<div>
+<label for="savingsBank">貯金（銀行）</label>
+<div class="input-wrap"><input id="savingsBank" min="0" required="" type="number"/></div>
+</div>
+</div>
+<label for="investment">投資</label>
+<div class="input-wrap"><input id="investment" min="0" required="" type="number"/></div>
+<div class="debt-section">
+<label for="debt">借金総額</label>
+<div class="input-wrap"><input id="debt" min="0" type="number" value="0"/></div>
+<div class="debt-note">現在残っている借金の合計額を入力します。</div>
+</div>
+<div class="salary-toggle"><div><span>給料日として記録</span><small>増加分を収入として扱い、貯金目安を提案します</small></div><label aria-label="給料日として記録" class="switch"><input id="salaryDay" type="checkbox"/><span class="slider"></span></label></div>
+<button class="primary" type="submit">記録して自動分析</button>
+<button class="danger" id="clear" type="button">全データ削除</button>
+</form>
+<div class="note">
           保存先はこのブラウザ内です。同じ日付で入力すると上書きされます。
         </div>
-      </div>
-    </aside>
-
-    <div class="dashboard-content">
-      <section class="panel snapshot-panel" id="snapshot">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">いまの資産スナップショット</h2>
-            <span class="badge">Live Summary</span>
-          </div>
-          <div class="stats-grid">
-            <div class="stat">
-              <span>純資産</span>
-              <strong id="total">¥0</strong>
-              <small>資産−借金</small>
-            </div>
-            <div class="stat">
-              <span>使えるお金</span>
-              <strong id="liquid">¥0</strong>
-              <small>現金＋カード残高</small>
-            </div>
-            <div class="stat">
-              <span>守るお金</span>
-              <strong id="protected">¥0</strong>
-              <small>貯金（現金＋銀行）</small>
-            </div>
-            <div class="stat">
-              <span>投資</span>
-              <strong id="investStat">¥0</strong>
-              <small>運用資産</small>
-            </div>
-            <div class="stat">
-              <span>借金</span>
-              <strong id="debtStat">¥0</strong>
-              <small>現在の借金総額</small>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel analysis-panel-main" id="ai">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">自動分析</h2>
-            <span class="badge">Trend Reading</span>
-          </div>
-          <div id="analysis" class="analysis">
-            <h3>まだ判定できません</h3>
+</div>
+</aside>
+<section class="panel snapshot-panel file-sheet" data-file-view="snapshot" data-tab="ASSETS" id="snapshot">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">いまの資産スナップショット</h2>
+<span class="badge">Live Summary</span>
+</div>
+<div class="stats-grid">
+<div class="stat">
+<span>純資産</span>
+<strong id="total">¥0</strong>
+<small>資産−借金</small>
+</div>
+<div class="stat">
+<span>使えるお金</span>
+<strong id="liquid">¥0</strong>
+<small>現金＋カード残高</small>
+</div>
+<div class="stat">
+<span>守るお金</span>
+<strong id="protected">¥0</strong>
+<small>貯金（現金＋銀行）</small>
+</div>
+<div class="stat">
+<span>投資</span>
+<strong id="investStat">¥0</strong>
+<small>運用資産</small>
+</div>
+<div class="stat">
+<span>借金</span>
+<strong id="debtStat">¥0</strong>
+<small>現在の借金総額</small>
+</div>
+</div>
+</div>
+</section>
+<section class="panel analysis-panel-main file-sheet" data-file-view="ai" data-tab="AI REPORT" id="ai">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">自動分析</h2>
+<span class="badge">Trend Reading</span>
+</div>
+<div class="analysis" id="analysis">
+<h3>まだ判定できません</h3>
             2件以上の記録が必要です。
           </div>
-
-          <div class="ai-analysis-panel">
-            <div class="ai-analysis-head">
-              <strong>AI分析</strong>
-              <span class="badge">Gemini API</span>
-            </div>
-            <p class="ai-analysis-note">
+<div class="ai-analysis-panel">
+<div class="ai-analysis-head">
+<strong>AI分析</strong>
+<span class="badge">Gemini API</span>
+</div>
+<p class="ai-analysis-note">
               記録した資産履歴・予定支出・直近の変化をGeminiへ送り、数値の読み上げではなく生活への影響まで分析します。
               AIはボタンを押した時だけ実行します。
             </p>
-            <div class="ai-analysis-actions">
-              <button id="aiAnalyzeButton" type="button" class="primary">AIで詳しく分析する</button>
-            </div>
-            <div id="aiAnalysisResult" class="ai-analysis-result">
+<div class="ai-analysis-actions">
+<button class="primary" id="aiAnalyzeButton" type="button">AIで詳しく分析する</button>
+</div>
+<div class="ai-analysis-result" id="aiAnalysisResult">
               まだAI分析は実行していません。
             </div>
-            <div id="aiAnalysisMeta" class="ai-analysis-meta"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel rules-panel" id="rules">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">今日のIFルール</h2>
-            <span class="badge">Behavior Guide</span>
-          </div>
-          <div class="rule-grid" id="ifRuleGrid">
-            <div class="rule">
-              <small id="ifRule1Label">IF データ不足</small>
-              <strong id="ifRule1Text">記録を3件以上ためる</strong>
-            </div>
-            <div class="rule">
-              <small id="ifRule2Label">IF 次の記録まで</small>
-              <strong id="ifRule2Text">大きな判断は保留する</strong>
-            </div>
-            <div class="rule">
-              <small id="ifRule3Label">IF 確認すること</small>
-              <strong id="ifRule3Text">資産の置き場所と残高を確認する</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-      <section class="panel plans-panel" id="plans">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">これからの予定支出</h2>
-            <span class="badge">Planned Expenses</span>
-          </div>
-          <div class="purchase-grid">
-            <label>
+<div class="ai-analysis-meta" id="aiAnalysisMeta"></div>
+</div>
+</div>
+</section>
+<section class="panel rules-panel file-sheet" data-file-view="rules" data-tab="RULES" id="rules">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">今日のIFルール</h2>
+<span class="badge">Behavior Guide</span>
+</div>
+<div class="rule-grid" id="ifRuleGrid">
+<div class="rule">
+<small id="ifRule1Label">IF データ不足</small>
+<strong id="ifRule1Text">記録を3件以上ためる</strong>
+</div>
+<div class="rule">
+<small id="ifRule2Label">IF 次の記録まで</small>
+<strong id="ifRule2Text">大きな判断は保留する</strong>
+</div>
+<div class="rule">
+<small id="ifRule3Label">IF 確認すること</small>
+<strong id="ifRule3Text">資産の置き場所と残高を確認する</strong>
+</div>
+</div>
+</div>
+</section>
+<section class="panel plans-panel file-sheet" data-file-view="plans" data-tab="PLANS" id="plans">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">これからの予定支出</h2>
+<span class="badge">Planned Expenses</span>
+</div>
+<div class="purchase-grid">
+<label>
               予定
-              <input id="plannedName" type="text" placeholder="例：旅行、交通費、飲み会">
-            </label>
-            <label>
+              <input id="plannedName" placeholder="例：旅行、交通費、飲み会" type="text"/>
+</label>
+<label>
               金額
-              <input id="plannedAmount" type="number" min="0" step="100" placeholder="10000">
-            </label>
-            <label>
+              <input id="plannedAmount" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<label>
               期限
-              <input id="plannedDate" type="date">
-            </label>
-            <label>
+              <input id="plannedDate" type="date"/>
+</label>
+<label>
               優先度
               <select id="plannedPriority">
-                <option value="essential">必ず必要</option>
-                <option value="important">できれば守る</option>
-                <option value="optional">削ってもよい</option>
-              </select>
-            </label>
-            <button id="plannedAdd" type="button" class="primary" style="margin-top:0">追加</button>
-          </div>
-          <div id="plannedExpenseList" class="planned-expense-list"></div>
-        </div>
-      </section>
-
-      <section class="panel purchase-panel-main" id="purchase">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">購入判定</h2>
-            <span class="badge">Purchase Check</span>
-          </div>
-          <div class="purchase-grid">
-            <label>
+<option value="essential">必ず必要</option>
+<option value="important">できれば守る</option>
+<option value="optional">削ってもよい</option>
+</select>
+</label>
+<button class="primary" id="plannedAdd" style="margin-top:0" type="button">追加</button>
+</div>
+<div class="planned-expense-list" id="plannedExpenseList"></div>
+</div>
+</section>
+<section class="panel purchase-panel-main file-sheet" data-file-view="purchase" data-tab="DECISION" id="purchase">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">購入判定</h2>
+<span class="badge">Purchase Check</span>
+</div>
+<div class="purchase-grid">
+<label>
               商品・予定
-              <input id="purchaseName" type="text" placeholder="例：ギター機材、旅行、飲み会">
-            </label>
-            <label>
+              <input id="purchaseName" placeholder="例：ギター機材、旅行、飲み会" type="text"/>
+</label>
+<label>
               金額
-              <input id="purchasePrice" type="number" min="0" step="100" placeholder="10000">
-            </label>
-            <label>
+              <input id="purchasePrice" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<label>
               種類
               <select id="purchaseType">
-                <option value="want">趣味・欲しい物</option>
-                <option value="experience">旅行・交際・経験</option>
-                <option value="study">学業・資格・制作</option>
-                <option value="need">生活必需品</option>
-              </select>
-            </label>
-            <label>
+<option value="want">趣味・欲しい物</option>
+<option value="experience">旅行・交際・経験</option>
+<option value="study">学業・資格・制作</option>
+<option value="need">生活必需品</option>
+</select>
+</label>
+<label>
               貯金の使い方
               <select id="savingsUseMode">
-                <option value="none">貯金は使わない</option>
-                <option value="surplus">最近の最低額を超えた分まで</option>
-                <option value="custom">上限を自分で指定</option>
-              </select>
-            </label>
-            <label id="savingsLimitWrap" style="display:none">
+<option value="none">貯金は使わない</option>
+<option value="surplus">最近の最低額を超えた分まで</option>
+<option value="custom">上限を自分で指定</option>
+</select>
+</label>
+<label id="savingsLimitWrap" style="display:none">
               貯金から使う上限
-              <input id="savingsUseLimit" type="number" min="0" step="100" placeholder="10000">
-            </label>
-            <button id="purchaseJudge" type="button" class="primary" style="margin-top:0">判定する</button>
-          </div>
-          <div id="purchaseResult" class="purchase-result plan-message">
+              <input id="savingsUseLimit" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<button class="primary" id="purchaseJudge" style="margin-top:0" type="button">判定する</button>
+</div>
+<div class="purchase-result plan-message" id="purchaseResult">
             予定支出・普段の消費ペース・貯金・借金を見て、購入後の生活に支障が出るか判定します。
           </div>
-        </div>
-      </section>
-
-      <section class="panel chart-panel" id="chart-section">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">資産推移</h2>
-            <span class="badge">Line Graph</span>
-          </div>
-          <div class="chart-controls">
-            <div class="segmented" id="periodControl">
-              <button type="button" data-period="daily" class="active">日足</button>
-              <button type="button" data-period="weekly">週足</button>
-              <button type="button" data-period="monthly">月足</button>
-            </div>
-            <div class="chart-hint">データが多いと横にスクロールできます</div>
-          </div>
-          <div id="legend" class="legend"></div>
-          <div id="chartScroll" class="chart-scroll">
-            <div id="canvasWrap" class="canvas-wrap"><canvas id="chart"></canvas></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel history-panel" id="history-section">
-        <div class="panel-inner history">
-          <div class="section-head">
-            <h2 class="section-title">記録一覧</h2>
-            <span class="badge">History</span>
-          </div>
-          <div id="history"></div>
-        </div>
-      </section>
-    </div>
-  </section>
+</div>
+</section>
+<section class="panel chart-panel file-sheet" data-file-view="chart-section" data-tab="CHART" id="chart-section">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">資産推移</h2>
+<span class="badge">Line Graph</span>
+</div>
+<div class="chart-controls">
+<div class="segmented" id="periodControl">
+<button class="active" data-period="daily" type="button">日足</button>
+<button data-period="weekly" type="button">週足</button>
+<button data-period="monthly" type="button">月足</button>
+</div>
+<div class="chart-hint">データが多いと横にスクロールできます</div>
+</div>
+<div class="legend" id="legend"></div>
+<div class="chart-scroll" id="chartScroll">
+<div class="canvas-wrap" id="canvasWrap"><canvas id="chart"></canvas></div>
+</div>
+</div>
+</section>
+<section class="panel history-panel file-sheet" data-file-view="history-section" data-tab="ARCHIVE" id="history-section">
+<div class="panel-inner history">
+<div class="section-head">
+<h2 class="section-title">記録一覧</h2>
+<span class="badge">History</span>
+</div>
+<div id="history"></div>
+</div>
+</section>
+</div>
+</section>
 </main>
-<div id="devToast" class="dev-toast"></div>
-
-<div id="devModal" class="dev-modal" aria-hidden="true">
-  <div class="dev-dialog" role="dialog" aria-modal="true" aria-labelledby="devTitle">
-    <div id="devLoginView" class="dev-login-view">
-      <h3 id="devTitle">Developer Mode</h3>
-      <p>開発者コードを入力してください。</p>
-      <input id="devCode" type="password" autocomplete="off" placeholder="Developer code">
-      <div class="dev-actions">
-        <button id="devCancel" class="secondary" type="button">閉じる</button>
-        <button id="devRun" class="primary" type="button" style="margin-top:0">認証</button>
-      </div>
-    </div>
-
-    <div id="devImportView" class="dev-import-view" hidden>
-      <h3>履歴データ一括移行</h3>
-      <p>数字列を貼り付けると、既存履歴へまとめて追加します。同じ日付は上書きされます。</p>
-      <div class="dev-format">
-        日付.現金.カード.貯金現金.貯金銀行.投資[.借金][.給料日]<br>
-        給料日：最後を1、通常日：0または省略<br>
-        例：20280513.5555.10000.1000.100000.200.0.1<br>
+<div class="dev-toast" id="devToast"></div>
+<div aria-hidden="true" class="dev-modal" id="devModal">
+<div aria-labelledby="devTitle" aria-modal="true" class="dev-dialog" role="dialog">
+<div class="dev-login-view" id="devLoginView">
+<h3 id="devTitle">Developer Mode</h3>
+<p>開発者コードを入力してください。</p>
+<input autocomplete="off" id="devCode" placeholder="Developer code" type="password"/>
+<div class="dev-actions">
+<button class="secondary" id="devCancel" type="button">閉じる</button>
+<button class="primary" id="devRun" style="margin-top:0" type="button">認証</button>
+</div>
+</div>
+<div class="dev-import-view" hidden="" id="devImportView">
+<h3>履歴データ一括移行</h3>
+<p>数字列を貼り付けると、既存履歴へまとめて追加します。同じ日付は上書きされます。</p>
+<div class="dev-format">
+        日付.現金.カード.貯金現金.貯金銀行.投資[.借金][.給料日]<br/>
+        給料日：最後を1、通常日：0または省略<br/>
+        例：20280513.5555.10000.1000.100000.200.0.1<br/>
         区切り：改行 ／ / ／ ;
       </div>
-      <textarea id="bulkImportData" spellcheck="false" placeholder="20280513.5555.10000.1000.100000.200.0.1&#10;20280520.6000.12000.3000.100000.500.10000.0"></textarea>
-      <div id="bulkImportStatus" class="dev-import-status"></div>
-      <div class="dev-toolbar">
-        <button id="devRandomSample" class="secondary" type="button">ランダムサンプル</button>
-        <button id="bulkImportRun" class="primary" type="button" style="margin-top:0">履歴へ追加</button>
-      </div>
-
-      <div class="dev-time-preview">
-        <h4>時間帯UIプレビュー</h4>
-        <p>実際の時刻を変えず、画面テーマだけを確認できます。</p>
-        <div class="dev-time-buttons">
-          <button type="button" class="secondary" data-dev-hour="7">朝 7時</button>
-          <button type="button" class="secondary" data-dev-hour="13">昼 13時</button>
-          <button type="button" class="secondary" data-dev-hour="18">夕方 18時</button>
-          <button type="button" class="secondary" data-dev-hour="23">夜 23時</button>
-        </div>
-        <button id="devTimeReset" class="secondary dev-time-reset" type="button">実際の現在時刻に戻す</button>
-        <div id="devTimeStatus" class="dev-time-status">現在時刻に連動中</div>
-      </div>
-
-      <button id="devImportClose" class="danger" type="button">閉じる</button>
-    </div>
-  </div>
+<textarea id="bulkImportData" placeholder="20280513.5555.10000.1000.100000.200.0.1
+20280520.6000.12000.3000.100000.500.10000.0" spellcheck="false"></textarea>
+<div class="dev-import-status" id="bulkImportStatus"></div>
+<div class="dev-toolbar">
+<button class="secondary" id="devRandomSample" type="button">ランダムサンプル</button>
+<button class="primary" id="bulkImportRun" style="margin-top:0" type="button">履歴へ追加</button>
 </div>
-
-
+<div class="dev-time-preview">
+<h4>時間帯UIプレビュー</h4>
+<p>実際の時刻を変えず、画面テーマだけを確認できます。</p>
+<div class="dev-time-buttons">
+<button class="secondary" data-dev-hour="7" type="button">朝 7時</button>
+<button class="secondary" data-dev-hour="13" type="button">昼 13時</button>
+<button class="secondary" data-dev-hour="18" type="button">夕方 18時</button>
+<button class="secondary" data-dev-hour="23" type="button">夜 23時</button>
+</div>
+<button class="secondary dev-time-reset" id="devTimeReset" type="button">実際の現在時刻に戻す</button>
+<div class="dev-time-status" id="devTimeStatus">現在時刻に連動中</div>
+</div>
+<button class="danger" id="devImportClose" type="button">閉じる</button>
+</div>
+</div>
+</div>
 <script>
 
 let devThemeHour=null;
@@ -4028,7 +4409,6 @@ window.onresize=()=>{
   window.__resizeTimer=setTimeout(render,100);
 };
 </script>
-
 <script>
 (() => {
   const openBtn = document.getElementById("menuButton");
@@ -4055,6 +4435,64 @@ window.onresize=()=>{
   });
 })();
 </script>
+<script>
+(() => {
+  const buttons = [...document.querySelectorAll(".file-tab-button")];
+  const panels = [...document.querySelectorAll("[data-file-view]")];
 
-</body>
+  function activateFile(id, updateHash = true){
+    const target = document.querySelector(`[data-file-view="${id}"]`);
+    if(!target) return;
+
+    panels.forEach(panel => {
+      panel.classList.toggle("file-active", panel === target);
+    });
+
+    buttons.forEach(btn => {
+      const active = btn.dataset.target === id;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", String(active));
+      if(active){
+        btn.scrollIntoView({behavior:"smooth", block:"nearest", inline:"center"});
+      }
+    });
+
+    if(updateHash){
+      history.replaceState(null, "", `#${id}`);
+    }
+
+    // Chart canvases often need a redraw after becoming visible.
+    if(id === "chart-section" && typeof render === "function"){
+      requestAnimationFrame(() => {
+        try{ render(); }catch(e){}
+      });
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => activateFile(btn.dataset.target));
+  });
+
+  // Hamburger links also switch the actual file instead of just scrolling.
+  document.querySelectorAll("#sideMenu a[href^='#']").forEach(link => {
+    link.addEventListener("click", e => {
+      const id = link.getAttribute("href").slice(1);
+      if(document.querySelector(`[data-file-view="${id}"]`)){
+        e.preventDefault();
+        activateFile(id);
+        document.querySelector(".file-workspace")?.scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
+      }
+    });
+  });
+
+  const initial = location.hash.slice(1);
+  activateFile(
+    panels.some(p => p.dataset.fileView === initial) ? initial : "entry",
+    false
+  );
+})();
+</script></body>
 </html>

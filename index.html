@@ -1347,11 +1347,480 @@ body.theme-day .ai-analysis-meta{
   line-height:1.65;
 }
 
+
+/* =========================================================
+   MONEY IF — UI REDESIGN / 2026
+   Functional logic below is unchanged.
+   ========================================================= */
+
+:root{
+  --mi-bg:#0b0e14;
+  --mi-surface:#121722;
+  --mi-surface-2:#181e2b;
+  --mi-line:rgba(255,255,255,.11);
+  --mi-text:#f4f7fb;
+  --mi-muted:#8e9aab;
+  --mi-blue:#72a7ff;
+  --mi-violet:#a78bfa;
+  --mi-green:#65d49a;
+  --mi-amber:#f6c76d;
+  --mi-coral:#ff8e7a;
+  --mi-cyan:#61d6e8;
+  --mi-header:64px;
+}
+
+html{scroll-behavior:smooth;scroll-padding-top:86px}
+body{
+  background:
+    radial-gradient(circle at 12% 12%, rgba(83,116,255,.12), transparent 28rem),
+    radial-gradient(circle at 85% 20%, rgba(174,105,255,.08), transparent 25rem),
+    var(--mi-bg) !important;
+  color:var(--mi-text);
+  padding-top:var(--mi-header);
+}
+
+/* Fixed top chrome */
+.app-header{
+  position:fixed;
+  inset:0 0 auto 0;
+  z-index:1000;
+  height:var(--mi-header);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 max(20px,calc((100vw - 1440px)/2));
+  background:rgba(8,11,17,.88);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.brand-lockup{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--mi-text);
+  text-decoration:none;
+}
+.brand-mark{
+  width:34px;height:34px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--mi-blue),var(--mi-violet));
+  color:#08101e;
+  font-size:15px;
+  font-weight:950;
+  border-radius:3px;
+  box-shadow:0 0 28px rgba(114,167,255,.23);
+}
+.brand-copy{display:grid;line-height:1}
+.brand-copy strong{font-size:.98rem;letter-spacing:.01em}
+.brand-copy small{
+  margin-top:5px;
+  font-size:.59rem;
+  letter-spacing:.2em;
+  color:var(--mi-muted);
+}
+.header-actions{display:flex;align-items:center;gap:16px}
+.ai-status-dot{
+  display:flex;align-items:center;gap:7px;
+  font-size:.7rem;letter-spacing:.05em;color:var(--mi-muted);
+}
+.ai-status-dot i{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--mi-green);
+  box-shadow:0 0 12px rgba(101,212,154,.8);
+}
+.menu-button{
+  width:42px;height:42px!important;
+  padding:0!important;margin:0!important;
+  display:grid!important;align-content:center;justify-items:center;gap:5px;
+  background:transparent!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:3px!important;
+  box-shadow:none!important;
+}
+.menu-button span{display:block;width:18px;height:1.5px;background:var(--mi-text);transition:.25s}
+.menu-button:hover{background:rgba(255,255,255,.06)!important}
+
+/* Drawer */
+.menu-backdrop{
+  position:fixed;inset:0;z-index:1100;
+  background:rgba(0,0,0,.52);
+  opacity:0;pointer-events:none;transition:.25s;
+}
+.side-menu{
+  position:fixed;
+  top:0;right:0;bottom:0;z-index:1200;
+  width:min(390px,88vw);
+  padding:28px;
+  transform:translateX(102%);
+  transition:transform .28s ease;
+  background:#10141d;
+  border-left:1px solid rgba(255,255,255,.1);
+  box-shadow:-24px 0 70px rgba(0,0,0,.36);
+  display:flex;flex-direction:column;
+}
+body.menu-open .menu-backdrop{opacity:1;pointer-events:auto}
+body.menu-open .side-menu{transform:none}
+.side-menu-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding-bottom:25px;margin-bottom:14px;
+  border-bottom:1px solid var(--mi-line);
+}
+.side-menu-top small{display:block;color:var(--mi-muted);font-size:.62rem;letter-spacing:.2em;margin-bottom:7px}
+.side-menu-top strong{font-size:1.4rem}
+.menu-close{
+  width:38px!important;height:38px!important;padding:0!important;margin:0!important;
+  background:transparent!important;border:1px solid var(--mi-line)!important;
+  border-radius:2px!important;color:var(--mi-muted)!important;font-size:1.4rem!important;
+}
+.side-menu>a{
+  display:grid;grid-template-columns:34px 1fr;align-items:center;
+  padding:15px 4px;
+  color:var(--mi-text);text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.055);
+  font-weight:650;
+}
+.side-menu>a span{font-size:.64rem;color:var(--mi-muted);font-weight:500;letter-spacing:.1em}
+.side-menu>a:hover{padding-left:10px;color:var(--mi-blue)}
+.side-menu-foot{margin-top:auto;border-top:1px solid var(--mi-line);padding-top:20px}
+.side-menu-foot span{font-size:.6rem;letter-spacing:.18em;color:var(--mi-violet)}
+.side-menu-foot p{font-size:.76rem;line-height:1.7;color:var(--mi-muted);margin:8px 0 0}
+
+/* Main geometry */
+.wrap{max-width:1440px!important;padding:34px 20px 80px!important}
+.hero{
+  position:relative;
+  margin:0 0 24px!important;
+  padding:44px 42px!important;
+  min-height:260px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.1)!important;
+  border-radius:3px!important;
+  background:
+    linear-gradient(110deg,rgba(30,42,67,.92),rgba(15,18,28,.92) 58%,rgba(40,27,66,.84))!important;
+  box-shadow:0 22px 70px rgba(0,0,0,.24)!important;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  width:330px;height:330px;
+  right:-75px;top:-125px;
+  border:1px solid rgba(114,167,255,.22);
+  transform:rotate(22deg);
+  border-radius:0;
+  box-shadow:0 0 0 45px rgba(167,139,250,.025),0 0 0 90px rgba(114,167,255,.018);
+}
+.hero-grid{position:relative;z-index:1;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr)!important;gap:55px!important}
+.eyebrow{
+  color:var(--mi-blue)!important;
+  letter-spacing:.22em!important;
+  font-size:.65rem!important;
+}
+.hero h1{
+  margin:10px 0 11px!important;
+  font-size:clamp(2.7rem,5vw,5.2rem)!important;
+  letter-spacing:-.065em!important;
+  line-height:.92!important;
+}
+.lead{max-width:730px!important;color:#aeb7c7!important;font-size:.96rem!important}
+.theme-indicator{
+  border-radius:2px!important;
+  border:1px solid rgba(114,167,255,.18)!important;
+  background:rgba(114,167,255,.06)!important;
+  color:#c7d7f2!important;
+}
+.status-card{
+  border-radius:2px!important;
+  border:0!important;
+  border-left:3px solid var(--mi-green)!important;
+  background:rgba(6,10,17,.52)!important;
+  box-shadow:none!important;
+}
+.mini-strip{gap:1px!important;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.09)}
+.mini{
+  border:0!important;
+  border-radius:0!important;
+  background:#121722!important;
+}
+
+/* Outer layout */
+.app-shell{
+  display:grid!important;
+  grid-template-columns:330px minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:18px!important;
+}
+.entry-panel{
+  top:86px!important;
+  border-top:3px solid var(--mi-cyan)!important;
+}
+.dashboard-content{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:18px;
+  align-items:start;
+}
+
+/* Kill the universal pill/card feel */
+.panel{
+  border-radius:3px!important;
+  background:rgba(18,23,34,.86)!important;
+  border:1px solid var(--mi-line)!important;
+  box-shadow:0 12px 36px rgba(0,0,0,.16)!important;
+  overflow:hidden;
+}
+.panel-inner{padding:22px!important}
+.section-head{margin-bottom:15px!important}
+.section-title{
+  font-size:1rem!important;
+  letter-spacing:.01em!important;
+}
+.badge{
+  border-radius:2px!important;
+  background:transparent!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  font-size:.58rem!important;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+/* Grid composition */
+.snapshot-panel{grid-column:span 12;border-top:3px solid var(--mi-blue)!important}
+.analysis-panel-main{grid-column:span 8;border-top:3px solid var(--mi-violet)!important}
+.rules-panel{grid-column:span 4;border-top:3px solid var(--mi-amber)!important}
+.plans-panel{grid-column:span 6;border-top:3px solid var(--mi-green)!important}
+.purchase-panel-main{grid-column:span 6;border-top:3px solid var(--mi-coral)!important}
+.chart-panel{grid-column:span 8;border-top:3px solid var(--mi-cyan)!important}
+.history-panel{grid-column:span 4;border-top:3px solid #8491a8!important}
+
+/* Stats are flat tiles with color-coded edge, not rounded bubbles */
+.stats-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:1px!important;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.09);
+}
+.stat{
+  min-height:114px;
+  padding:17px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#111722!important;
+}
+.stat:nth-child(1){box-shadow:inset 0 3px var(--mi-blue)}
+.stat:nth-child(2){box-shadow:inset 0 3px var(--mi-cyan)}
+.stat:nth-child(3){box-shadow:inset 0 3px var(--mi-green)}
+.stat:nth-child(4){box-shadow:inset 0 3px var(--mi-violet)}
+.stat:nth-child(5){box-shadow:inset 0 3px var(--mi-coral)}
+.stat strong{font-size:clamp(1.25rem,2vw,1.8rem)!important;letter-spacing:-.04em}
+
+/* Forms: sharper, editorial */
+input,select,textarea{
+  border-radius:2px!important;
+  background:#0d121b!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  box-shadow:none!important;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--mi-blue)!important;
+  box-shadow:0 0 0 2px rgba(114,167,255,.12)!important;
+}
+button.primary{
+  border-radius:2px!important;
+  background:linear-gradient(90deg,#6d9fff,#8f7dff)!important;
+  color:#08101b!important;
+  box-shadow:none!important;
+}
+button.danger,button.secondary{border-radius:2px!important}
+.debt-section,.salary-toggle,.note,.purchase-result,.analysis,.rule,.planned-expense-item{
+  border-radius:2px!important;
+}
+
+/* AI = focal zone */
+.analysis-panel-main .panel-inner{padding:24px!important}
+.ai-analysis-panel{
+  margin-top:18px!important;
+  border-radius:2px!important;
+  border:1px solid rgba(167,139,250,.2)!important;
+  border-left:3px solid var(--mi-violet)!important;
+  background:
+    linear-gradient(135deg,rgba(167,139,250,.08),rgba(114,167,255,.035)),
+    #101520!important;
+}
+.ai-analysis-result{
+  border-radius:0!important;
+  background:#0c1119!important;
+  border:0!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+  padding:20px 0 0!important;
+}
+.ai-analysis-result h3{
+  color:#e9e4ff!important;
+  padding-left:12px;
+  border-left:2px solid var(--mi-violet);
+}
+
+/* Rules become vertical signal blocks */
+.rule-grid{grid-template-columns:1fr!important;gap:8px!important}
+.rule{
+  min-height:auto!important;
+  padding:15px!important;
+  background:#10151f!important;
+  border:0!important;
+  border-left:2px solid var(--mi-amber)!important;
+}
+
+/* Charts / lists */
+.chart-scroll,.canvas-wrap{border-radius:0!important}
+.history-panel .panel-inner{padding:20px!important}
+.history-panel #history{max-height:620px;overflow:auto;padding-right:4px}
+
+/* Color accents by area */
+.plans-panel .primary{background:linear-gradient(90deg,#65d49a,#61d6c5)!important}
+.purchase-panel-main .primary{background:linear-gradient(90deg,#ff9b80,#f6c76d)!important}
+.entry-panel .primary{background:linear-gradient(90deg,#61d6e8,#72a7ff)!important}
+
+/* Day/morning: retain geometry, use light surfaces */
+body.theme-morning,
+body.theme-day{
+  --mi-bg:#edf2f7;
+  --mi-surface:#ffffff;
+  --mi-surface-2:#f7f9fc;
+  --mi-line:rgba(25,42,66,.13);
+  --mi-text:#172033;
+  --mi-muted:#68768b;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(84,132,255,.13),transparent 28rem),
+    radial-gradient(circle at 90% 8%,rgba(170,116,255,.09),transparent 24rem),
+    #eef3f8!important;
+  color:var(--mi-text)!important;
+}
+body.theme-morning .app-header,
+body.theme-day .app-header{
+  background:rgba(246,249,252,.9);
+  border-color:rgba(22,39,66,.1);
+}
+body.theme-morning .brand-lockup,
+body.theme-day .brand-lockup{color:#172033}
+body.theme-morning .menu-button span,
+body.theme-day .menu-button span{background:#172033}
+body.theme-morning .side-menu,
+body.theme-day .side-menu{background:#f7f9fc;color:#172033}
+body.theme-morning .side-menu>a,
+body.theme-day .side-menu>a{color:#172033;border-color:rgba(23,32,51,.08)}
+body.theme-morning .hero,
+body.theme-day .hero{
+  background:linear-gradient(115deg,#ffffff,#f0f5ff 60%,#f6f0ff)!important;
+  color:#172033!important;
+}
+body.theme-morning .lead,
+body.theme-day .lead{color:#58677d!important}
+body.theme-morning .mini,
+body.theme-day .mini,
+body.theme-morning .stat,
+body.theme-day .stat{
+  background:#fff!important;color:#172033!important;
+}
+body.theme-morning .panel,
+body.theme-day .panel{
+  background:rgba(255,255,255,.93)!important;
+  color:#172033!important;
+  box-shadow:0 12px 36px rgba(36,55,84,.08)!important;
+}
+body.theme-morning input,
+body.theme-day input,
+body.theme-morning select,
+body.theme-day select,
+body.theme-morning textarea,
+body.theme-day textarea{
+  background:#f8fafc!important;color:#172033!important;border-color:rgba(23,32,51,.14)!important;
+}
+body.theme-morning .ai-analysis-panel,
+body.theme-day .ai-analysis-panel{
+  background:linear-gradient(135deg,rgba(167,139,250,.08),rgba(114,167,255,.05)),#fafbff!important;
+  color:#172033!important;
+}
+body.theme-morning .ai-analysis-result,
+body.theme-day .ai-analysis-result{
+  background:transparent!important;color:#172033!important;border-top-color:rgba(23,32,51,.1)!important;
+}
+body.theme-morning .rule,
+body.theme-day .rule{background:#fbfcfe!important;color:#172033!important}
+
+/* Responsive */
+@media (max-width:1180px){
+  .app-shell{grid-template-columns:1fr!important}
+  .entry-panel{position:relative!important;top:auto!important}
+  .analysis-panel-main,.rules-panel,.plans-panel,.purchase-panel-main,.chart-panel,.history-panel{
+    grid-column:span 12;
+  }
+  .stats-grid{grid-template-columns:repeat(3,1fr)!important}
+}
+@media (max-width:760px){
+  :root{--mi-header:58px}
+  .app-header{padding:0 14px}
+  .ai-status-dot{display:none}
+  .wrap{padding:18px 12px 56px!important}
+  .hero{padding:28px 20px!important;min-height:0}
+  .hero-grid{grid-template-columns:1fr!important;gap:22px!important}
+  .hero h1{font-size:3rem!important}
+  .dashboard-content{grid-template-columns:1fr;gap:12px}
+  .snapshot-panel,.analysis-panel-main,.rules-panel,.plans-panel,.purchase-panel-main,.chart-panel,.history-panel{
+    grid-column:1;
+  }
+  .stats-grid{grid-template-columns:1fr 1fr!important}
+  .stat:first-child{grid-column:1/-1}
+  .panel-inner{padding:18px!important}
+  .side-menu{padding:22px}
+}
+
 </style>
 </head>
 <body>
-<main class="wrap">
-  <section class="hero">
+
+<header class="app-header">
+  <a class="brand-lockup" href="#overview" aria-label="Money IF Auto top">
+    <span class="brand-mark">M</span>
+    <span class="brand-copy">
+      <strong>Money IF</strong>
+      <small>AI MONEY OS</small>
+    </span>
+  </a>
+
+  <div class="header-actions">
+    <span class="ai-status-dot"><i></i> Gemini connected</span>
+    <button id="menuButton" class="menu-button" type="button" aria-label="メニューを開く" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div id="menuBackdrop" class="menu-backdrop"></div>
+<nav id="sideMenu" class="side-menu" aria-hidden="true">
+  <div class="side-menu-top">
+    <div>
+      <small>NAVIGATION</small>
+      <strong>Money IF</strong>
+    </div>
+    <button id="menuClose" class="menu-close" type="button" aria-label="メニューを閉じる">×</button>
+  </div>
+
+  <a href="#overview"><span>01</span> Overview</a>
+  <a href="#entry"><span>02</span> 記録する</a>
+  <a href="#ai"><span>03</span> AI分析</a>
+  <a href="#plans"><span>04</span> 予定支出</a>
+  <a href="#purchase"><span>05</span> 購入判定</a>
+  <a href="#chart-section"><span>06</span> 資産推移</a>
+  <a href="#history-section"><span>07</span> 履歴</a>
+
+  <div class="side-menu-foot">
+    <span>MORE FEATURES</span>
+    <p>ここは今後の機能追加用。設定・AI相談・通知などを増やせます。</p>
+  </div>
+</nav>
+
+<main class="wrap" id="top">
+  <section class="hero" id="overview">
     <div class="hero-grid">
       <div>
         <div class="eyebrow">Money Signal Dashboard</div>
@@ -1377,8 +1846,8 @@ body.theme-day .ai-analysis-meta{
     </div>
   </section>
 
-  <section class="layout">
-    <aside class="panel sticky">
+  <section class="layout app-shell">
+    <aside class="panel sticky entry-panel" id="entry">
       <div class="panel-inner">
         <div class="section-head">
           <h2 class="section-title">資産残高を記録</h2>
@@ -1434,8 +1903,8 @@ body.theme-day .ai-analysis-meta{
       </div>
     </aside>
 
-    <div style="display:grid; gap:22px;">
-      <section class="panel">
+    <div class="dashboard-content">
+      <section class="panel snapshot-panel" id="snapshot">
         <div class="panel-inner">
           <div class="section-head">
             <h2 class="section-title">いまの資産スナップショット</h2>
@@ -1471,7 +1940,7 @@ body.theme-day .ai-analysis-meta{
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel analysis-panel-main" id="ai">
         <div class="panel-inner">
           <div class="section-head">
             <h2 class="section-title">自動分析</h2>
@@ -1502,7 +1971,7 @@ body.theme-day .ai-analysis-meta{
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel rules-panel" id="rules">
         <div class="panel-inner">
           <div class="section-head">
             <h2 class="section-title">今日のIFルール</h2>
@@ -1527,7 +1996,7 @@ body.theme-day .ai-analysis-meta{
 
 
 
-      <section class="panel">
+      <section class="panel plans-panel" id="plans">
         <div class="panel-inner">
           <div class="section-head">
             <h2 class="section-title">これからの予定支出</h2>
@@ -1560,7 +2029,7 @@ body.theme-day .ai-analysis-meta{
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel purchase-panel-main" id="purchase">
         <div class="panel-inner">
           <div class="section-head">
             <h2 class="section-title">購入判定</h2>
@@ -1604,7 +2073,7 @@ body.theme-day .ai-analysis-meta{
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel chart-panel" id="chart-section">
         <div class="panel-inner">
           <div class="section-head">
             <h2 class="section-title">資産推移</h2>
@@ -1625,7 +2094,7 @@ body.theme-day .ai-analysis-meta{
         </div>
       </section>
 
-      <section class="panel">
+      <section class="panel history-panel" id="history-section">
         <div class="panel-inner history">
           <div class="section-head">
             <h2 class="section-title">記録一覧</h2>
@@ -3559,5 +4028,33 @@ window.onresize=()=>{
   window.__resizeTimer=setTimeout(render,100);
 };
 </script>
+
+<script>
+(() => {
+  const openBtn = document.getElementById("menuButton");
+  const closeBtn = document.getElementById("menuClose");
+  const backdrop = document.getElementById("menuBackdrop");
+  const menu = document.getElementById("sideMenu");
+
+  function setMenu(open){
+    document.body.classList.toggle("menu-open", open);
+    openBtn?.setAttribute("aria-expanded", String(open));
+    menu?.setAttribute("aria-hidden", String(!open));
+  }
+
+  openBtn?.addEventListener("click", () => setMenu(true));
+  closeBtn?.addEventListener("click", () => setMenu(false));
+  backdrop?.addEventListener("click", () => setMenu(false));
+
+  menu?.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", () => setMenu(false));
+  });
+
+  document.addEventListener("keydown", e => {
+    if(e.key === "Escape") setMenu(false);
+  });
+})();
+</script>
+
 </body>
 </html>

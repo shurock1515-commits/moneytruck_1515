@@ -3047,7 +3047,50 @@ body.theme-day .money-if-chart-curtain{
   animation:none !important;
 }
 
+
+/* =========================================================
+   SUPABASE CLOUD SYNC
+   ========================================================= */
+.dashboard-back-link{
+  display:flex !important;
+  align-items:center;
+  gap:9px;
+  margin:0 0 14px !important;
+  padding:10px 11px !important;
+  border:1px solid rgba(255,255,255,.1);
+  text-decoration:none;
+}
+.cloud-sync-status{
+  display:flex;
+  align-items:center;
+  gap:9px;
+  margin:0 0 16px;
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.cloud-sync-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#f0bf68;
+}
+.cloud-sync-status.online .cloud-sync-dot{
+  background:#65d49a;
+  box-shadow:0 0 10px rgba(101,212,154,.55);
+}
+.cloud-sync-status.error .cloud-sync-dot{background:#ff8f80}
+.cloud-sync-status>div{display:grid;line-height:1}
+.cloud-sync-status small{
+  color:#7f8b9d;
+  font-size:.52rem;
+  letter-spacing:.14em;
+}
+.cloud-sync-status strong{
+  margin-top:4px;
+  color:#dce4ef;
+  font-size:.67rem;
+}
+
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 <header class="app-header">
@@ -3075,6 +3118,14 @@ body.theme-day .money-if-chart-curtain{
 <button aria-label="メニューを閉じる" class="menu-close" id="menuClose" type="button">×</button>
 </div><a href="#chart-section"><span>01</span> 資産推移</a><a href="#snapshot"><span>02</span>資産</a><a href="#ai"><span>03</span> AI分析</a><a href="#plans"><span>04</span> 予定支出</a><a href="#purchase"><span>05</span> 購入判定</a><a href="#rules"><span>06</span>ルール</a><a href="#history-section"><span>07</span> 履歴</a><a href="#entry"><span>R</span> 記録する</a>
 <div class="side-menu-foot">
+<a href="index.html" class="dashboard-back-link"><span>←</span> ダッシュボードへ戻る</a>
+<div class="cloud-sync-status" id="cloudSyncStatus">
+  <span class="cloud-sync-dot"></span>
+  <div>
+    <small>CLOUD</small>
+    <strong id="cloudSyncLabel">確認中</strong>
+  </div>
+</div>
 <span>MORE FEATURES</span>
 <p>ここは今後の機能追加用。設定・AI相談・通知などを増やせます。</p>
 </div>
@@ -3492,7 +3543,11 @@ const normalizeRecord=r=>{
   return normalized;
 };
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]").map(normalizeRecord)}catch{return[]}};
-const save=r=>localStorage.setItem(KEY,JSON.stringify(r));
+
+const save=r=>{
+  localStorage.setItem(KEY,JSON.stringify(r));
+  window.moneyIfScheduleCloudSync?.();
+};
 
 function today(){
   const d=new Date(),o=d.getTimezoneOffset();
@@ -5550,7 +5605,7 @@ document.getElementById("devTimeReset").onclick=()=>{
 
 $("clear").onclick=()=>{
   if(confirm("すべて削除しますか？")){
-    localStorage.removeItem(KEY);
+    save([]);
     render();
   }
 };
@@ -5572,6 +5627,271 @@ window.onresize=()=>{
   clearTimeout(window.__resizeTimer);
   window.__resizeTimer=setTimeout(render,100);
 };
+
+
+/* =========================================================
+   MONEY IF / SUPABASE CLOUD RECORD SYNC
+   Logged in: Supabase is the account-backed source.
+   Guest: existing localStorage behavior is preserved.
+   ========================================================= */
+const MONEY_IF_SUPABASE_URL="https://ftjcamvzhmqcxqehpdwd.supabase.co";
+const MONEY_IF_SUPABASE_PUBLISHABLE_KEY="sb_publishable_wrWwHdFjgQQ3fHhIo9Vtaw_wSjSSJXW";
+const MONEY_IF_CLOUD_TABLE="money_if_records";
+const MONEY_IF_CLOUD_LINK_PREFIX="money-if-cloud-linked-v1:";
+
+let moneyIfCloudClient=null;
+let moneyIfCloudUser=null;
+let moneyIfCloudReady=false;
+let moneyIfCloudSyncTimer=null;
+let moneyIfCloudSyncing=false;
+let moneyIfCloudSyncAgain=false;
+
+function moneyIfSetCloudStatus(label,state=""){
+  const box=document.getElementById("cloudSyncStatus");
+  const text=document.getElementById("cloudSyncLabel");
+  if(text)text.textContent=label;
+  if(box){
+    box.classList.remove("online","error");
+    if(state)box.classList.add(state);
+  }
+}
+
+function moneyIfRecordToCloud(record,userId){
+  const customValues={};
+  loadCustomAssetDefs().forEach(item=>{
+    customValues[item.id]=+record[item.id]||0;
+  });
+
+  return {
+    user_id:userId,
+    date:record.date,
+    cash:+record.cash||0,
+    card:+record.card||0,
+    savings_cash:+record.savingsCash||0,
+    savings_bank:+record.savingsBank||0,
+    investment:+record.investment||0,
+    debt:+record.debt||0,
+    salary_day:!!record.salaryDay,
+    custom_assets:{
+      defs:loadCustomAssetDefs(),
+      values:customValues
+    }
+  };
+}
+
+function moneyIfCloudToRecord(row){
+  const payload=row?.custom_assets && typeof row.custom_assets==="object"
+    ? row.custom_assets
+    : {};
+  const values=payload.values && typeof payload.values==="object"
+    ? payload.values
+    : payload;
+
+  return normalizeRecord({
+    date:row.date,
+    cash:+row.cash||0,
+    card:+row.card||0,
+    savingsCash:+row.savings_cash||0,
+    savingsBank:+row.savings_bank||0,
+    investment:+row.investment||0,
+    debt:+row.debt||0,
+    salaryDay:!!row.salary_day,
+    ...values
+  });
+}
+
+function moneyIfRestoreCustomDefinitions(rows){
+  for(let i=rows.length-1;i>=0;i--){
+    const ca=rows[i]?.custom_assets;
+    if(ca && Array.isArray(ca.defs)){
+      saveCustomAssetDefs(ca.defs);
+      syncCustomAssetConfig();
+      visible=Object.fromEntries(Object.keys(config).map(k=>[k,true]));
+      return;
+    }
+  }
+}
+
+async function moneyIfFetchCloudRows(){
+  if(!moneyIfCloudClient || !moneyIfCloudUser)return [];
+  const {data,error}=await moneyIfCloudClient
+    .from(MONEY_IF_CLOUD_TABLE)
+    .select("*")
+    .eq("user_id",moneyIfCloudUser.id)
+    .order("date",{ascending:true});
+
+  if(error)throw error;
+  return Array.isArray(data)?data:[];
+}
+
+async function moneyIfMirrorLocalToCloud(){
+  if(!moneyIfCloudReady || !moneyIfCloudClient || !moneyIfCloudUser)return;
+  if(moneyIfCloudSyncing){
+    moneyIfCloudSyncAgain=true;
+    return;
+  }
+
+  moneyIfCloudSyncing=true;
+  moneyIfSetCloudStatus("同期中");
+
+  try{
+    const localRows=load().sort((a,b)=>a.date.localeCompare(b.date));
+    const cloudRows=await moneyIfFetchCloudRows();
+    const cloudByDate=new Map(cloudRows.map(row=>[row.date,row]));
+    const localDates=new Set(localRows.map(row=>row.date));
+
+    for(const record of localRows){
+      const payload=moneyIfRecordToCloud(record,moneyIfCloudUser.id);
+      const existing=cloudByDate.get(record.date);
+
+      if(existing){
+        const {error}=await moneyIfCloudClient
+          .from(MONEY_IF_CLOUD_TABLE)
+          .update(payload)
+          .eq("id",existing.id)
+          .eq("user_id",moneyIfCloudUser.id);
+        if(error)throw error;
+      }else{
+        const {error}=await moneyIfCloudClient
+          .from(MONEY_IF_CLOUD_TABLE)
+          .insert(payload);
+        if(error)throw error;
+      }
+    }
+
+    for(const existing of cloudRows){
+      if(!localDates.has(existing.date)){
+        const {error}=await moneyIfCloudClient
+          .from(MONEY_IF_CLOUD_TABLE)
+          .delete()
+          .eq("id",existing.id)
+          .eq("user_id",moneyIfCloudUser.id);
+        if(error)throw error;
+      }
+    }
+
+    moneyIfSetCloudStatus("同期済み","online");
+  }catch(error){
+    console.error("Money IF cloud sync failed:",error);
+    moneyIfSetCloudStatus("同期エラー","error");
+  }finally{
+    moneyIfCloudSyncing=false;
+    if(moneyIfCloudSyncAgain){
+      moneyIfCloudSyncAgain=false;
+      moneyIfMirrorLocalToCloud();
+    }
+  }
+}
+
+window.moneyIfScheduleCloudSync=()=>{
+  if(!moneyIfCloudReady)return;
+  clearTimeout(moneyIfCloudSyncTimer);
+  moneyIfCloudSyncTimer=setTimeout(moneyIfMirrorLocalToCloud,250);
+};
+
+async function moneyIfInitializeCloud(){
+  if(!window.supabase?.createClient){
+    moneyIfSetCloudStatus("ゲスト保存");
+    return;
+  }
+
+  moneyIfCloudClient=window.supabase.createClient(
+    MONEY_IF_SUPABASE_URL,
+    MONEY_IF_SUPABASE_PUBLISHABLE_KEY,
+    {
+      auth:{
+        persistSession:true,
+        autoRefreshToken:true,
+        detectSessionInUrl:true
+      }
+    }
+  );
+
+  const {data,error}=await moneyIfCloudClient.auth.getSession();
+  if(error){
+    console.error(error);
+    moneyIfSetCloudStatus("ゲスト保存");
+    return;
+  }
+
+  moneyIfCloudUser=data?.session?.user||null;
+
+  if(!moneyIfCloudUser){
+    moneyIfSetCloudStatus("ゲスト保存");
+    return;
+  }
+
+  try{
+    moneyIfSetCloudStatus("読み込み中");
+    const cloudRows=await moneyIfFetchCloudRows();
+    const localRows=load();
+    const marker=MONEY_IF_CLOUD_LINK_PREFIX+moneyIfCloudUser.id;
+    const alreadyLinked=localStorage.getItem(marker)==="1";
+
+    if(!alreadyLinked && localRows.length && !cloudRows.length){
+      const migrate=confirm(
+        `この端末にMoney IFの記録が${localRows.length}件あります。\n`+
+        `ログイン中のアカウントへアップロードしますか？`
+      );
+
+      if(migrate){
+        moneyIfCloudReady=true;
+        await moneyIfMirrorLocalToCloud();
+        localStorage.setItem(marker,"1");
+      }else{
+        moneyIfCloudReady=false;
+        moneyIfSetCloudStatus("端末保存のみ");
+        return;
+      }
+    }else if(!alreadyLinked && localRows.length && cloudRows.length){
+      const merge=confirm(
+        `この端末の記録${localRows.length}件と、クラウドの記録${cloudRows.length}件があります。\n`+
+        `統合しますか？ 同じ日付はこの端末の記録を優先します。`
+      );
+
+      if(merge){
+        moneyIfRestoreCustomDefinitions(cloudRows);
+        const merged=new Map(
+          cloudRows.map(row=>{
+            const record=moneyIfCloudToRecord(row);
+            return [record.date,record];
+          })
+        );
+        localRows.forEach(record=>merged.set(record.date,record));
+        localStorage.setItem(KEY,JSON.stringify(
+          [...merged.values()].sort((a,b)=>a.date.localeCompare(b.date))
+        ));
+        moneyIfCloudReady=true;
+        await moneyIfMirrorLocalToCloud();
+        localStorage.setItem(marker,"1");
+        renderCustomAssetInputs(load().sort((a,b)=>a.date.localeCompare(b.date)).at(-1)||null);
+        renderLegend();
+        render();
+      }else{
+        moneyIfCloudReady=false;
+        moneyIfSetCloudStatus("端末保存のみ");
+        return;
+      }
+    }else{
+      moneyIfRestoreCustomDefinitions(cloudRows);
+      const cloudRecords=cloudRows.map(moneyIfCloudToRecord);
+      localStorage.setItem(KEY,JSON.stringify(cloudRecords));
+      localStorage.setItem(marker,"1");
+      moneyIfCloudReady=true;
+      renderCustomAssetInputs(cloudRecords.at(-1)||null);
+      renderLegend();
+      render();
+      moneyIfSetCloudStatus("同期済み","online");
+    }
+  }catch(error){
+    console.error("Money IF cloud initialization failed:",error);
+    moneyIfCloudReady=false;
+    moneyIfSetCloudStatus("同期エラー","error");
+  }
+}
+
+moneyIfInitializeCloud();
+
 </script>
 <script>
 (() => {

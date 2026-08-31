@@ -1,9 +1,10 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Money IF Auto | Assets</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Money IF Auto</title>
 <style>
 :root{
   --bg:#07111f;
@@ -496,26 +497,25 @@ canvas{
 
 /* Time-based themes */
 body.theme-morning{
-  --bg:#7fa9d1;
-  --bg2:#90b5d8;
-  --panel:rgba(49,88,130,.52);
-  --panel-strong:rgba(42,79,119,.68);
-  --panel-soft:rgba(18,51,86,.12);
-  --text:#102238;
-  --muted:#405a76;
-  --line:transparent;
-  --line-strong:transparent;
-  --accent:#2f6fa9;
-  --accent2:#2c8f91;
-  --accent3:#6c70b3;
-  --warning:#a85d00;
-  --danger:#9f3652;
-  --shadow:0 22px 54px rgba(28,56,89,.24);
+  --bg:#f5f7fb;
+  --bg2:#eaf0f8;
+  --panel:rgba(255,255,255,.76);
+  --panel-strong:rgba(255,255,255,.90);
+  --panel-soft:rgba(20,40,70,.04);
+  --text:#182235;
+  --muted:#6f7e96;
+  --line:rgba(24,34,53,.10);
+  --line-strong:rgba(24,34,53,.16);
+  --accent:#4e7cff;
+  --accent2:#54c8a8;
+  --accent3:#9c78ff;
+  --warning:#cc8517;
+  --danger:#d94f72;
+  --shadow:0 24px 60px rgba(44,67,106,.13);
   background:
-    radial-gradient(circle at 14% 5%,rgba(255,176,128,.22),transparent 20%),
-    radial-gradient(circle at 84% 7%,rgba(255,213,166,.15),transparent 18%),
-    radial-gradient(circle at 46% 12%,rgba(102,163,221,.30),transparent 34%),
-    linear-gradient(165deg,#6f9bc5 0%,#86afd3 32%,#9abbd8 66%,#aec8df 100%);
+    radial-gradient(circle at 12% 8%, rgba(118,166,255,.28), transparent 30%),
+    radial-gradient(circle at 88% 12%, rgba(255,196,133,.20), transparent 24%),
+    linear-gradient(180deg,#f7faff 0%,#eef3fa 50%,#e9eff7 100%);
 }
 body.theme-day{
   --bg:#eef5fb;
@@ -583,16 +583,21 @@ body.theme-morning .hero,
 body.theme-day .hero{
   color:var(--text);
 }
+body.theme-morning .status-card,
 body.theme-day .status-card{
   color:var(--text);
   background:linear-gradient(180deg,rgba(255,255,255,.74),rgba(255,255,255,.54));
 }
+body.theme-morning input,
 body.theme-day input,
+body.theme-morning .legend button,
 body.theme-day .legend button,
+body.theme-morning .secondary,
 body.theme-day .secondary{
   color:var(--text);
   background:rgba(255,255,255,.72);
 }
+body.theme-morning .canvas-wrap,
 body.theme-day .canvas-wrap{
   background:
     linear-gradient(180deg,rgba(255,255,255,.78),rgba(255,255,255,.60)),
@@ -1105,212 +1110,84 @@ body.theme-day .salary-badge{
 }
 
 
-
-
-
-/* Final morning theme — direct selectors, no white cards */
-body.theme-morning .panel,
-body.theme-morning .hero,
-body.theme-morning .status-card,
-body.theme-morning .mini,
-body.theme-morning .stat,
-body.theme-morning .metric-card,
-body.theme-morning .debt-summary > div,
-body.theme-morning .student-plan-card,
-body.theme-morning .planned-expense-row,
-body.theme-morning .analysis-page,
-body.theme-morning .rule-card,
-body.theme-morning .salary-toggle{
-  background:linear-gradient(145deg,rgba(50,91,134,.58),rgba(75,116,158,.48)) !important;
-  border:none !important;
-  color:#102238 !important;
-  box-shadow:0 18px 42px rgba(29,58,91,.22),inset 0 1px 0 rgba(255,255,255,.08) !important;
-}
-body.theme-morning .panel::before{background:none !important}
-body.theme-morning .panel:hover,
-body.theme-morning .student-plan-card:hover,
-body.theme-morning .planned-expense-row:hover{
-  background:linear-gradient(145deg,rgba(56,100,145,.66),rgba(82,126,169,.56)) !important;
-}
-body.theme-morning input,
-body.theme-morning select,
-body.theme-morning textarea,
-body.theme-morning .secondary,
-body.theme-morning .legend button{
-  background:rgba(170,202,229,.52) !important;
-  color:#102238 !important;
-  border:none !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 6px 16px rgba(28,58,92,.12) !important;
-}
-body.theme-morning input::placeholder,
-body.theme-morning textarea::placeholder{color:#516b86 !important;opacity:1}
-body.theme-morning .canvas-wrap{
-  background:rgba(41,79,119,.40) !important;
-  border:none !important;
-  box-shadow:0 18px 42px rgba(29,58,91,.20) !important;
-}
-body.theme-morning .badge,
-body.theme-morning .eyebrow{
-  background:rgba(121,164,202,.42) !important;
-  color:#173a5b !important;
-  border:none !important;
-}
-body.theme-morning .analysis,
-body.theme-morning .analysis-page{
-  background:linear-gradient(145deg,rgba(42,82,124,.58),rgba(66,108,151,.48)) !important;
-  border:none !important;
-}
-body.theme-morning .analysis.warn,
-body.theme-morning .plan-message.warn,
-body.theme-morning .allocation-alert{
-  background:linear-gradient(145deg,rgba(45,84,124,.66),rgba(72,112,151,.56)) !important;
-  border:none !important;
-  box-shadow:inset 5px 0 0 #d98220,0 14px 32px rgba(31,58,87,.18) !important;
-}
-body.theme-morning .analysis.stop,
-body.theme-morning .plan-message.stop,
-body.theme-morning .allocation-alert.high{
-  background:linear-gradient(145deg,rgba(54,81,116,.68),rgba(87,105,137,.58)) !important;
-  border:none !important;
-  box-shadow:inset 5px 0 0 #b5435e,0 14px 32px rgba(31,58,87,.18) !important;
-}
-body.theme-morning .analysis strong,
-body.theme-morning .analysis.warn strong,
-body.theme-morning .plan-message.warn strong,
-body.theme-morning .allocation-alert strong{
-  color:#7a3f00 !important;
-  background:rgba(255,220,170,.68) !important;
-  padding:2px 6px;
-  border-radius:6px;
-  box-decoration-break:clone;
-  -webkit-box-decoration-break:clone;
-}
-body.theme-morning .analysis.stop strong,
-body.theme-morning .plan-message.stop strong,
-body.theme-morning .allocation-alert.high strong{
-  color:#7f263e !important;
-  background:rgba(255,205,216,.64) !important;
-}
-body.theme-morning h1,
-body.theme-morning h2,
-body.theme-morning h3,
-body.theme-morning .section-title,
-body.theme-morning .stat strong,
-body.theme-morning .metric-card strong{
-  color:#102238 !important;
-}
-body.theme-morning p,
-body.theme-morning label,
-body.theme-morning small,
-body.theme-morning .muted,
-body.theme-morning .section-sub,
-body.theme-morning .status-detail,
-body.theme-morning .allocation-alert p{
-  color:#405a76 !important;
-}
-body.theme-morning .home-return{
-  background:rgba(50,91,134,.66) !important;
-  color:#102238 !important;
-  border:none !important;
-  box-shadow:0 14px 34px rgba(29,58,91,.22) !important;
-}
-
-
-/* Definitive light-time theme override: morning + day */
+/* Strong light-theme contrast fix */
 body.theme-morning,
 body.theme-day{
-  --text:#10233d !important;
-  --muted:#35516f !important;
-  --warning:#8d4a00 !important;
-  --danger:#8f2949 !important;
-  --line:rgba(16,35,61,.14) !important;
-  --line-strong:rgba(16,35,61,.22) !important;
-  background:
-    radial-gradient(circle at 14% 4%,rgba(255,171,122,.16),transparent 20%),
-    radial-gradient(circle at 82% 7%,rgba(255,210,160,.10),transparent 18%),
-    linear-gradient(165deg,#86acd2 0%,#98bad9 30%,#a9c7e2 62%,#b6d0e6 100%) !important;
-  color:#10233d !important;
+  --panel:rgba(255,255,255,.98);
+  --panel-strong:#ffffff;
+  --panel-soft:rgba(28,47,73,.07);
+  --text:#0f1b2c;
+  --muted:#46566d;
+  --line:rgba(20,39,64,.28);
+  --line-strong:rgba(20,39,64,.50);
+  --shadow:0 12px 32px rgba(30,50,80,.16);
 }
-
-body.theme-morning .panel,
-body.theme-day .panel,
 body.theme-morning .hero,
 body.theme-day .hero,
+body.theme-morning .panel,
+body.theme-day .panel,
 body.theme-morning .status-card,
 body.theme-day .status-card,
 body.theme-morning .mini,
 body.theme-day .mini,
-body.theme-morning .stat,
-body.theme-day .stat,
-body.theme-morning .metric-card,
-body.theme-day .metric-card,
-body.theme-morning .debt-summary > div,
-body.theme-day .debt-summary > div,
 body.theme-morning .student-plan-card,
 body.theme-day .student-plan-card,
-body.theme-morning .planned-expense-row,
-body.theme-day .planned-expense-row,
-body.theme-morning .analysis,
-body.theme-day .analysis,
-body.theme-morning .analysis-page,
-body.theme-day .analysis-page,
-body.theme-morning .rule-card,
-body.theme-day .rule-card,
-body.theme-morning .salary-toggle,
-body.theme-day .salary-toggle,
 body.theme-morning .allocation-alert,
 body.theme-day .allocation-alert,
 body.theme-morning .plan-message,
-body.theme-day .plan-message{
-  background:linear-gradient(145deg,rgba(47,87,130,.62),rgba(73,112,153,.52)) !important;
-  color:#10233d !important;
-  border:none !important;
-  box-shadow:
-    0 18px 42px rgba(24,53,86,.24),
-    inset 0 1px 0 rgba(255,255,255,.08) !important;
+body.theme-day .plan-message,
+body.theme-morning .planned-expense-row,
+body.theme-day .planned-expense-row{
+  background:#fff !important;
+  border:1.5px solid var(--line-strong) !important;
+  box-shadow:var(--shadow) !important;
+  color:var(--text) !important;
 }
-
 body.theme-morning .panel::before,
 body.theme-day .panel::before{
-  display:none !important;
+  display:none;
 }
-
 body.theme-morning input,
 body.theme-day input,
 body.theme-morning select,
 body.theme-day select,
 body.theme-morning textarea,
 body.theme-day textarea{
-  background:rgba(199,221,241,.64) !important;
-  color:#10233d !important;
-  border:1px solid rgba(16,35,61,.20) !important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.25) !important;
+  background:#fff !important;
+  color:#0f1b2c !important;
+  border:2px solid rgba(20,39,64,.42) !important;
+  box-shadow:none !important;
 }
-
+body.theme-morning input:focus,
+body.theme-day input:focus,
+body.theme-morning select:focus,
+body.theme-day select:focus,
+body.theme-morning textarea:focus,
+body.theme-day textarea:focus{
+  border-color:#1769aa !important;
+  outline:3px solid rgba(23,105,170,.18) !important;
+}
 body.theme-morning input::placeholder,
 body.theme-day input::placeholder,
 body.theme-morning textarea::placeholder,
 body.theme-day textarea::placeholder{
-  color:#54708e !important;
-  opacity:1 !important;
+  color:#718096 !important;
+  opacity:1;
 }
-
-body.theme-morning label,
-body.theme-day label,
-body.theme-morning .field-label,
-body.theme-day .field-label,
-body.theme-morning .section-sub,
-body.theme-day .section-sub,
-body.theme-morning .muted,
-body.theme-day .muted,
-body.theme-morning small,
-body.theme-day small,
-body.theme-morning .planned-expense-row span,
-body.theme-day .planned-expense-row span{
-  color:#294766 !important;
-  opacity:1 !important;
+body.theme-morning button,
+body.theme-day button{
+  color:#102033 !important;
+  border:1.5px solid rgba(20,39,64,.42) !important;
+  background:#f7faff !important;
 }
-
+body.theme-morning button.primary,
+body.theme-day button.primary{
+  color:#fff !important;
+  background:#1769aa !important;
+  border-color:#0d4f86 !important;
+}
+body.theme-morning .section-title,
+body.theme-day .section-title,
 body.theme-morning h1,
 body.theme-day h1,
 body.theme-morning h2,
@@ -1318,752 +1195,2255 @@ body.theme-day h2,
 body.theme-morning h3,
 body.theme-day h3,
 body.theme-morning strong,
-body.theme-day strong,
-body.theme-morning .section-title,
-body.theme-day .section-title{
-  color:#10233d !important;
+body.theme-day strong{
+  color:#0f1b2c !important;
 }
-
-body.theme-morning .analysis.warn,
-body.theme-day .analysis.warn,
-body.theme-morning .plan-message.warn,
-body.theme-day .plan-message.warn,
-body.theme-morning .allocation-alert,
-body.theme-day .allocation-alert{
-  background:linear-gradient(145deg,rgba(50,89,130,.70),rgba(69,106,145,.62)) !important;
-  border:none !important;
-  box-shadow:
-    inset 5px 0 0 #d98220,
-    0 14px 32px rgba(25,52,82,.22) !important;
+body.theme-morning .lead,
+body.theme-day .lead,
+body.theme-morning .section-sub,
+body.theme-day .section-sub,
+body.theme-morning .status-detail,
+body.theme-day .status-detail,
+body.theme-morning .muted,
+body.theme-day .muted,
+body.theme-morning small,
+body.theme-day small,
+body.theme-morning label,
+body.theme-day label,
+body.theme-morning .planned-expense-row span,
+body.theme-day .planned-expense-row span{
+  color:#46566d !important;
+  opacity:1 !important;
 }
-
-body.theme-morning .analysis.warn strong,
-body.theme-day .analysis.warn strong,
-body.theme-morning .plan-message.warn strong,
-body.theme-day .plan-message.warn strong,
-body.theme-morning .allocation-alert strong,
-body.theme-day .allocation-alert strong{
-  color:#ffe2ad !important;
-  background:transparent !important;
-  text-shadow:0 1px 2px rgba(0,0,0,.24);
-}
-
-body.theme-morning .analysis.warn p,
-body.theme-day .analysis.warn p,
-body.theme-morning .plan-message.warn,
-body.theme-day .plan-message.warn,
-body.theme-morning .allocation-alert p,
-body.theme-day .allocation-alert p{
-  color:#edf5ff !important;
-}
-
-body.theme-morning .analysis.stop,
-body.theme-day .analysis.stop,
-body.theme-morning .plan-message.stop,
-body.theme-day .plan-message.stop{
-  background:linear-gradient(145deg,rgba(65,77,116,.72),rgba(85,81,116,.64)) !important;
-  box-shadow:
-    inset 5px 0 0 #cf4568,
-    0 14px 32px rgba(25,42,75,.24) !important;
-}
-
-body.theme-morning .analysis-page,
-body.theme-day .analysis-page{
-  color:#10233d !important;
-}
-
-body.theme-morning .analysis-page strong,
-body.theme-day .analysis-page strong{
-  color:#ffffff !important;
-  text-shadow:0 1px 2px rgba(0,0,0,.18);
-}
-
-body.theme-morning .analysis-page h3,
-body.theme-day .analysis-page h3{
-  color:#10233d !important;
-}
-
 body.theme-morning .badge,
 body.theme-day .badge,
 body.theme-morning .eyebrow,
 body.theme-day .eyebrow{
-  background:rgba(119,160,200,.52) !important;
-  color:#153654 !important;
-  border:none !important;
+  color:#12304d !important;
+  background:#edf5ff !important;
+  border:1.5px solid #4f759e !important;
 }
-
-body.theme-morning button,
-body.theme-day button{
-  color:#10233d !important;
-  background:rgba(183,210,235,.58) !important;
-  border:none !important;
-}
-
-body.theme-morning button.primary,
-body.theme-day button.primary{
-  color:#081827 !important;
-  background:linear-gradient(135deg,#6f9fd0,#8ab6df) !important;
-}
-
 body.theme-morning .canvas-wrap,
 body.theme-day .canvas-wrap{
-  background:rgba(43,82,123,.28) !important;
-  border:none !important;
+  background:#fff !important;
+  border:1.5px solid var(--line-strong) !important;
+  box-shadow:inset 0 0 0 1px rgba(20,39,64,.06);
+}
+body.theme-morning table,
+body.theme-day table{
+  color:#0f1b2c !important;
+}
+body.theme-morning th,
+body.theme-day th,
+body.theme-morning td,
+body.theme-day td{
+  border-color:rgba(20,39,64,.25) !important;
+}
+body.theme-morning .analysis-page,
+body.theme-day .analysis-page,
+body.theme-morning .rule-card,
+body.theme-day .rule-card{
+  background:#fff !important;
+  border:1.5px solid var(--line-strong) !important;
+  color:#0f1b2c !important;
 }
 
 
-.expense-forecast{
-  display:grid;
-  gap:10px;
-  margin-top:16px;
-}
-.forecast-card{
-  display:grid;
-  grid-template-columns:minmax(0,1.4fr) repeat(3,minmax(110px,.7fr));
-  gap:12px;
-  align-items:center;
-  padding:14px 15px;
-  border-radius:16px;
-  background:rgba(255,255,255,.035);
-  border-left:4px solid var(--accent);
-}
-.forecast-card.urgent{border-left-color:#ff8d76}
-.forecast-card.warning{border-left-color:#ffc56b}
-.forecast-title strong{
-  display:block;
-  margin-bottom:4px;
-}
-.forecast-title span,
-.forecast-metric span{
-  color:var(--muted);
-  font-size:.74rem;
-}
-.forecast-metric strong{
-  display:block;
-  margin-top:3px;
-}
-.forecast-summary{
-  margin-top:12px;
-  padding:14px 15px;
-  border-radius:16px;
-  background:rgba(106,167,255,.08);
-  line-height:1.7;
-}
-@media(max-width:780px){
-  .forecast-card{grid-template-columns:1fr 1fr}
-}
-
-
-.future-flow-grid{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:10px;
-  margin:14px 0;
-}
-.future-flow-card{
-  padding:14px;
-  border-radius:16px;
-  background:rgba(255,255,255,.04);
-}
-.future-flow-card span{
-  display:block;
-  color:var(--muted);
-  font-size:.75rem;
-  margin-bottom:5px;
-}
-.future-flow-list{
-  display:grid;
-  gap:8px;
-  margin-top:12px;
-}
-.future-flow-row{
-  display:grid;
-  grid-template-columns:90px 1fr auto;
-  gap:10px;
-  align-items:center;
-  padding:11px 12px;
-  border-radius:14px;
+.ai-analysis-panel{
+  margin-top:18px;
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:18px;
   background:rgba(255,255,255,.035);
 }
-.future-flow-row .date{
-  color:var(--muted);
-  font-size:.75rem;
-}
-.future-flow-row .amount{
-  font-weight:850;
-}
-.future-flow-row.expense .amount{color:#ffb2c5}
-.future-flow-row.income .amount{color:#aaf4df}
-.future-flow-advice{
-  margin-top:12px;
-  padding:14px 15px;
-  border-radius:16px;
-  background:rgba(117,170,255,.08);
-  line-height:1.7;
-}
-@media(max-width:620px){
-  .future-flow-grid{grid-template-columns:1fr}
-  .future-flow-row{grid-template-columns:78px 1fr}
-  .future-flow-row .amount{grid-column:2}
-}
-
-
-/* Final HOME button styles */
-a.home-return{
-  position:fixed !important;
-  z-index:9999 !important;
-  top:16px !important;
-  left:16px !important;
-  display:inline-flex !important;
-  align-items:center !important;
-  gap:10px !important;
-  width:auto !important;
-  min-height:48px !important;
-  padding:6px 16px 6px 7px !important;
-  margin:0 !important;
-  border:1px solid rgba(176,210,241,.30) !important;
-  border-radius:999px !important;
-  color:#eef6ff !important;
-  background:linear-gradient(145deg,rgba(15,38,66,.94),rgba(25,61,96,.88)) !important;
-  box-shadow:0 16px 38px rgba(3,14,29,.36),inset 0 1px 0 rgba(255,255,255,.10) !important;
-  text-decoration:none !important;
-  font-size:.82rem !important;
-  font-weight:850 !important;
-  line-height:1 !important;
-  letter-spacing:.07em !important;
-  backdrop-filter:blur(18px) saturate(140%) !important;
-  -webkit-backdrop-filter:blur(18px) saturate(140%) !important;
-  overflow:visible !important;
-}
-a.home-return .home-return-icon{
-  position:relative !important;
-  display:grid !important;
-  place-items:center !important;
-  width:36px !important;
-  height:36px !important;
-  min-width:36px !important;
-  border-radius:50% !important;
-  background:linear-gradient(145deg,#72aaff,#7cf0cf) !important;
-  box-shadow:0 8px 22px rgba(80,159,226,.30) !important;
-}
-a.home-return .home-return-icon::before{
-  content:"" !important;
-  display:block !important;
-  width:10px !important;
-  height:10px !important;
-  margin-left:4px !important;
-  border-left:2.5px solid #071421 !important;
-  border-bottom:2.5px solid #071421 !important;
-  transform:rotate(45deg) !important;
-}
-a.home-return .home-return-label{
-  display:flex !important;
-  flex-direction:column !important;
-  gap:4px !important;
-  color:inherit !important;
-  white-space:nowrap !important;
-}
-a.home-return .home-return-label small{
-  display:block !important;
-  color:#abc0d8 !important;
-  font-size:.61rem !important;
-  font-weight:650 !important;
-  line-height:1 !important;
-  letter-spacing:.01em !important;
-}
-a.home-return:hover{
-  transform:translateY(-2px) !important;
-  background:linear-gradient(145deg,rgba(25,58,94,.98),rgba(31,78,116,.94)) !important;
-  box-shadow:0 20px 44px rgba(3,14,29,.40),0 0 0 4px rgba(124,240,207,.08) !important;
-}
-body.theme-morning a.home-return,
-body.theme-day a.home-return{
-  color:#10233d !important;
-  background:linear-gradient(145deg,rgba(89,135,180,.94),rgba(130,170,207,.90)) !important;
-  border:1px solid rgba(20,49,78,.22) !important;
-  box-shadow:0 14px 32px rgba(29,58,91,.25),inset 0 1px 0 rgba(255,255,255,.20) !important;
-}
-body.theme-morning a.home-return .home-return-label small,
-body.theme-day a.home-return .home-return-label small{
-  color:#294c6d !important;
-}
-@media(max-width:640px){
-  a.home-return{
-    top:10px !important;
-    left:10px !important;
-    min-height:43px !important;
-    padding:4px 6px !important;
-  }
-  a.home-return .home-return-icon{
-    width:34px !important;
-    height:34px !important;
-    min-width:34px !important;
-  }
-  a.home-return .home-return-label{
-    display:none !important;
-  }
-}
-
-
-/* User-selectable theme settings */
-.theme-settings{
+.ai-analysis-head{
   display:flex;
   align-items:center;
-  gap:9px;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.ai-analysis-head strong{font-size:1rem}
+.ai-analysis-note{
+  margin:0 0 14px;
+  color:var(--muted);
+  font-size:.84rem;
+  line-height:1.65;
+}
+.ai-analysis-actions{
+  display:flex;
+  gap:10px;
+  align-items:center;
   flex-wrap:wrap;
+}
+.ai-analysis-actions button{
+  width:auto;
+  margin:0;
+}
+.ai-analysis-result{
+  margin-top:14px;
+  padding:16px;
+  border-radius:15px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.08);
+  line-height:1.8;
+  white-space:pre-wrap;
+  min-height:64px;
+}
+.ai-analysis-result.loading{
+  opacity:.72;
+}
+.ai-analysis-result.error{
+  border-color:rgba(255,96,116,.55);
+}
+.ai-analysis-meta{
+  margin-top:9px;
+  font-size:.74rem;
+  color:var(--muted);
+}
+body.theme-morning .ai-analysis-panel,
+body.theme-day .ai-analysis-panel,
+body.theme-morning .ai-analysis-result,
+body.theme-day .ai-analysis-result{
+  background:#fff !important;
+  border:1.5px solid rgba(20,39,64,.38) !important;
+  color:#0f1b2c !important;
+}
+body.theme-morning .ai-analysis-note,
+body.theme-day .ai-analysis-note,
+body.theme-morning .ai-analysis-meta,
+body.theme-day .ai-analysis-meta{
+  color:#46566d !important;
+}
+
+
+.ai-analysis-result{
+  overflow-wrap:anywhere;
+}
+.ai-analysis-result h3{
+  margin:20px 0 8px;
+  font-size:1rem;
+  line-height:1.5;
+}
+.ai-analysis-result h3:first-child{margin-top:0}
+.ai-analysis-result p{
+  margin:0 0 12px;
+  line-height:1.9;
+}
+.ai-analysis-result ol{
+  margin:8px 0 4px 1.4em;
+  padding:0;
+}
+.ai-analysis-result li{
+  margin:7px 0;
+  line-height:1.75;
+}
+.ai-analysis-warning{
+  margin-top:12px;
+  padding:11px 13px;
+  border-radius:12px;
+  border:1px solid rgba(255,184,77,.5);
+  background:rgba(255,184,77,.09);
+  font-size:.82rem;
+  line-height:1.65;
+}
+
+
+/* =========================================================
+   MONEY IF — UI REDESIGN / 2026
+   Functional logic below is unchanged.
+   ========================================================= */
+
+:root{
+  --mi-bg:#0b0e14;
+  --mi-surface:#121722;
+  --mi-surface-2:#181e2b;
+  --mi-line:rgba(255,255,255,.11);
+  --mi-text:#f4f7fb;
+  --mi-muted:#8e9aab;
+  --mi-blue:#72a7ff;
+  --mi-violet:#a78bfa;
+  --mi-green:#65d49a;
+  --mi-amber:#f6c76d;
+  --mi-coral:#ff8e7a;
+  --mi-cyan:#61d6e8;
+  --mi-header:64px;
+}
+
+html{scroll-behavior:smooth;scroll-padding-top:86px}
+body{
+  background:
+    radial-gradient(circle at 12% 12%, rgba(83,116,255,.12), transparent 28rem),
+    radial-gradient(circle at 85% 20%, rgba(174,105,255,.08), transparent 25rem),
+    var(--mi-bg) !important;
+  color:var(--mi-text);
+  padding-top:var(--mi-header);
+}
+
+/* Fixed top chrome */
+.app-header{
+  position:fixed;
+  inset:0 0 auto 0;
+  z-index:1000;
+  height:var(--mi-header);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 max(20px,calc((100vw - 1440px)/2));
+  background:rgba(8,11,17,.88);
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+.brand-lockup{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  color:var(--mi-text);
+  text-decoration:none;
+}
+.brand-mark{
+  width:34px;height:34px;
+  display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--mi-blue),var(--mi-violet));
+  color:#08101e;
+  font-size:15px;
+  font-weight:950;
+  border-radius:3px;
+  box-shadow:0 0 28px rgba(114,167,255,.23);
+}
+.brand-copy{display:grid;line-height:1}
+.brand-copy strong{font-size:.98rem;letter-spacing:.01em}
+.brand-copy small{
+  margin-top:5px;
+  font-size:.59rem;
+  letter-spacing:.2em;
+  color:var(--mi-muted);
+}
+.header-actions{display:flex;align-items:center;gap:16px}
+.ai-status-dot{
+  display:flex;align-items:center;gap:7px;
+  font-size:.7rem;letter-spacing:.05em;color:var(--mi-muted);
+}
+.ai-status-dot i{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--mi-green);
+  box-shadow:0 0 12px rgba(101,212,154,.8);
+}
+.menu-button{
+  width:42px;height:42px!important;
+  padding:0!important;margin:0!important;
+  display:grid!important;align-content:center;justify-items:center;gap:5px;
+  background:transparent!important;
+  border:1px solid rgba(255,255,255,.13)!important;
+  border-radius:3px!important;
+  box-shadow:none!important;
+}
+.menu-button span{display:block;width:18px;height:1.5px;background:var(--mi-text);transition:.25s}
+.menu-button:hover{background:rgba(255,255,255,.06)!important}
+
+/* Drawer */
+.menu-backdrop{
+  position:fixed;inset:0;z-index:1100;
+  background:rgba(0,0,0,.52);
+  opacity:0;pointer-events:none;transition:.25s;
+}
+.side-menu{
+  position:fixed;
+  top:0;right:0;bottom:0;z-index:1200;
+  width:min(390px,88vw);
+  padding:28px;
+  transform:translateX(102%);
+  transition:transform .28s ease;
+  background:#10141d;
+  border-left:1px solid rgba(255,255,255,.1);
+  box-shadow:-24px 0 70px rgba(0,0,0,.36);
+  display:flex;flex-direction:column;
+}
+body.menu-open .menu-backdrop{opacity:1;pointer-events:auto}
+body.menu-open .side-menu{transform:none}
+.side-menu-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding-bottom:25px;margin-bottom:14px;
+  border-bottom:1px solid var(--mi-line);
+}
+.side-menu-top small{display:block;color:var(--mi-muted);font-size:.62rem;letter-spacing:.2em;margin-bottom:7px}
+.side-menu-top strong{font-size:1.4rem}
+.menu-close{
+  width:38px!important;height:38px!important;padding:0!important;margin:0!important;
+  background:transparent!important;border:1px solid var(--mi-line)!important;
+  border-radius:2px!important;color:var(--mi-muted)!important;font-size:1.4rem!important;
+}
+.side-menu>a{
+  display:grid;grid-template-columns:34px 1fr;align-items:center;
+  padding:15px 4px;
+  color:var(--mi-text);text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.055);
+  font-weight:650;
+}
+.side-menu>a span{font-size:.64rem;color:var(--mi-muted);font-weight:500;letter-spacing:.1em}
+.side-menu>a:hover{padding-left:10px;color:var(--mi-blue)}
+.side-menu-foot{margin-top:auto;border-top:1px solid var(--mi-line);padding-top:20px}
+.side-menu-foot span{font-size:.6rem;letter-spacing:.18em;color:var(--mi-violet)}
+.side-menu-foot p{font-size:.76rem;line-height:1.7;color:var(--mi-muted);margin:8px 0 0}
+
+/* Main geometry */
+.wrap{max-width:1440px!important;padding:34px 20px 80px!important}
+.hero{
+  position:relative;
+  margin:0 0 24px!important;
+  padding:44px 42px!important;
+  min-height:260px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.1)!important;
+  border-radius:3px!important;
+  background:
+    linear-gradient(110deg,rgba(30,42,67,.92),rgba(15,18,28,.92) 58%,rgba(40,27,66,.84))!important;
+  box-shadow:0 22px 70px rgba(0,0,0,.24)!important;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  width:330px;height:330px;
+  right:-75px;top:-125px;
+  border:1px solid rgba(114,167,255,.22);
+  transform:rotate(22deg);
+  border-radius:0;
+  box-shadow:0 0 0 45px rgba(167,139,250,.025),0 0 0 90px rgba(114,167,255,.018);
+}
+.hero-grid{position:relative;z-index:1;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr)!important;gap:55px!important}
+.eyebrow{
+  color:var(--mi-blue)!important;
+  letter-spacing:.22em!important;
+  font-size:.65rem!important;
+}
+.hero h1{
+  margin:10px 0 11px!important;
+  font-size:clamp(2.7rem,5vw,5.2rem)!important;
+  letter-spacing:-.065em!important;
+  line-height:.92!important;
+}
+.lead{max-width:730px!important;color:#aeb7c7!important;font-size:.96rem!important}
+.theme-indicator{
+  border-radius:2px!important;
+  border:1px solid rgba(114,167,255,.18)!important;
+  background:rgba(114,167,255,.06)!important;
+  color:#c7d7f2!important;
+}
+.status-card{
+  border-radius:2px!important;
+  border:0!important;
+  border-left:3px solid var(--mi-green)!important;
+  background:rgba(6,10,17,.52)!important;
+  box-shadow:none!important;
+}
+.mini-strip{gap:1px!important;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.09)}
+.mini{
+  border:0!important;
+  border-radius:0!important;
+  background:#121722!important;
+}
+
+/* Outer layout */
+.app-shell{
+  display:grid!important;
+  grid-template-columns:330px minmax(0,1fr)!important;
+  align-items:start!important;
+  gap:18px!important;
+}
+.entry-panel{
+  top:86px!important;
+  border-top:3px solid var(--mi-cyan)!important;
+}
+.dashboard-content{
+  display:grid;
+  grid-template-columns:repeat(12,minmax(0,1fr));
+  gap:18px;
+  align-items:start;
+}
+
+/* Kill the universal pill/card feel */
+.panel{
+  border-radius:3px!important;
+  background:rgba(18,23,34,.86)!important;
+  border:1px solid var(--mi-line)!important;
+  box-shadow:0 12px 36px rgba(0,0,0,.16)!important;
+  overflow:hidden;
+}
+.panel-inner{padding:22px!important}
+.section-head{margin-bottom:15px!important}
+.section-title{
+  font-size:1rem!important;
+  letter-spacing:.01em!important;
+}
+.badge{
+  border-radius:2px!important;
+  background:transparent!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  font-size:.58rem!important;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+
+/* Grid composition */
+.snapshot-panel{grid-column:span 12;border-top:3px solid var(--mi-blue)!important}
+.analysis-panel-main{grid-column:span 8;border-top:3px solid var(--mi-violet)!important}
+.rules-panel{grid-column:span 4;border-top:3px solid var(--mi-amber)!important}
+.plans-panel{grid-column:span 6;border-top:3px solid var(--mi-green)!important}
+.purchase-panel-main{grid-column:span 6;border-top:3px solid var(--mi-coral)!important}
+.chart-panel{grid-column:span 8;border-top:3px solid var(--mi-cyan)!important}
+.history-panel{grid-column:span 4;border-top:3px solid #8491a8!important}
+
+/* Stats are flat tiles with color-coded edge, not rounded bubbles */
+.stats-grid{
+  grid-template-columns:repeat(5,minmax(0,1fr))!important;
+  gap:1px!important;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.09);
+}
+.stat{
+  min-height:114px;
+  padding:17px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:#111722!important;
+}
+.stat:nth-child(1){box-shadow:inset 0 3px var(--mi-blue)}
+.stat:nth-child(2){box-shadow:inset 0 3px var(--mi-cyan)}
+.stat:nth-child(3){box-shadow:inset 0 3px var(--mi-green)}
+.stat:nth-child(4){box-shadow:inset 0 3px var(--mi-violet)}
+.stat:nth-child(5){box-shadow:inset 0 3px var(--mi-coral)}
+.stat strong{font-size:clamp(1.25rem,2vw,1.8rem)!important;letter-spacing:-.04em}
+
+/* Forms: sharper, editorial */
+input,select,textarea{
+  border-radius:2px!important;
+  background:#0d121b!important;
+  border:1px solid rgba(255,255,255,.12)!important;
+  box-shadow:none!important;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--mi-blue)!important;
+  box-shadow:0 0 0 2px rgba(114,167,255,.12)!important;
+}
+button.primary{
+  border-radius:2px!important;
+  background:linear-gradient(90deg,#6d9fff,#8f7dff)!important;
+  color:#08101b!important;
+  box-shadow:none!important;
+}
+button.danger,button.secondary{border-radius:2px!important}
+.debt-section,.salary-toggle,.note,.purchase-result,.analysis,.rule,.planned-expense-item{
+  border-radius:2px!important;
+}
+
+/* AI = focal zone */
+.analysis-panel-main .panel-inner{padding:24px!important}
+.ai-analysis-panel{
+  margin-top:18px!important;
+  border-radius:2px!important;
+  border:1px solid rgba(167,139,250,.2)!important;
+  border-left:3px solid var(--mi-violet)!important;
+  background:
+    linear-gradient(135deg,rgba(167,139,250,.08),rgba(114,167,255,.035)),
+    #101520!important;
+}
+.ai-analysis-result{
+  border-radius:0!important;
+  background:#0c1119!important;
+  border:0!important;
+  border-top:1px solid rgba(255,255,255,.08)!important;
+  padding:20px 0 0!important;
+}
+.ai-analysis-result h3{
+  color:#e9e4ff!important;
+  padding-left:12px;
+  border-left:2px solid var(--mi-violet);
+}
+
+/* Rules become vertical signal blocks */
+.rule-grid{grid-template-columns:1fr!important;gap:8px!important}
+.rule{
+  min-height:auto!important;
+  padding:15px!important;
+  background:#10151f!important;
+  border:0!important;
+  border-left:2px solid var(--mi-amber)!important;
+}
+
+/* Charts / lists */
+.chart-scroll,.canvas-wrap{border-radius:0!important}
+.history-panel .panel-inner{padding:20px!important}
+.history-panel #history{max-height:620px;overflow:auto;padding-right:4px}
+
+/* Color accents by area */
+.plans-panel .primary{background:linear-gradient(90deg,#65d49a,#61d6c5)!important}
+.purchase-panel-main .primary{background:linear-gradient(90deg,#ff9b80,#f6c76d)!important}
+.entry-panel .primary{background:linear-gradient(90deg,#61d6e8,#72a7ff)!important}
+
+/* Day/morning: retain geometry, use light surfaces */
+body.theme-morning,
+body.theme-day{
+  --mi-bg:#edf2f7;
+  --mi-surface:#ffffff;
+  --mi-surface-2:#f7f9fc;
+  --mi-line:rgba(25,42,66,.13);
+  --mi-text:#172033;
+  --mi-muted:#68768b;
+  background:
+    radial-gradient(circle at 10% 10%,rgba(84,132,255,.13),transparent 28rem),
+    radial-gradient(circle at 90% 8%,rgba(170,116,255,.09),transparent 24rem),
+    #eef3f8!important;
+  color:var(--mi-text)!important;
+}
+body.theme-morning .app-header,
+body.theme-day .app-header{
+  background:rgba(246,249,252,.9);
+  border-color:rgba(22,39,66,.1);
+}
+body.theme-morning .brand-lockup,
+body.theme-day .brand-lockup{color:#172033}
+body.theme-morning .menu-button span,
+body.theme-day .menu-button span{background:#172033}
+body.theme-morning .side-menu,
+body.theme-day .side-menu{background:#f7f9fc;color:#172033}
+body.theme-morning .side-menu>a,
+body.theme-day .side-menu>a{color:#172033;border-color:rgba(23,32,51,.08)}
+body.theme-morning .hero,
+body.theme-day .hero{
+  background:linear-gradient(115deg,#ffffff,#f0f5ff 60%,#f6f0ff)!important;
+  color:#172033!important;
+}
+body.theme-morning .lead,
+body.theme-day .lead{color:#58677d!important}
+body.theme-morning .mini,
+body.theme-day .mini,
+body.theme-morning .stat,
+body.theme-day .stat{
+  background:#fff!important;color:#172033!important;
+}
+body.theme-morning .panel,
+body.theme-day .panel{
+  background:rgba(255,255,255,.93)!important;
+  color:#172033!important;
+  box-shadow:0 12px 36px rgba(36,55,84,.08)!important;
+}
+body.theme-morning input,
+body.theme-day input,
+body.theme-morning select,
+body.theme-day select,
+body.theme-morning textarea,
+body.theme-day textarea{
+  background:#f8fafc!important;color:#172033!important;border-color:rgba(23,32,51,.14)!important;
+}
+body.theme-morning .ai-analysis-panel,
+body.theme-day .ai-analysis-panel{
+  background:linear-gradient(135deg,rgba(167,139,250,.08),rgba(114,167,255,.05)),#fafbff!important;
+  color:#172033!important;
+}
+body.theme-morning .ai-analysis-result,
+body.theme-day .ai-analysis-result{
+  background:transparent!important;color:#172033!important;border-top-color:rgba(23,32,51,.1)!important;
+}
+body.theme-morning .rule,
+body.theme-day .rule{background:#fbfcfe!important;color:#172033!important}
+
+/* Responsive */
+@media (max-width:1180px){
+  .app-shell{grid-template-columns:1fr!important}
+  .entry-panel{position:relative!important;top:auto!important}
+  .analysis-panel-main,.rules-panel,.plans-panel,.purchase-panel-main,.chart-panel,.history-panel{
+    grid-column:span 12;
+  }
+  .stats-grid{grid-template-columns:repeat(3,1fr)!important}
+}
+@media (max-width:760px){
+  :root{--mi-header:58px}
+  .app-header{padding:0 14px}
+  .ai-status-dot{display:none}
+  .wrap{padding:18px 12px 56px!important}
+  .hero{padding:28px 20px!important;min-height:0}
+  .hero-grid{grid-template-columns:1fr!important;gap:22px!important}
+  .hero h1{font-size:3rem!important}
+  .dashboard-content{grid-template-columns:1fr;gap:12px}
+  .snapshot-panel,.analysis-panel-main,.rules-panel,.plans-panel,.purchase-panel-main,.chart-panel,.history-panel{
+    grid-column:1;
+  }
+  .stats-grid{grid-template-columns:1fr 1fr!important}
+  .stat:first-child{grid-column:1/-1}
+  .panel-inner{padding:18px!important}
+  .side-menu{padding:22px}
+}
+
+
+/* =========================================================
+   PHYSICAL FILE / INDEX-TAB LAYER
+   Paper-file inspired tabs: offset, protruding, asymmetric.
+   ========================================================= */
+
+.dashboard-content{
+  gap:30px 18px !important;
+  padding-top:13px;
+}
+
+.file-sheet{
+  position:relative;
+  overflow:visible !important;
+  isolation:isolate;
+}
+
+/* The physical protruding index tab */
+.file-sheet::before{
+  content:attr(data-tab);
+  position:absolute;
+  top:-25px;
+  height:25px;
+  min-width:94px;
+  padding:0 16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:-1;
+
+  font-size:.59rem;
+  font-weight:850;
+  letter-spacing:.16em;
+  line-height:1;
+  color:#0a101a;
+
+  background:var(--folder-tab,#72a7ff);
+  border:1px solid rgba(255,255,255,.11);
+  border-bottom:0;
+  border-radius:3px 3px 0 0;
+  box-shadow:0 -5px 18px rgba(0,0,0,.13);
+}
+
+/* Tabs intentionally "walk" across the sheet like real index files */
+.tab-left::before{left:20px}
+.tab-a::before{left:34px}
+.tab-b::before{left:18%}
+.tab-c::before{right:24px}
+.tab-d::before{left:42%}
+.tab-e::before{right:14%}
+.tab-f::before{left:12%}
+.tab-g::before{right:18px}
+
+/* Category tab colors */
+.entry-panel{--folder-tab:var(--mi-cyan)}
+.snapshot-panel{--folder-tab:var(--mi-blue)}
+.analysis-panel-main{--folder-tab:var(--mi-violet)}
+.rules-panel{--folder-tab:var(--mi-amber)}
+.plans-panel{--folder-tab:var(--mi-green)}
+.purchase-panel-main{--folder-tab:var(--mi-coral)}
+.chart-panel{--folder-tab:#62c9d9}
+.history-panel{--folder-tab:#98a4b8}
+
+/* Make the body of each section read more like a stacked document */
+.file-sheet::after{
+  content:"";
+  position:absolute;
+  left:7px;
+  right:-7px;
+  bottom:-7px;
+  height:100%;
+  z-index:-2;
+  pointer-events:none;
+  border:1px solid rgba(255,255,255,.055);
+  background:rgba(255,255,255,.018);
+}
+
+/* Staggered paper edges create the impression of multiple files */
+.snapshot-panel::after,
+.plans-panel::after,
+.chart-panel::after{
+  left:-6px;
+  right:6px;
+}
+
+.file-sheet{
+  border-radius:1px !important;
+}
+
+/* Give section heads a document-title feeling rather than floating card heading */
+.file-sheet > .panel-inner > .section-head{
+  position:relative;
+  padding-bottom:13px;
+  border-bottom:1px solid rgba(255,255,255,.075);
+}
+.file-sheet > .panel-inner > .section-head::after{
+  content:"";
+  position:absolute;
+  bottom:-1px;
+  left:0;
+  width:42px;
+  height:1px;
+  background:var(--folder-tab);
+}
+
+.file-sheet .section-title{
+  text-transform:none;
+  letter-spacing:-.01em !important;
+}
+
+/* The record file at left gets a slightly larger physical label */
+.entry-panel::before{
+  min-width:112px;
+  height:28px;
+  top:-28px;
+}
+.entry-panel{
+  margin-top:15px;
+}
+
+/* Hero gets a small filing-index motif */
+.hero{
+  overflow:visible !important;
+}
+.hero::before{
+  content:"CURRENT FILE";
+  position:absolute;
+  top:-22px;
+  left:36px;
+  height:22px;
+  padding:0 14px;
+  display:flex;
+  align-items:center;
+  background:#dbe6ff;
+  color:#182236;
+  border-radius:3px 3px 0 0;
+  font-size:.55rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  z-index:2;
+}
+
+/* Make nested AI box less "card inside card"; more like an inserted report page */
+.ai-analysis-panel{
+  position:relative;
+  margin-left:10px !important;
+  border-left:1px solid rgba(167,139,250,.42) !important;
+}
+.ai-analysis-panel::before{
+  content:"GEMINI";
+  position:absolute;
+  right:15px;
+  top:-1px;
+  transform:translateY(-55%);
+  padding:4px 9px;
+  background:var(--mi-violet);
+  color:#0b0e14;
+  font-size:.52rem;
+  letter-spacing:.13em;
+  font-weight:900;
+  border-radius:2px;
+}
+
+/* History rows imitate clipped sheets */
+.history-panel #history > *{
+  border-radius:0 !important;
+}
+
+/* Light modes: paper becomes literal */
+body.theme-morning .file-sheet::after,
+body.theme-day .file-sheet::after{
+  border-color:rgba(25,42,66,.09);
+  background:rgba(255,255,255,.72);
+}
+body.theme-morning .file-sheet > .panel-inner > .section-head,
+body.theme-day .file-sheet > .panel-inner > .section-head{
+  border-bottom-color:rgba(25,42,66,.09);
+}
+body.theme-morning .hero::before,
+body.theme-day .hero::before{
+  background:#273551;
+  color:#fff;
+}
+
+/* Mobile: keep file tabs but reduce offset collisions */
+@media (max-width:760px){
+  .dashboard-content{
+    gap:34px !important;
+    padding-top:12px;
+  }
+  .file-sheet::before{
+    left:16px !important;
+    right:auto !important;
+    min-width:86px;
+    padding:0 12px;
+  }
+  .file-sheet:nth-child(even)::before{
+    left:auto !important;
+    right:16px !important;
+  }
+  .entry-panel{
+    margin-top:18px;
+  }
+}
+
+
+
+/* =========================================================
+   INTERACTIVE FILE CABINET
+   The protruding index tabs are now real controls.
+   ========================================================= */
+
+/* The old decorative pseudo tabs are no longer needed */
+.file-sheet::before{display:none !important;}
+
+.file-workspace{
+  display:block !important;
+  position:relative;
+  margin-top:44px;
+}
+
+/* Physical tab rail */
+.file-tab-switcher{
+  display:flex;
+  align-items:flex-end;
+  gap:4px;
+  min-height:66px;
+  padding:0 18px;
+  margin:0 0 -1px;
+  overflow-x:auto;
+  overflow-y:visible;
+  scrollbar-width:none;
+  position:relative;
+  z-index:20;
+}
+.file-tab-switcher::-webkit-scrollbar{display:none}
+
+.file-tab-button{
+  --tab-color:var(--mi-blue);
+  position:relative;
+  flex:0 0 auto;
+  min-width:112px;
+  height:48px !important;
+  margin:0 !important;
+  padding:8px 14px 9px !important;
+  display:flex !important;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+  gap:3px;
+  border:1px solid rgba(255,255,255,.12) !important;
+  border-bottom:0 !important;
+  border-radius:4px 4px 0 0 !important;
+  background:color-mix(in srgb,var(--tab-color) 72%,#111722) !important;
+  color:#09111d !important;
+  box-shadow:none !important;
+  transform:translateY(8px);
+  transition:transform .18s ease, filter .18s ease, height .18s ease;
+  cursor:pointer;
+  z-index:1;
+}
+.file-tab-button:nth-child(1){--tab-color:var(--mi-cyan)}
+.file-tab-button:nth-child(2){--tab-color:var(--mi-blue);transform:translateY(13px)}
+.file-tab-button:nth-child(3){--tab-color:var(--mi-violet);transform:translateY(5px)}
+.file-tab-button:nth-child(4){--tab-color:var(--mi-amber);transform:translateY(15px)}
+.file-tab-button:nth-child(5){--tab-color:var(--mi-green);transform:translateY(9px)}
+.file-tab-button:nth-child(6){--tab-color:var(--mi-coral);transform:translateY(2px)}
+.file-tab-button:nth-child(7){--tab-color:#62c9d9;transform:translateY(12px)}
+.file-tab-button:nth-child(8){--tab-color:#98a4b8;transform:translateY(7px)}
+
+.file-tab-button small{
+  font-size:.52rem;
+  line-height:1;
+  letter-spacing:.13em;
+  opacity:.62;
+}
+.file-tab-button strong{
+  font-size:.67rem;
+  line-height:1;
+  letter-spacing:.1em;
+  white-space:nowrap;
+}
+.file-tab-button:hover{
+  filter:brightness(1.08);
+  transform:translateY(2px) !important;
+}
+.file-tab-button.active{
+  height:58px !important;
+  transform:translateY(0) !important;
+  filter:brightness(1.08);
+  z-index:5;
+}
+.file-tab-button.active::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:-2px;height:3px;
+  background:var(--tab-color);
+}
+
+/* One physical "file" shown at a time */
+.dashboard-content{
+  display:block !important;
+  position:relative;
+  padding-top:0 !important;
+}
+.dashboard-content > [data-file-view]{
+  display:none !important;
+  width:100%;
+  min-height:540px;
+  animation:fileIn .22s ease both;
+}
+.dashboard-content > [data-file-view].file-active{
+  display:block !important;
+}
+
+@keyframes fileIn{
+  from{opacity:0;transform:translateY(7px)}
+  to{opacity:1;transform:none}
+}
+
+/* Main sheet beneath tabs */
+.dashboard-content > .file-sheet{
+  border-radius:2px !important;
+  border-top-width:1px !important;
+  box-shadow:
+    0 18px 50px rgba(0,0,0,.20),
+    8px 8px 0 rgba(255,255,255,.018) !important;
+}
+
+/* Remove old two-column sizing constraints when panels become pages */
+.analysis-panel-main,
+.rules-panel,
+.plans-panel,
+.purchase-panel-main,
+.chart-panel,
+.history-panel,
+.snapshot-panel,
+.entry-panel{
+  grid-column:auto !important;
+  margin-top:0 !important;
+  position:relative !important;
+  top:auto !important;
+}
+
+/* Make record page less narrow now that it occupies the full file */
+.entry-panel .panel-inner{
+  max-width:980px;
+}
+.entry-panel form{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px 18px;
+}
+.entry-panel form > button,
+.entry-panel form > .salary-toggle,
+.entry-panel form > .debt-section{
+  grid-column:1/-1;
+}
+
+/* Page label within active sheet */
+.dashboard-content > .file-sheet::after{
+  content:attr(data-tab);
+  position:absolute;
+  right:22px;
+  bottom:18px;
+  left:auto !important;
+  width:auto;
+  height:auto !important;
+  border:0 !important;
+  background:transparent !important;
+  color:rgba(255,255,255,.035);
+  font-size:clamp(3rem,8vw,7rem);
+  font-weight:950;
+  letter-spacing:-.07em;
+  line-height:.8;
+  z-index:-1;
+  pointer-events:none;
+}
+
+/* Light theme */
+body.theme-morning .file-tab-button,
+body.theme-day .file-tab-button{
+  border-color:rgba(23,32,51,.13) !important;
+  color:#101725 !important;
+}
+body.theme-morning .dashboard-content > .file-sheet::after,
+body.theme-day .dashboard-content > .file-sheet::after{
+  color:rgba(22,39,64,.035);
+}
+
+/* Mobile keeps the file-tab metaphor horizontally */
+@media(max-width:760px){
+  .file-workspace{margin-top:34px}
+  .file-tab-switcher{
+    padding:0 8px;
+    min-height:59px;
+    gap:3px;
+  }
+  .file-tab-button{
+    min-width:92px;
+    height:43px !important;
+    padding:7px 10px !important;
+  }
+  .file-tab-button.active{height:51px !important}
+  .entry-panel form{grid-template-columns:1fr}
+  .entry-panel form > *{grid-column:1 !important}
+  .dashboard-content > [data-file-view]{min-height:0}
+}
+
+/* =========================================================
+   MOTION SYSTEM
+   Meaningful, restrained application animation.
+   ========================================================= */
+
+:root{
+  --motion-fast:160ms;
+  --motion-normal:320ms;
+  --motion-slow:680ms;
+  --motion-ease:cubic-bezier(.22,.8,.24,1);
+}
+
+/* Buttons / interactive surfaces */
+button,
+.file-tab-button,
+.side-menu a{
+  transition:
+    transform var(--motion-fast) var(--motion-ease),
+    opacity var(--motion-fast) ease,
+    background-color var(--motion-fast) ease,
+    border-color var(--motion-fast) ease,
+    box-shadow var(--motion-fast) ease !important;
+}
+button:active{transform:translateY(1px) scale(.985)}
+
+/* File page transition */
+.dashboard-content > [data-file-view].file-entering{
+  animation:fileSheetEnter 420ms var(--motion-ease) both;
+}
+.dashboard-content > [data-file-view].file-leaving{
+  display:block !important;
+  position:absolute !important;
+  inset:0;
+  pointer-events:none;
+  animation:fileSheetLeave 180ms ease both;
+}
+@keyframes fileSheetEnter{
+  0%{opacity:0;transform:translate3d(24px,9px,0) scale(.992);filter:blur(2px)}
+  55%{opacity:1;filter:blur(0)}
+  100%{opacity:1;transform:none}
+}
+@keyframes fileSheetLeave{
+  from{opacity:1;transform:none}
+  to{opacity:0;transform:translate3d(-10px,3px,0) scale(.995)}
+}
+
+/* Animated number */
+.motion-number{
+  display:inline-block;
+  transform-origin:50% 70%;
+}
+.motion-number.number-bump{
+  animation:numberBump 420ms var(--motion-ease);
+}
+@keyframes numberBump{
+  0%{transform:translateY(3px);opacity:.62}
+  60%{transform:translateY(-1px) scale(1.025);opacity:1}
+  100%{transform:none}
+}
+
+/* Change flash */
+.stat.value-up{
+  animation:flashUp 820ms ease both;
+}
+.stat.value-down{
+  animation:flashDown 820ms ease both;
+}
+@keyframes flashUp{
+  0%{background:#111722}
+  25%{background:rgba(101,212,154,.18);box-shadow:inset 0 0 0 1px rgba(101,212,154,.38)}
+  100%{background:#111722}
+}
+@keyframes flashDown{
+  0%{background:#111722}
+  25%{background:rgba(255,142,122,.16);box-shadow:inset 0 0 0 1px rgba(255,142,122,.35)}
+  100%{background:#111722}
+}
+body.theme-morning .stat.value-up,
+body.theme-day .stat.value-up{animation-name:flashUpLight}
+body.theme-morning .stat.value-down,
+body.theme-day .stat.value-down{animation-name:flashDownLight}
+@keyframes flashUpLight{
+  0%{background:#fff}
+  25%{background:#e9fbf1}
+  100%{background:#fff}
+}
+@keyframes flashDownLight{
+  0%{background:#fff}
+  25%{background:#fff0ed}
+  100%{background:#fff}
+}
+
+/* AI progress */
+.ai-motion-status{
+  display:none;
+  margin:14px 0 0;
+  padding:14px 0 2px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.ai-motion-status.active{display:block}
+.ai-progress-track{
+  height:2px;
+  width:100%;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+  position:relative;
+}
+.ai-progress-track::after{
+  content:"";
+  position:absolute;
+  inset:0 auto 0 0;
+  width:32%;
+  background:linear-gradient(90deg,var(--mi-violet),var(--mi-blue),var(--mi-cyan));
+  animation:aiScan 1.25s ease-in-out infinite;
+}
+@keyframes aiScan{
+  0%{transform:translateX(-115%)}
+  100%{transform:translateX(420%)}
+}
+.ai-progress-step{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-top:9px;
+  color:var(--mi-muted);
+  font-size:.73rem;
+  letter-spacing:.02em;
+}
+.ai-progress-step::before{
+  content:"";
+  width:6px;height:6px;
+  border-radius:50%;
+  background:var(--mi-violet);
+  box-shadow:0 0 10px rgba(167,139,250,.7);
+  animation:aiPulse .9s ease-in-out infinite alternate;
+}
+@keyframes aiPulse{
+  to{opacity:.3;transform:scale(.65)}
+}
+
+/* AI report prints/unfolds in */
+.ai-analysis-result.ai-report-reveal{
+  transform-origin:top center;
+  animation:reportReveal 620ms var(--motion-ease) both;
+}
+@keyframes reportReveal{
+  0%{opacity:0;transform:scaleY(.08) translateY(-6px);clip-path:inset(0 0 92% 0)}
+  55%{opacity:1;transform:scaleY(1);clip-path:inset(0 0 0 0)}
+  100%{opacity:1;transform:none}
+}
+
+/* Chart draw overlay to make redraw feel intentional */
+.chart-panel.chart-opening .canvas-wrap,
+.chart-panel.chart-opening .chart-scroll{
+  animation:chartStageIn 520ms var(--motion-ease);
+}
+@keyframes chartStageIn{
+  from{opacity:.35;transform:translateX(-10px)}
+  to{opacity:1;transform:none}
+}
+canvas.chart-drawing{
+  animation:chartGlow 720ms ease;
+}
+@keyframes chartGlow{
+  0%{opacity:.12}
+  100%{opacity:1}
+}
+
+/* Hamburger */
+.menu-button span:nth-child(1),
+.menu-button span:nth-child(2),
+.menu-button span:nth-child(3){
+  transform-origin:center;
+}
+body.menu-open .menu-button span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+body.menu-open .menu-button span:nth-child(2){opacity:0;transform:scaleX(.2)}
+body.menu-open .menu-button span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+.side-menu>a{
+  opacity:0;
+  transform:translateX(18px);
+}
+body.menu-open .side-menu>a{
+  animation:menuItemIn 320ms var(--motion-ease) forwards;
+}
+body.menu-open .side-menu>a:nth-of-type(1){animation-delay:50ms}
+body.menu-open .side-menu>a:nth-of-type(2){animation-delay:85ms}
+body.menu-open .side-menu>a:nth-of-type(3){animation-delay:120ms}
+body.menu-open .side-menu>a:nth-of-type(4){animation-delay:155ms}
+body.menu-open .side-menu>a:nth-of-type(5){animation-delay:190ms}
+body.menu-open .side-menu>a:nth-of-type(6){animation-delay:225ms}
+body.menu-open .side-menu>a:nth-of-type(7){animation-delay:260ms}
+@keyframes menuItemIn{
+  to{opacity:1;transform:none}
+}
+
+/* Celebration */
+.celebration-layer{
+  position:fixed;
+  inset:0;
+  z-index:3000;
+  pointer-events:none;
+  overflow:hidden;
+}
+.celebration-toast{
+  position:absolute;
+  top:88px;
+  left:50%;
+  transform:translate(-50%,-14px);
+  min-width:min(420px,calc(100vw - 32px));
+  padding:15px 18px;
+  background:rgba(13,18,27,.94);
+  border:1px solid rgba(101,212,154,.35);
+  border-left:3px solid var(--mi-green);
+  box-shadow:0 16px 48px rgba(0,0,0,.28);
+  color:var(--mi-text);
+  opacity:0;
+  animation:celebrateToast 3s var(--motion-ease) both;
+}
+.celebration-toast strong{
+  display:block;
+  font-size:.92rem;
+  margin-bottom:3px;
+}
+.celebration-toast span{
+  color:var(--mi-muted);
+  font-size:.74rem;
+}
+@keyframes celebrateToast{
+  0%{opacity:0;transform:translate(-50%,-14px)}
+  12%,78%{opacity:1;transform:translate(-50%,0)}
+  100%{opacity:0;transform:translate(-50%,-6px)}
+}
+.confetti-piece{
+  --drift:0px;
+  position:absolute;
+  top:-22px;
+  width:7px;height:16px;
+  border-radius:1px;
+  opacity:0;
+  background:var(--piece-color,var(--mi-blue));
+  animation:confettiFall var(--fall-duration,1800ms) cubic-bezier(.18,.67,.37,1) forwards;
+}
+@keyframes confettiFall{
+  0%{opacity:0;transform:translate3d(0,-15px,0) rotate(0deg)}
+  10%{opacity:.92}
+  100%{opacity:0;transform:translate3d(var(--drift),105vh,0) rotate(620deg)}
+}
+body.theme-morning .celebration-toast,
+body.theme-day .celebration-toast{
+  background:rgba(255,255,255,.96);
+  color:#172033;
+  box-shadow:0 16px 48px rgba(34,54,82,.18);
+}
+
+/* Respect OS accessibility preference */
+@media (prefers-reduced-motion:reduce){
+  *,
+  *::before,
+  *::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+    scroll-behavior:auto !important;
+  }
+}
+
+
+
+/* =========================================================
+   LAYOUT V2 — main workspace + persistent record dock
+   ========================================================= */
+
+html,body{
+  max-width:100%;
+  overflow-x:hidden !important;
+}
+
+.wrap{
+  width:min(1500px,100%) !important;
+  overflow:visible;
+}
+
+/* Main working area + permanent record dock */
+.file-workspace{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 340px !important;
+  gap:20px !important;
+  align-items:start !important;
+  margin-top:44px;
+}
+
+.main-file-column{
+  min-width:0;
+  width:100%;
+}
+
+/* Record is now always visible at right */
+.record-dock{
+  display:block !important;
+  position:sticky !important;
+  top:84px !important;
+  height:max-content;
+  max-height:calc(100vh - 100px);
+  overflow:auto !important;
+  margin:0 !important;
+  border-top:3px solid var(--mi-cyan) !important;
+  z-index:10;
+}
+.record-dock::before{
+  content:"RECORD";
+  display:flex !important;
+  position:absolute;
+  top:-28px;
+  right:18px;
+  left:auto !important;
+  height:28px;
+  min-width:104px;
+  padding:0 14px;
+  align-items:center;
+  justify-content:center;
+  background:var(--mi-cyan);
+  color:#08101a;
+  border-radius:3px 3px 0 0;
+  font-size:.58rem;
+  font-weight:900;
+  letter-spacing:.16em;
+  z-index:2;
+}
+.record-dock::after{
+  content:"";
+}
+
+/* Record form returns to a compact one-column dock */
+.record-dock form{
+  display:block !important;
+}
+.record-dock form > *{
+  width:100%;
+}
+.record-dock .panel-inner{
+  padding:20px !important;
+}
+
+/* Tabs fit viewport: no horizontal website movement */
+.file-tab-switcher{
+  width:100%;
+  min-width:0;
+  overflow:visible !important;
+  display:grid !important;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:3px;
+  padding:0 8px !important;
+}
+
+.file-tab-button{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  padding:8px 7px 9px !important;
+}
+
+.file-tab-button small{
+  font-size:.48rem;
+}
+
+.file-tab-button strong{
+  font-size:clamp(.5rem,.72vw,.66rem);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  max-width:100%;
+}
+
+/* New use-order color mapping */
+.file-tab-button:nth-child(1){--tab-color:#62c9d9}
+.file-tab-button:nth-child(2){--tab-color:var(--mi-blue)}
+.file-tab-button:nth-child(3){--tab-color:var(--mi-violet)}
+.file-tab-button:nth-child(4){--tab-color:var(--mi-green)}
+.file-tab-button:nth-child(5){--tab-color:var(--mi-coral)}
+.file-tab-button:nth-child(6){--tab-color:var(--mi-amber)}
+.file-tab-button:nth-child(7){--tab-color:#98a4b8}
+
+/* Intentional stagger without changing total layout width */
+.file-tab-button:nth-child(1){transform:translateY(10px)}
+.file-tab-button:nth-child(2){transform:translateY(4px)}
+.file-tab-button:nth-child(3){transform:translateY(12px)}
+.file-tab-button:nth-child(4){transform:translateY(7px)}
+.file-tab-button:nth-child(5){transform:translateY(1px)}
+.file-tab-button:nth-child(6){transform:translateY(11px)}
+.file-tab-button:nth-child(7){transform:translateY(6px)}
+.file-tab-button.active{
+  transform:translateY(0) !important;
+}
+
+/* Main sheet never exceeds its column */
+.dashboard-content,
+.dashboard-content > [data-file-view]{
+  width:100%;
+  min-width:0;
+  max-width:100%;
+}
+
+canvas{
+  max-width:100%;
+}
+
+/* Disable any accidental wide inner overflow */
+.panel,
+.panel-inner,
+.analysis,
+.ai-analysis-panel,
+.ai-analysis-result,
+.chart-scroll,
+.canvas-wrap{
+  max-width:100%;
+  box-sizing:border-box;
+}
+.chart-scroll{
+  overflow-x:auto;
+  overscroll-behavior-x:contain;
+}
+
+/* Mobile / tablet: record moves below content instead of crushing width */
+@media(max-width:1100px){
+  .file-workspace{
+    grid-template-columns:1fr !important;
+  }
+  .record-dock{
+    position:relative !important;
+    top:auto !important;
+    max-height:none;
+    margin-top:24px !important;
+  }
+}
+
+@media(max-width:760px){
+  html,body{overflow-x:hidden !important}
+
+  .file-tab-switcher{
+    grid-template-columns:repeat(4,1fr);
+    gap:4px;
+    min-height:auto;
+    padding:0 !important;
+    margin-bottom:12px;
+  }
+
+  .file-tab-button,
+  .file-tab-button:nth-child(n){
+    transform:none !important;
+    height:44px !important;
+    border-bottom:1px solid rgba(255,255,255,.12) !important;
+    border-radius:3px !important;
+  }
+
+  .file-tab-button.active{
+    height:44px !important;
+    transform:translateY(-2px) !important;
+  }
+
+  .file-tab-button:nth-child(7){
+    grid-column:span 2;
+  }
+}
+
+/* =========================================================
+   TAB POSITION FIX
+   Switching files must never move the document horizontally.
+   ========================================================= */
+.file-tab-switcher{
+  overflow-x:hidden !important;
+  overscroll-behavior-x:none !important;
+  scroll-behavior:auto !important;
+  contain:layout paint;
+}
+
+.file-tab-button{
+  scroll-margin:0 !important;
+}
+
+.main-file-column,
+.file-workspace,
+.dashboard-content,
+.dashboard-content > [data-file-view]{
+  overflow-x:hidden !important;
+  min-width:0 !important;
+}
+
+/* Ensure active-tab elevation changes only vertically */
+.file-tab-button.active{
+  translate:0 0 !important;
+}
+
+/* Prevent browsers from horizontally revealing focused tab buttons */
+.file-tab-button:focus{
+  scroll-margin-inline:0 !important;
+}
+
+@media(max-width:760px){
+  .file-tab-switcher{
+    overflow-x:hidden !important;
+  }
+}
+
+
+
+/* =========================================================
+   CUSTOM ASSETS + RELIABLE MOTION
+   ========================================================= */
+
+.custom-assets-editor{
+  margin:18px 0;
+  padding:14px 0 4px;
+  border-top:1px solid rgba(255,255,255,.09);
+}
+.custom-assets-editor-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:12px;
+}
+.custom-assets-editor-head strong{display:block;font-size:.85rem}
+.custom-assets-editor-head small{
+  display:block;
+  color:var(--mi-muted);
+  font-size:.67rem;
+  margin-top:3px;
+}
+.asset-add-button{
+  width:auto !important;
+  margin:0 !important;
+  padding:8px 10px !important;
+  border-radius:2px !important;
+  font-size:.7rem !important;
+  background:rgba(97,214,232,.08) !important;
+  border:1px solid rgba(97,214,232,.25) !important;
+  color:var(--mi-cyan) !important;
+}
+.custom-asset-creator{
+  margin:10px 0 14px;
+  padding:12px;
+  border:1px solid rgba(97,214,232,.22);
+  background:rgba(97,214,232,.045);
+}
+.custom-asset-creator-actions{
+  display:flex;
+  gap:8px;
+  margin-top:8px;
+}
+.custom-asset-creator-actions button{
+  margin:0 !important;
+  width:auto !important;
+  flex:1;
+}
+.custom-asset-inputs{
+  display:grid;
+  gap:10px;
+}
+.custom-asset-field{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 120px;
+  align-items:center;
+  gap:10px;
+  padding:10px 0;
+  border-bottom:1px solid rgba(255,255,255,.055);
+}
+.custom-asset-field:last-child{border-bottom:0}
+.custom-asset-field label{
+  margin:0;
+  min-width:0;
+}
+.custom-asset-field label span{
+  display:block;
+  font-size:.78rem;
+  font-weight:700;
+}
+.custom-asset-field label small{
+  display:block;
+  margin-top:3px;
+  color:var(--mi-muted);
+  font-size:.62rem;
+}
+.custom-asset-field input{
+  width:100%;
+  text-align:right;
+}
+
+.custom-asset-snapshot{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:8px;
   margin-top:10px;
 }
-.theme-settings label{
-  color:var(--muted);
+.custom-asset-snapshot:empty{display:none}
+.custom-asset-tile{
+  padding:13px 14px;
+  min-width:0;
+  background:rgba(255,255,255,.025);
+  border:1px solid rgba(255,255,255,.075);
+  border-top:2px solid var(--custom-color,var(--mi-blue));
+}
+.custom-asset-tile span{
+  display:block;
+  overflow:hidden;
+  white-space:nowrap;
+  text-overflow:ellipsis;
+  color:var(--mi-muted);
+  font-size:.68rem;
+}
+.custom-asset-tile strong{
+  display:block;
+  margin-top:5px;
+  font-size:1.05rem;
+  letter-spacing:-.03em;
+}
+
+/* Stat number motion - driven directly by renderStats */
+.money-counting{
+  display:inline-block;
+  will-change:contents,transform;
+}
+.money-counting.motion-pop{
+  animation:moneyPop 480ms cubic-bezier(.22,.8,.24,1);
+}
+@keyframes moneyPop{
+  0%{transform:translateY(4px);opacity:.55}
+  58%{transform:translateY(-1px) scale(1.025);opacity:1}
+  100%{transform:none}
+}
+.stat.direct-flash-good,
+.custom-asset-tile.direct-flash-good{
+  animation:directGoodFlash 850ms ease;
+}
+.stat.direct-flash-bad,
+.custom-asset-tile.direct-flash-bad{
+  animation:directBadFlash 850ms ease;
+}
+@keyframes directGoodFlash{
+  0%,100%{filter:none}
+  24%{background:rgba(101,212,154,.18);box-shadow:inset 0 0 0 1px rgba(101,212,154,.4)}
+}
+@keyframes directBadFlash{
+  0%,100%{filter:none}
+  24%{background:rgba(255,142,122,.16);box-shadow:inset 0 0 0 1px rgba(255,142,122,.38)}
+}
+
+/* AI progress now has real markup and direct request hooks */
+.ai-motion-status{
+  display:none;
+  margin:15px 0 4px;
+  padding:14px 0 2px;
+  border-top:1px solid rgba(255,255,255,.08);
+}
+.ai-motion-status.active{display:block}
+.ai-progress-track{
+  position:relative;
+  height:3px;
+  overflow:hidden;
+  background:rgba(255,255,255,.08);
+}
+.ai-progress-track::after{
+  content:"";
+  position:absolute;
+  width:28%;
+  height:100%;
+  left:-30%;
+  background:linear-gradient(90deg,var(--mi-violet),var(--mi-blue),var(--mi-cyan));
+  animation:moneyIfAiScan 1.1s ease-in-out infinite;
+}
+@keyframes moneyIfAiScan{
+  to{left:105%}
+}
+.ai-progress-step{
+  margin-top:9px;
+  color:var(--mi-muted);
   font-size:.72rem;
-  font-weight:750;
 }
-.theme-settings select{
-  width:auto;
-  min-width:150px;
-  padding:8px 34px 8px 11px;
-  border-radius:999px;
-  color:var(--text);
-  background:rgba(16,35,61,.72);
-  border:1px solid rgba(255,255,255,.14);
+.ai-analysis-result.direct-ai-reveal{
+  animation:directAiReveal 600ms cubic-bezier(.22,.8,.24,1);
 }
-.theme-settings select option{
-  color:#f4f7ff;
-  background:#172b47;
+@keyframes directAiReveal{
+  from{opacity:0;transform:translateY(-8px);clip-path:inset(0 0 90% 0)}
+  to{opacity:1;transform:none;clip-path:inset(0)}
 }
-body.theme-morning .theme-settings select,
-body.theme-day .theme-settings select{
-  color:#10233d !important;
-  background:rgba(173,204,231,.72) !important;
-  border-color:rgba(16,35,61,.18) !important;
+
+/* Real chart reveal: a sheet slides away from left to right */
+.canvas-wrap{
+  position:relative;
 }
-body.theme-morning .theme-settings select option,
-body.theme-day .theme-settings select option{
-  color:#f4f7ff;
-  background:#27486c;
+.chart-panel.direct-chart-reveal .canvas-wrap::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:5;
+  pointer-events:none;
+  background:var(--mi-surface,#121722);
+  transform-origin:right center;
+  animation:chartWipe 760ms cubic-bezier(.22,.8,.24,1) forwards;
+}
+@keyframes chartWipe{
+  from{transform:scaleX(1)}
+  to{transform:scaleX(0)}
+}
+body.theme-morning .chart-panel.direct-chart-reveal .canvas-wrap::after,
+body.theme-day .chart-panel.direct-chart-reveal .canvas-wrap::after{
+  background:#fff;
+}
+
+body.theme-morning .custom-assets-editor,
+body.theme-day .custom-assets-editor{
+  border-top-color:rgba(23,32,51,.09);
+}
+body.theme-morning .custom-asset-field,
+body.theme-day .custom-asset-field{
+  border-bottom-color:rgba(23,32,51,.07);
+}
+body.theme-morning .custom-asset-tile,
+body.theme-day .custom-asset-tile{
+  background:#fbfcfe;
+  border-color:rgba(23,32,51,.08);
+}
+
+@media(max-width:760px){
+  .custom-asset-snapshot{grid-template-columns:1fr 1fr}
+  .custom-asset-field{grid-template-columns:1fr 110px}
+}
+
+/* =========================================================
+   NUMBER INPUT SAFETY
+   Prevent accidental value changes via mouse wheel/spinners.
+   ========================================================= */
+
+/* Chrome / Edge / Safari */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button{
+  -webkit-appearance:none;
+  margin:0;
+}
+
+/* Firefox */
+input[type="number"]{
+  -moz-appearance:textfield;
+  appearance:textfield;
+}
+
+
+/* =========================================================
+   ALWAYS-ON VIEW ANIMATIONS
+   ASSETS: count from 0 every time the file is opened.
+   CHART: reveal left-to-right every time the file is opened.
+   ========================================================= */
+
+.money-if-counting{
+  display:inline-block;
+  font-variant-numeric:tabular-nums;
+  will-change:transform,opacity;
+}
+.money-if-counting.counting-now{
+  animation:moneyIfCountPulse .72s cubic-bezier(.22,.8,.24,1);
+}
+@keyframes moneyIfCountPulse{
+  0%{opacity:.45;transform:translateY(5px)}
+  55%{opacity:1;transform:translateY(-1px)}
+  100%{opacity:1;transform:none}
+}
+
+#chart-section .canvas-wrap,
+#chart-section .chart-scroll{
+  position:relative;
+  overflow:hidden;
+}
+
+.money-if-chart-curtain{
+  position:absolute;
+  inset:0;
+  z-index:50;
+  pointer-events:none;
+  background:var(--mi-surface,#121722);
+  transform-origin:right center;
+}
+.money-if-chart-curtain.run{
+  animation:moneyIfChartReveal .82s cubic-bezier(.22,.8,.24,1) forwards;
+}
+@keyframes moneyIfChartReveal{
+  0%{transform:scaleX(1)}
+  100%{transform:scaleX(0)}
+}
+
+body.theme-morning .money-if-chart-curtain,
+body.theme-day .money-if-chart-curtain{
+  background:#fff;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .money-if-counting.counting-now,
+  .money-if-chart-curtain.run{
+    animation-duration:.001ms !important;
+  }
+}
+
+
+/* True line drawing now replaces the old chart curtain. */
+.money-if-chart-curtain{
+  display:none !important;
+}
+#chart-section canvas{
+  opacity:1 !important;
+}
+
+
+/* =========================================================
+   FILE SWITCH STABILITY
+   Disable page transition motion. File tabs now switch instantly.
+   ========================================================= */
+
+.dashboard-content > [data-file-view],
+.dashboard-content > [data-file-view].file-entering,
+.dashboard-content > [data-file-view].file-leaving,
+.dashboard-content > [data-file-view].file-active{
+  animation:none !important;
+  transition:none !important;
+  transform:none !important;
+  filter:none !important;
+}
+
+.dashboard-content > [data-file-view].file-leaving{
+  position:relative !important;
+  inset:auto !important;
+  pointer-events:auto !important;
+}
+
+.file-tab-button{
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease !important;
+}
+
+/* Active tab should not jump vertically or resize. */
+.file-tab-button,
+.file-tab-button.active,
+.file-tab-button:nth-child(1),
+.file-tab-button:nth-child(2),
+.file-tab-button:nth-child(3),
+.file-tab-button:nth-child(4),
+.file-tab-button:nth-child(5),
+.file-tab-button:nth-child(6),
+.file-tab-button:nth-child(7){
+  transform:none !important;
+  translate:none !important;
+  height:48px !important;
+}
+
+.file-tab-button:hover{
+  transform:none !important;
+}
+
+/* Prevent stacked pseudo/file effects from appearing doubled during switching. */
+.dashboard-content > .file-sheet::after{
+  transition:none !important;
+  animation:none !important;
 }
 
 </style>
 </head>
 <body>
-<a class="home-return" href="index.html" aria-label="ホームへ戻る">
-  <span class="home-return-icon" aria-hidden="true"></span>
-  <span class="home-return-label">
-    HOME
-    <small>ダッシュボードへ戻る</small>
-  </span>
+<header class="app-header">
+<a aria-label="Money IF Auto top" class="brand-lockup" href="#overview">
+<span class="brand-mark">M</span>
+<span class="brand-copy">
+<strong>Money IF</strong>
+<small>AI MONEY OS</small>
+</span>
 </a>
-
-<main class="wrap">
-  <section class="hero">
-    <div class="hero-grid">
-      <div>
-        <div class="eyebrow">Money Signal Dashboard</div>
-        <h1 id="devTrigger" aria-label="Money IF Auto">Money IF Auto</h1>
-        <p class="lead">
+<div class="header-actions">
+<span class="ai-status-dot"><i></i> Gemini connected</span>
+<button aria-expanded="false" aria-label="メニューを開く" class="menu-button" id="menuButton" type="button">
+<span></span><span></span><span></span>
+</button>
+</div>
+</header>
+<div class="menu-backdrop" id="menuBackdrop"></div>
+<nav aria-hidden="true" class="side-menu" id="sideMenu">
+<div class="side-menu-top">
+<div>
+<small>NAVIGATION</small>
+<strong>Money IF</strong>
+</div>
+<button aria-label="メニューを閉じる" class="menu-close" id="menuClose" type="button">×</button>
+</div><a href="#chart-section"><span>01</span> 資産推移</a><a href="#snapshot"><span>02</span>資産</a><a href="#ai"><span>03</span> AI分析</a><a href="#plans"><span>04</span> 予定支出</a><a href="#purchase"><span>05</span> 購入判定</a><a href="#rules"><span>06</span>ルール</a><a href="#history-section"><span>07</span> 履歴</a><a href="#entry"><span>R</span> 記録する</a>
+<div class="side-menu-foot">
+<span>MORE FEATURES</span>
+<p>ここは今後の機能追加用。設定・AI相談・通知などを増やせます。</p>
+</div>
+</nav>
+<main class="wrap" id="top">
+<section class="hero" id="overview">
+<div class="hero-grid">
+<div>
+<div class="eyebrow">PERSONAL MONEY ARCHIVE</div>
+<h1 aria-label="Money IF Auto" id="devTrigger">Money IF Auto</h1>
+<p class="lead">
           残高を記録すると、直近3件・直近8件・全履歴・月次推移を組み合わせ、資金移動や資産悪化まで自動で読み取る、
           自分専用のお金ダッシュボード。
         </p>
-        <div id="themeIndicator" class="theme-indicator">時間帯テーマを読み込み中</div>
-        <div class="theme-settings">
-          <label for="themePreference">表示テーマ</label>
-          <select id="themePreference" aria-label="表示テーマ">
-            <option value="auto">時刻に合わせる</option>
-            <option value="morning">朝に固定</option>
-            <option value="day">昼に固定</option>
-            <option value="evening">夕方に固定</option>
-            <option value="night">夜に固定</option>
-          </select>
-        </div>
-      </div>
-      <div class="hero-side">
-        <div class="status-card">
-          <small>自動判定モード</small>
-          <strong id="modeTitle">データ不足</strong>
-          <div id="modeDetail" class="status-detail">2件以上記録すると傾向を判定します。</div>
-        </div>
-        <div class="mini-strip">
-          <div class="mini"><span>判定軸</span><strong>総資産</strong></div>
-          <div class="mini"><span>判定軸</span><strong>使えるお金</strong></div>
-          <div class="mini"><span>判定軸</span><strong>貯金比率</strong></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="layout">
-    <aside class="panel sticky">
-      <div class="panel-inner">
-        <div class="section-head">
-          <h2 class="section-title">資産残高を記録</h2>
-          <span class="badge">Auto Analyze</span>
-        </div>
-        <p class="section-sub">
+<div class="theme-indicator" id="themeIndicator">時間帯テーマを読み込み中</div>
+</div>
+<div class="hero-side">
+<div class="status-card">
+<small>自動判定モード</small>
+<strong id="modeTitle">データ不足</strong>
+<div class="status-detail" id="modeDetail">2件以上記録すると傾向を判定します。</div>
+</div>
+<div class="mini-strip">
+<div class="mini"><span>判定軸</span><strong>総資産</strong></div>
+<div class="mini"><span>判定軸</span><strong>使えるお金</strong></div>
+<div class="mini"><span>判定軸</span><strong>貯金比率</strong></div>
+</div>
+</div>
+</div>
+</section>
+<section class="layout app-shell file-workspace">
+<div class="main-file-column"><nav aria-label="Money IF セクション切り替え" class="file-tab-switcher"><button aria-selected="true" class="file-tab-button active" data-target="chart-section" title="推移" type="button"><small>01</small><strong>CHART</strong></button><button aria-selected="false" class="file-tab-button" data-target="snapshot" title="資産" type="button"><small>02</small><strong>ASSETS</strong></button><button aria-selected="false" class="file-tab-button" data-target="ai" title="AI分析" type="button"><small>03</small><strong>AI</strong></button><button aria-selected="false" class="file-tab-button" data-target="plans" title="予定" type="button"><small>04</small><strong>PLANS</strong></button><button aria-selected="false" class="file-tab-button" data-target="purchase" title="購入判定" type="button"><small>05</small><strong>DECISION</strong></button><button aria-selected="false" class="file-tab-button" data-target="rules" title="ルール" type="button"><small>06</small><strong>RULES</strong></button><button aria-selected="false" class="file-tab-button" data-target="history-section" title="履歴" type="button"><small>07</small><strong>ARCHIVE</strong></button></nav><div class="dashboard-content">
+<section class="panel chart-panel file-sheet file-active" data-file-view="chart-section" data-tab="CHART" id="chart-section">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">資産推移</h2>
+<span class="badge">Line Graph</span>
+</div>
+<div class="chart-controls">
+<div class="segmented" id="periodControl">
+<button class="active" data-period="daily" type="button">日足</button>
+<button data-period="weekly" type="button">週足</button>
+<button data-period="monthly" type="button">月足</button>
+</div>
+<div class="chart-hint">データが多いと横にスクロールできます</div>
+</div>
+<div class="legend" id="legend"></div>
+<div class="chart-scroll" id="chartScroll">
+<div class="canvas-wrap" id="canvasWrap"><canvas id="chart"></canvas></div>
+</div>
+</div>
+</section><section class="panel snapshot-panel file-sheet" data-file-view="snapshot" data-tab="ASSETS" id="snapshot">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">いまの資産スナップショット</h2>
+<span class="badge">Live Summary</span>
+</div>
+<div class="stats-grid">
+<div class="stat">
+<span>純資産</span>
+<strong id="total">¥0</strong>
+<small>資産−借金</small>
+</div>
+<div class="stat">
+<span>使えるお金</span>
+<strong id="liquid">¥0</strong>
+<small>現金＋カード残高</small>
+</div>
+<div class="stat">
+<span>守るお金</span>
+<strong id="protected">¥0</strong>
+<small>貯金（現金＋銀行）</small>
+</div>
+<div class="stat">
+<span>投資</span>
+<strong id="investStat">¥0</strong>
+<small>運用資産</small>
+</div>
+<div class="stat">
+<span>借金</span>
+<strong id="debtStat">¥0</strong>
+<small>現在の借金総額</small>
+</div>
+</div><div class="custom-asset-snapshot" id="customAssetSnapshot"></div>
+</div>
+</section><section class="panel analysis-panel-main file-sheet" data-file-view="ai" data-tab="AI REPORT" id="ai">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">自動分析</h2>
+<span class="badge">Trend Reading</span>
+</div>
+<div class="analysis" id="analysis">
+<h3>まだ判定できません</h3>
+            2件以上の記録が必要です。
+          </div>
+<div class="ai-analysis-panel">
+<div class="ai-analysis-head">
+<strong>AI分析</strong>
+<span class="badge">Gemini API</span>
+</div>
+<p class="ai-analysis-note">
+              記録した資産履歴・予定支出・直近の変化をGeminiへ送り、数値の読み上げではなく生活への影響まで分析します。
+              AIはボタンを押した時だけ実行します。
+            </p>
+<div class="ai-analysis-actions">
+<button class="primary" id="aiAnalyzeButton" type="button">AIで詳しく分析する</button>
+</div>
+<div aria-live="polite" class="ai-motion-status" id="aiMotionStatus"><div class="ai-progress-track"></div><div class="ai-progress-step" id="aiProgressStep">資産履歴を読み込んでいます</div></div><div class="ai-analysis-result" id="aiAnalysisResult">
+              まだAI分析は実行していません。
+            </div>
+<div class="ai-analysis-meta" id="aiAnalysisMeta"></div>
+</div>
+</div>
+</section><section class="panel plans-panel file-sheet" data-file-view="plans" data-tab="PLANS" id="plans">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">これからの予定支出</h2>
+<span class="badge">Planned Expenses</span>
+</div>
+<div class="purchase-grid">
+<label>
+              予定
+              <input id="plannedName" placeholder="例：旅行、交通費、飲み会" type="text"/>
+</label>
+<label>
+              金額
+              <input id="plannedAmount" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<label>
+              期限
+              <input id="plannedDate" type="date"/>
+</label>
+<label>
+              優先度
+              <select id="plannedPriority">
+<option value="essential">必ず必要</option>
+<option value="important">できれば守る</option>
+<option value="optional">削ってもよい</option>
+</select>
+</label>
+<button class="primary" id="plannedAdd" style="margin-top:0" type="button">追加</button>
+</div>
+<div class="planned-expense-list" id="plannedExpenseList"></div>
+</div>
+</section><section class="panel purchase-panel-main file-sheet" data-file-view="purchase" data-tab="DECISION" id="purchase">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">購入判定</h2>
+<span class="badge">Purchase Check</span>
+</div>
+<div class="purchase-grid">
+<label>
+              商品・予定
+              <input id="purchaseName" placeholder="例：ギター機材、旅行、飲み会" type="text"/>
+</label>
+<label>
+              金額
+              <input id="purchasePrice" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<label>
+              種類
+              <select id="purchaseType">
+<option value="want">趣味・欲しい物</option>
+<option value="experience">旅行・交際・経験</option>
+<option value="study">学業・資格・制作</option>
+<option value="need">生活必需品</option>
+</select>
+</label>
+<label>
+              貯金の使い方
+              <select id="savingsUseMode">
+<option value="none">貯金は使わない</option>
+<option value="surplus">最近の最低額を超えた分まで</option>
+<option value="custom">上限を自分で指定</option>
+</select>
+</label>
+<label id="savingsLimitWrap" style="display:none">
+              貯金から使う上限
+              <input id="savingsUseLimit" min="0" placeholder="10000" step="100" type="number"/>
+</label>
+<button class="primary" id="purchaseJudge" style="margin-top:0" type="button">判定する</button>
+</div>
+<div class="purchase-result plan-message" id="purchaseResult">
+            予定支出・普段の消費ペース・貯金・借金を見て、購入後の生活に支障が出るか判定します。
+          </div>
+</div>
+</section><section class="panel rules-panel file-sheet" data-file-view="rules" data-tab="RULES" id="rules">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">今日のIFルール</h2>
+<span class="badge">Behavior Guide</span>
+</div>
+<div class="rule-grid" id="ifRuleGrid">
+<div class="rule">
+<small id="ifRule1Label">IF データ不足</small>
+<strong id="ifRule1Text">記録を3件以上ためる</strong>
+</div>
+<div class="rule">
+<small id="ifRule2Label">IF 次の記録まで</small>
+<strong id="ifRule2Text">大きな判断は保留する</strong>
+</div>
+<div class="rule">
+<small id="ifRule3Label">IF 確認すること</small>
+<strong id="ifRule3Text">資産の置き場所と残高を確認する</strong>
+</div>
+</div>
+</div>
+</section><section class="panel history-panel file-sheet" data-file-view="history-section" data-tab="ARCHIVE" id="history-section">
+<div class="panel-inner history">
+<div class="section-head">
+<h2 class="section-title">記録一覧</h2>
+<span class="badge">History</span>
+</div>
+<div id="history"></div>
+</div>
+</section></div></div><aside class="panel sticky entry-panel file-sheet record-dock" data-tab="RECORD" id="entry">
+<div class="panel-inner">
+<div class="section-head">
+<h2 class="section-title">資産残高を記録</h2>
+<span class="badge">Auto Analyze</span>
+</div>
+<p class="section-sub">
           支出を逐一入力しなくても大丈夫。現金・カード・貯金・投資の残高だけ記録して、
           傾向を自動判定します。
         </p>
-
-        <form id="form">
-          <label for="date">日付</label>
-          <input id="date" type="date" required>
-
-          <div class="row">
-            <div>
-              <label for="cash">現金</label>
-              <div class="input-wrap"><input id="cash" type="number" min="0" required></div>
-            </div>
-            <div>
-              <label for="card">カード残高</label>
-              <div class="input-wrap"><input id="card" type="number" min="0" required></div>
-            </div>
-          </div>
-
-          <div class="row">
-            <div>
-              <label for="savingsCash">貯金（現金）</label>
-              <div class="input-wrap"><input id="savingsCash" type="number" min="0" required></div>
-            </div>
-            <div>
-              <label for="savingsBank">貯金（銀行）</label>
-              <div class="input-wrap"><input id="savingsBank" type="number" min="0" required></div>
-            </div>
-          </div>
-
-          <label for="investment">投資</label>
-          <div class="input-wrap"><input id="investment" type="number" min="0" required></div>
-          <div class="debt-section">
-            <label for="debt">借金総額</label>
-            <div class="input-wrap"><input id="debt" type="number" min="0" value="0"></div>
-            <div class="debt-note">現在残っている借金の合計額を入力します。</div>
-          </div>
-
-          <div class="salary-toggle"><div><span>給料日として記録</span><small>増加分を収入として扱い、貯金目安を提案します</small></div><label class="switch" aria-label="給料日として記録"><input id="salaryDay" type="checkbox"><span class="slider"></span></label></div>
-          <button class="primary" type="submit">記録して自動分析</button>
-                    <button class="danger" id="clear" type="button">全データ削除</button>
-        </form>
-
-        <div class="note">
+<form id="form">
+<label for="date">日付</label>
+<input id="date" required="" type="date"/>
+<div class="row">
+<div>
+<label for="cash">現金</label>
+<div class="input-wrap"><input id="cash" min="0" required="" type="number"/></div>
+</div>
+<div>
+<label for="card">カード残高</label>
+<div class="input-wrap"><input id="card" min="0" required="" type="number"/></div>
+</div>
+</div>
+<div class="row">
+<div>
+<label for="savingsCash">貯金（現金）</label>
+<div class="input-wrap"><input id="savingsCash" min="0" required="" type="number"/></div>
+</div>
+<div>
+<label for="savingsBank">貯金（銀行）</label>
+<div class="input-wrap"><input id="savingsBank" min="0" required="" type="number"/></div>
+</div>
+</div>
+<label for="investment">投資</label>
+<div class="input-wrap"><input id="investment" min="0" required="" type="number"/></div><div class="custom-assets-editor">
+<div class="custom-assets-editor-head">
+<div>
+<strong>追加資産</strong>
+<small>今ある項目以外の資産を自由に追加</small>
+</div>
+<button class="asset-add-button" id="openCustomAssetCreator" type="button">＋ 種類を追加</button>
+</div>
+<div class="custom-asset-creator" hidden="" id="customAssetCreator">
+<input id="customAssetName" maxlength="24" placeholder="例：電子マネー、ポイント、外貨、金" type="text"/>
+<div class="custom-asset-creator-actions">
+<button class="secondary" id="cancelCustomAsset" type="button">キャンセル</button>
+<button class="primary" id="saveCustomAsset" type="button">追加する</button>
+</div>
+</div>
+<div class="custom-asset-inputs" id="customAssetInputs"></div>
+</div>
+<div class="debt-section">
+<label for="debt">借金総額</label>
+<div class="input-wrap"><input id="debt" min="0" type="number" value="0"/></div>
+<div class="debt-note">現在残っている借金の合計額を入力します。</div>
+</div>
+<div class="salary-toggle"><div><span>給料日として記録</span><small>増加分を収入として扱い、貯金目安を提案します</small></div><label aria-label="給料日として記録" class="switch"><input id="salaryDay" type="checkbox"/><span class="slider"></span></label></div>
+<button class="primary" type="submit">記録して自動分析</button>
+<button class="danger" id="clear" type="button">全データ削除</button>
+</form>
+<div class="note">
           保存先はこのブラウザ内です。同じ日付で入力すると上書きされます。
         </div>
-      </div>
-    </aside>
-
-    <div style="display:grid; gap:22px;">
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">いまの資産スナップショット</h2>
-            <span class="badge">Live Summary</span>
-          </div>
-          <div class="stats-grid">
-            <div class="stat">
-              <span>純資産</span>
-              <strong id="total">¥0</strong>
-              <small>資産−借金</small>
-            </div>
-            <div class="stat">
-              <span>使えるお金</span>
-              <strong id="liquid">¥0</strong>
-              <small>現金＋カード残高</small>
-            </div>
-            <div class="stat">
-              <span>守るお金</span>
-              <strong id="protected">¥0</strong>
-              <small>貯金（現金＋銀行）</small>
-            </div>
-            <div class="stat">
-              <span>投資</span>
-              <strong id="investStat">¥0</strong>
-              <small>運用資産</small>
-            </div>
-            <div class="stat">
-              <span>借金</span>
-              <strong id="debtStat">¥0</strong>
-              <small>現在の借金総額</small>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">自動分析</h2>
-            <span class="badge">Trend Reading</span>
-          </div>
-          <div id="analysis" class="analysis">
-            <h3>まだ判定できません</h3>
-            2件以上の記録が必要です。
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">今日のIFルール</h2>
-            <span class="badge">Behavior Guide</span>
-          </div>
-          <div class="rule-grid" id="ifRuleGrid">
-            <div class="rule">
-              <small id="ifRule1Label">IF データ不足</small>
-              <strong id="ifRule1Text">記録を3件以上ためる</strong>
-            </div>
-            <div class="rule">
-              <small id="ifRule2Label">IF 次の記録まで</small>
-              <strong id="ifRule2Text">大きな判断は保留する</strong>
-            </div>
-            <div class="rule">
-              <small id="ifRule3Label">IF 確認すること</small>
-              <strong id="ifRule3Text">資産の置き場所と残高を確認する</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">これからの予定支出</h2>
-            <span class="badge">Planned Expenses</span>
-          </div>
-          <div class="purchase-grid">
-            <label>
-              予定
-              <input id="plannedName" type="text" placeholder="例：旅行、交通費、飲み会">
-            </label>
-            <label>
-              金額
-              <input id="plannedAmount" type="number" min="0" step="100" placeholder="10000">
-            </label>
-            <label>
-              期限
-              <input id="plannedDate" type="date">
-            </label>
-            <label>
-              優先度
-              <select id="plannedPriority">
-                <option value="essential">必ず必要</option>
-                <option value="important">できれば守る</option>
-                <option value="optional">削ってもよい</option>
-              </select>
-            </label>
-            <button id="plannedAdd" type="button" class="primary" style="margin-top:0">追加</button>
-          </div>
-          <div id="plannedExpenseList" class="planned-expense-list"></div>
-          <div id="expenseForecast" class="expense-forecast"></div>
-        </div>
-      </section>
-
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">これからのお金の動き</h2>
-            <span class="badge">Calendar Link</span>
-          </div>
-          <div id="futureFlowSummary"></div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">購入判定</h2>
-            <span class="badge">Purchase Check</span>
-          </div>
-          <div class="purchase-grid">
-            <label>
-              商品・予定
-              <input id="purchaseName" type="text" placeholder="例：ギター機材、旅行、飲み会">
-            </label>
-            <label>
-              金額
-              <input id="purchasePrice" type="number" min="0" step="100" placeholder="10000">
-            </label>
-            <label>
-              種類
-              <select id="purchaseType">
-                <option value="want">趣味・欲しい物</option>
-                <option value="experience">旅行・交際・経験</option>
-                <option value="study">学業・資格・制作</option>
-                <option value="need">生活必需品</option>
-              </select>
-            </label>
-            <label>
-              貯金の使い方
-              <select id="savingsUseMode">
-                <option value="none">貯金は使わない</option>
-                <option value="surplus">最近の最低額を超えた分まで</option>
-                <option value="custom">上限を自分で指定</option>
-              </select>
-            </label>
-            <label id="savingsLimitWrap" style="display:none">
-              貯金から使う上限
-              <input id="savingsUseLimit" type="number" min="0" step="100" placeholder="10000">
-            </label>
-            <button id="purchaseJudge" type="button" class="primary" style="margin-top:0">判定する</button>
-          </div>
-          <div id="purchaseResult" class="purchase-result plan-message">
-            予定支出・普段の消費ペース・貯金・借金を見て、購入後の生活に支障が出るか判定します。
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner">
-          <div class="section-head">
-            <h2 class="section-title">資産推移</h2>
-            <span class="badge">Line Graph</span>
-          </div>
-          <div class="chart-controls">
-            <div class="segmented" id="periodControl">
-              <button type="button" data-period="daily" class="active">日足</button>
-              <button type="button" data-period="weekly">週足</button>
-              <button type="button" data-period="monthly">月足</button>
-            </div>
-            <div class="chart-hint">データが多いと横にスクロールできます</div>
-          </div>
-          <div id="legend" class="legend"></div>
-          <div id="chartScroll" class="chart-scroll">
-            <div id="canvasWrap" class="canvas-wrap"><canvas id="chart"></canvas></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel">
-        <div class="panel-inner history">
-          <div class="section-head">
-            <h2 class="section-title">記録一覧</h2>
-            <span class="badge">History</span>
-          </div>
-          <div id="history"></div>
-        </div>
-      </section>
-    </div>
-  </section>
+</div>
+</aside></section>
 </main>
-<div id="devToast" class="dev-toast"></div>
-
-<div id="devModal" class="dev-modal" aria-hidden="true">
-  <div class="dev-dialog" role="dialog" aria-modal="true" aria-labelledby="devTitle">
-    <div id="devLoginView" class="dev-login-view">
-      <h3 id="devTitle">Developer Mode</h3>
-      <p>開発者コードを入力してください。</p>
-      <input id="devCode" type="password" autocomplete="off" placeholder="Developer code">
-      <div class="dev-actions">
-        <button id="devCancel" class="secondary" type="button">閉じる</button>
-        <button id="devRun" class="primary" type="button" style="margin-top:0">認証</button>
-      </div>
-    </div>
-
-    <div id="devImportView" class="dev-import-view" hidden>
-      <h3>履歴データ一括移行</h3>
-      <p>数字列を貼り付けると、既存履歴へまとめて追加します。同じ日付は上書きされます。</p>
-      <div class="dev-format">
-        日付.現金.カード.貯金現金.貯金銀行.投資[.借金][.給料日]<br>
-        給料日：最後を1、通常日：0または省略<br>
-        例：20280513.5555.10000.1000.100000.200.0.1<br>
+<div class="dev-toast" id="devToast"></div>
+<div aria-hidden="true" class="dev-modal" id="devModal">
+<div aria-labelledby="devTitle" aria-modal="true" class="dev-dialog" role="dialog">
+<div class="dev-login-view" id="devLoginView">
+<h3 id="devTitle">Developer Mode</h3>
+<p>開発者コードを入力してください。</p>
+<input autocomplete="off" id="devCode" placeholder="Developer code" type="password"/>
+<div class="dev-actions">
+<button class="secondary" id="devCancel" type="button">閉じる</button>
+<button class="primary" id="devRun" style="margin-top:0" type="button">認証</button>
+</div>
+</div>
+<div class="dev-import-view" hidden="" id="devImportView">
+<h3>履歴データ一括移行</h3>
+<p>数字列を貼り付けると、既存履歴へまとめて追加します。同じ日付は上書きされます。</p>
+<div class="dev-format">
+        日付.現金.カード.貯金現金.貯金銀行.投資[.借金][.給料日]<br/>
+        給料日：最後を1、通常日：0または省略<br/>
+        例：20280513.5555.10000.1000.100000.200.0.1<br/>
         区切り：改行 ／ / ／ ;
       </div>
-      <textarea id="bulkImportData" spellcheck="false" placeholder="20280513.5555.10000.1000.100000.200.0.1&#10;20280520.6000.12000.3000.100000.500.10000.0"></textarea>
-      <div id="bulkImportStatus" class="dev-import-status"></div>
-      <div class="dev-toolbar">
-        <button id="devRandomSample" class="secondary" type="button">ランダムサンプル</button>
-        <button id="bulkImportRun" class="primary" type="button" style="margin-top:0">履歴へ追加</button>
-      </div>
-
-      <div class="dev-time-preview">
-        <h4>時間帯UIプレビュー</h4>
-        <p>実際の時刻を変えず、画面テーマだけを確認できます。</p>
-        <div class="dev-time-buttons">
-          <button type="button" class="secondary" data-dev-hour="7">朝 7時</button>
-          <button type="button" class="secondary" data-dev-hour="13">昼 13時</button>
-          <button type="button" class="secondary" data-dev-hour="18">夕方 18時</button>
-          <button type="button" class="secondary" data-dev-hour="23">夜 23時</button>
-        </div>
-        <button id="devTimeReset" class="secondary dev-time-reset" type="button">実際の現在時刻に戻す</button>
-        <div id="devTimeStatus" class="dev-time-status">現在時刻に連動中</div>
-      </div>
-
-      <button id="devImportClose" class="danger" type="button">閉じる</button>
-    </div>
-  </div>
+<textarea id="bulkImportData" placeholder="20280513.5555.10000.1000.100000.200.0.1
+20280520.6000.12000.3000.100000.500.10000.0" spellcheck="false"></textarea>
+<div class="dev-import-status" id="bulkImportStatus"></div>
+<div class="dev-toolbar">
+<button class="secondary" id="devRandomSample" type="button">ランダムサンプル</button>
+<button class="primary" id="bulkImportRun" style="margin-top:0" type="button">履歴へ追加</button>
 </div>
-
-
+<div class="dev-time-preview">
+<h4>時間帯UIプレビュー</h4>
+<p>実際の時刻を変えず、画面テーマだけを確認できます。</p>
+<div class="dev-time-buttons">
+<button class="secondary" data-dev-hour="7" type="button">朝 7時</button>
+<button class="secondary" data-dev-hour="13" type="button">昼 13時</button>
+<button class="secondary" data-dev-hour="18" type="button">夕方 18時</button>
+<button class="secondary" data-dev-hour="23" type="button">夜 23時</button>
+</div>
+<button class="secondary dev-time-reset" id="devTimeReset" type="button">実際の現在時刻に戻す</button>
+<div class="dev-time-status" id="devTimeStatus">現在時刻に連動中</div>
+</div>
+<button class="danger" id="devImportClose" type="button">閉じる</button>
+</div>
+</div>
+</div>
 <script>
 
 let devThemeHour=null;
-const THEME_PREFERENCE_KEY="money-if-theme-preference-v1";
-
-function getThemePreference(){
-  const value=localStorage.getItem(THEME_PREFERENCE_KEY)||"auto";
-  return ["auto","morning","day","evening","night"].includes(value)?value:"auto";
-}
-
-function themeFromHour(hour){
-  if(hour>=5&&hour<10)return {key:"morning",className:"theme-morning",label:"朝モード"};
-  if(hour>=10&&hour<17)return {key:"day",className:"theme-day",label:"昼モード"};
-  if(hour>=17&&hour<20)return {key:"evening",className:"theme-evening",label:"夕方モード"};
-  return {key:"night",className:"theme-night",label:"夜モード"};
-}
 
 function applyTimeTheme(){
   const actualHour=new Date().getHours();
-  const preference=getThemePreference();
-  let theme;
-  let sourceLabel;
+  const hour=devThemeHour===null?actualHour:devThemeHour;
+  const body = document.body;
+  body.classList.remove("theme-morning","theme-day","theme-evening","theme-night");
 
-  if(devThemeHour!==null){
-    theme=themeFromHour(devThemeHour);
-    sourceLabel=`DEVプレビュー ${String(devThemeHour).padStart(2,"0")}時台`;
-  }else if(preference!=="auto"){
-    const map={
-      morning:{key:"morning",className:"theme-morning",label:"朝モード"},
-      day:{key:"day",className:"theme-day",label:"昼モード"},
-      evening:{key:"evening",className:"theme-evening",label:"夕方モード"},
-      night:{key:"night",className:"theme-night",label:"夜モード"}
-    };
-    theme=map[preference];
-    sourceLabel="設定で固定中";
-  }else{
-    theme=themeFromHour(actualHour);
-    sourceLabel=`現在 ${String(actualHour).padStart(2,"0")}時台`;
+  let themeClass = "theme-night";
+  let label = "夜モード";
+
+  if(hour >= 5 && hour < 10){
+    themeClass = "theme-morning";
+    label = "朝モード";
+  }else if(hour >= 10 && hour < 17){
+    themeClass = "theme-day";
+    label = "昼モード";
+  }else if(hour >= 17 && hour < 20){
+    themeClass = "theme-evening";
+    label = "夕方モード";
   }
 
-  document.body.classList.remove("theme-morning","theme-day","theme-evening","theme-night");
-  document.body.classList.add(theme.className);
-
-  const indicator=document.getElementById("themeIndicator");
-  if(indicator)indicator.textContent=`${theme.label}・${sourceLabel}`;
-
-  const selector=document.getElementById("themePreference");
-  if(selector&&selector.value!==preference)selector.value=preference;
+  body.classList.add(themeClass);
+  const indicator = document.getElementById("themeIndicator");
+  if(indicator){
+    indicator.textContent = devThemeHour===null
+      ? `${label}・現在 ${String(actualHour).padStart(2,"0")}時台`
+      : `${label}・DEVプレビュー ${String(hour).padStart(2,"0")}時台`;
+  }
 
   const status=document.getElementById("devTimeStatus");
   if(status){
     status.textContent=devThemeHour===null
-      ? (preference==="auto"?`現在時刻に連動中（${String(actualHour).padStart(2,"0")}時台）`:`${theme.label}に固定中`)
-      : `${String(devThemeHour).padStart(2,"0")}時台をプレビュー中。リセットすると表示設定へ戻ります。`;
+      ? `現在時刻に連動中（${String(actualHour).padStart(2,"0")}時台）`
+      : `${String(hour).padStart(2,"0")}時台をプレビュー中。リセットすると現在時刻へ戻ります。`;
   }
   document.querySelectorAll("[data-dev-hour]").forEach(button=>{
-    button.classList.toggle("active",devThemeHour!==null&&+button.dataset.devHour===devThemeHour);
+    button.classList.toggle("active",devThemeHour!==null && +button.dataset.devHour===devThemeHour);
   });
 }
 applyTimeTheme();
 setInterval(applyTimeTheme, 60 * 1000);
-const themePreferenceSelect=document.getElementById("themePreference");
-if(themePreferenceSelect){
-  themePreferenceSelect.value=getThemePreference();
-  themePreferenceSelect.addEventListener("change",()=>{
-    localStorage.setItem(THEME_PREFERENCE_KEY,themePreferenceSelect.value);
-    devThemeHour=null;
-    applyTimeTheme();
-  });
-}
 
 const KEY="money-if-auto-records-v2";
 const config={
@@ -2073,13 +3453,44 @@ const config={
  savingsBank:{label:"貯金（銀行）",color:"#b388ff"},
  investment:{label:"投資",color:"#ff7f9f"}
 };
+
+const CUSTOM_ASSETS_KEY="money-if-custom-assets-v1";
+const CUSTOM_ASSET_COLORS=["#61d6e8","#8ea8ff","#a78bfa","#65d49a","#f6c76d","#ff9b80","#8bd5ca","#c6a0f6"];
+
+function loadCustomAssetDefs(){
+  try{
+    const rows=JSON.parse(localStorage.getItem(CUSTOM_ASSETS_KEY)||"[]");
+    return Array.isArray(rows)
+      ? rows.filter(x=>x && typeof x.id==="string" && typeof x.name==="string")
+      : [];
+  }catch{return[]}
+}
+function saveCustomAssetDefs(rows){
+  localStorage.setItem(CUSTOM_ASSETS_KEY,JSON.stringify(rows));
+}
+function syncCustomAssetConfig(){
+  Object.keys(config).filter(k=>k.startsWith("custom_")).forEach(k=>delete config[k]);
+  loadCustomAssetDefs().forEach((item,index)=>{
+    config[item.id]={
+      label:item.name,
+      color:item.color||CUSTOM_ASSET_COLORS[index%CUSTOM_ASSET_COLORS.length],
+      custom:true
+    };
+  });
+}
+syncCustomAssetConfig();
 let visible=Object.fromEntries(Object.keys(config).map(k=>[k,true]));
 let chartPeriod="daily";
 let currentStudentPlan=null;
 const PLANNED_EXPENSES_KEY="money-if-planned-expenses-v1";
+const AI_WORKER_URL="https://money-if-ai.shurock1515.workers.dev/";
 const $=id=>document.getElementById(id);
 const yen=n=>"¥"+Math.round(n||0).toLocaleString("ja-JP");
-const normalizeRecord=r=>({...r,cash:+r.cash||0,card:+r.card||0,savingsCash:+r.savingsCash||0,savingsBank:+r.savingsBank||0,investment:+r.investment||0,debt:+r.debt||0});
+const normalizeRecord=r=>{
+  const normalized={...r,cash:+r.cash||0,card:+r.card||0,savingsCash:+r.savingsCash||0,savingsBank:+r.savingsBank||0,investment:+r.investment||0,debt:+r.debt||0};
+  loadCustomAssetDefs().forEach(item=>{normalized[item.id]=+r[item.id]||0});
+  return normalized;
+};
 const load=()=>{try{return JSON.parse(localStorage.getItem(KEY)||"[]").map(normalizeRecord)}catch{return[]}};
 const save=r=>localStorage.setItem(KEY,JSON.stringify(r));
 
@@ -2088,9 +3499,10 @@ function today(){
   return new Date(d.getTime()-o*60000).toISOString().slice(0,10);
 }
 function totals(r){
-  const gross=r.cash+r.card+r.savingsCash+r.savingsBank+r.investment;
+  const custom=loadCustomAssetDefs().reduce((sum,item)=>sum+(+r[item.id]||0),0);
+  const gross=r.cash+r.card+r.savingsCash+r.savingsBank+r.investment+custom;
   const debt=+r.debt||0;
-  return {liquid:r.cash+r.card,protected:r.savingsCash+r.savingsBank,investment:r.investment,debt,gross,total:gross,net:gross-debt};
+  return {liquid:r.cash+r.card,protected:r.savingsCash+r.savingsBank,investment:r.investment,custom,debt,gross,total:gross,net:gross-debt};
 }
 function pct(a,b){return b===0?0:(a-b)/b*100}
 
@@ -2948,82 +4360,12 @@ function loadPlannedExpenses(){
 function savePlannedExpenses(items){
   localStorage.setItem(PLANNED_EXPENSES_KEY,JSON.stringify(items));
 }
-
-function renderExpenseForecast(){
-  const box=$("expenseForecast");
-  if(!box)return;
-
-  const items=loadPlannedExpenses()
-    .filter(item=>item.date&&item.amount>0)
-    .sort((a,b)=>a.date.localeCompare(b.date));
-  const records=load().sort((a,b)=>a.date.localeCompare(b.date));
-
-  if(!items.length){
-    box.innerHTML="";
-    return;
-  }
-
-  const latest=records.at(-1);
-  const dynamic=latest?latest.cash+latest.card:0;
-  const now=new Date();
-  now.setHours(0,0,0,0);
-
-  let cumulative=0;
-  let firstRisk=null;
-  const cards=items.map(item=>{
-    const due=new Date(item.date+"T00:00:00");
-    const days=Math.max(0,Math.ceil((due-now)/86400000));
-    cumulative+=Number(item.amount)||0;
-    const daily=days>0?Math.ceil(item.amount/days):item.amount;
-    const weekly=days>0?Math.ceil(item.amount/Math.max(1,days/7)/100)*100:item.amount;
-    const remainingAfter=dynamic-cumulative;
-    const urgent=days<=7;
-    const risk=remainingAfter<0;
-    if(risk&&!firstRisk)firstRisk={item,shortage:Math.abs(remainingAfter)};
-
-    return `
-      <div class="forecast-card ${risk?"urgent":urgent?"warning":""}">
-        <div class="forecast-title">
-          <strong>${escapeHtml(item.name)}</strong>
-          <span>${item.date}に${yen(item.amount)}の支出予定</span>
-        </div>
-        <div class="forecast-metric">
-          <span>あと</span>
-          <strong>${days}日</strong>
-        </div>
-        <div class="forecast-metric">
-          <span>毎週残す目安</span>
-          <strong>${yen(weekly)}</strong>
-        </div>
-        <div class="forecast-metric">
-          <span>予定確保後</span>
-          <strong>${yen(remainingAfter)}</strong>
-        </div>
-      </div>
-    `;
-  }).join("");
-
-  let summary;
-  if(!latest){
-    summary="資産記録を入力すると、現在の動的なお金から支出予定を確保できるか計算します。";
-  }else if(firstRisk){
-    summary=`${firstRisk.item.date}の「${escapeHtml(firstRisk.item.name)}」までに、現在の動的なお金では${yen(firstRisk.shortage)}不足する予測です。支出を減らすか、貯金から使う額を事前に決める必要があります。`;
-  }else{
-    const nearest=items[0];
-    const days=Math.max(0,Math.ceil((new Date(nearest.date+"T00:00:00")-now)/86400000));
-    const weekly=days>0?Math.ceil(nearest.amount/Math.max(1,days/7)/100)*100:nearest.amount;
-    summary=`${nearest.date}の「${escapeHtml(nearest.name)}」に向けて、毎週${yen(weekly)}程度を動的なお金から使わずに残すと、予定日に確保できます。`;
-  }
-
-  box.innerHTML=`<div class="forecast-summary">${summary}</div>${cards}`;
-}
 function renderPlannedExpenses(){
   const box=$("plannedExpenseList");
   if(!box)return;
   const items=loadPlannedExpenses().sort((a,b)=>(a.date||"9999").localeCompare(b.date||"9999"));
   if(!items.length){
     box.innerHTML='<div class="planned-expense-empty">まだ予定支出はありません。</div>';
-    renderExpenseForecast();
     return;
   }
   box.innerHTML=items.map(item=>`
@@ -3039,10 +4381,8 @@ function renderPlannedExpenses(){
       const next=loadPlannedExpenses().filter(item=>item.id!==btn.dataset.id);
       savePlannedExpenses(next);
       renderPlannedExpenses();
-renderFutureMoneyFlows();
     });
   });
-  renderExpenseForecast();
 }
 function escapeHtml(value){
   return String(value??"").replace(/[&<>"']/g,ch=>({
@@ -3061,80 +4401,10 @@ function addPlannedExpense(){
     name,amount,date,priority
   });
   savePlannedExpenses(items);
-  renderPlannedExpenses();
   $("plannedName").value="";
   $("plannedAmount").value="";
   $("plannedDate").value="";
   renderPlannedExpenses();
-}
-
-
-function loadCalendarMoneyFlows(){
-  try{
-    const events=JSON.parse(localStorage.getItem("money-if-calendar-events-v1")||"[]");
-    return (Array.isArray(events)?events:[])
-      .filter(event=>Number(event.moneyFlowAmount)>0&&event.date)
-      .map(event=>({
-        id:event.id,
-        title:event.title||"予定",
-        date:event.date,
-        type:event.moneyFlowType==="income"?"income":"expense",
-        amount:Math.max(0,Number(event.moneyFlowAmount)||0)
-      }));
-  }catch{
-    return [];
-  }
-}
-function getUpcomingMoneyFlows(days=45){
-  const base=currentStudentPlan?.latestDate
-    ? new Date(currentStudentPlan.latestDate+"T00:00:00")
-    : new Date();
-  const end=new Date(base);
-  end.setDate(end.getDate()+days);
-  return loadCalendarMoneyFlows()
-    .filter(flow=>{
-      const d=new Date(flow.date+"T00:00:00");
-      return d>=base&&d<=end;
-    })
-    .sort((a,b)=>a.date.localeCompare(b.date));
-}
-function renderFutureMoneyFlows(){
-  const box=$("futureFlowSummary");
-  if(!box)return;
-  const flows=getUpcomingMoneyFlows(45);
-  const expenses=flows.filter(f=>f.type==="expense").reduce((s,f)=>s+f.amount,0);
-  const incomes=flows.filter(f=>f.type==="income").reduce((s,f)=>s+f.amount,0);
-  const net=incomes-expenses;
-
-  let advice;
-  if(!flows.length){
-    advice="カレンダーに金額付きの予定を登録すると、ここに未来の収支が表示されます。";
-  }else if(expenses>incomes){
-    const nearest=flows.find(f=>f.type==="expense");
-    advice=nearest
-      ? `${nearest.date.slice(5).replace("-","/")}の「${nearest.title}」までに、少なくとも${yen(nearest.amount)}を使わず残しておく必要があります。今後45日では支出予定が収入予定を${yen(expenses-incomes)}上回ります。`
-      : `今後45日では支出予定が収入予定を${yen(expenses-incomes)}上回ります。`;
-  }else{
-    advice=`今後45日の予定収支は${yen(net)}のプラスです。ただし収入予定より前に支出が来る場合は、先に支出分を確保します。`;
-  }
-
-  box.innerHTML=`
-    <div class="future-flow-grid">
-      <div class="future-flow-card"><span>支出予定</span><strong>${yen(expenses)}</strong></div>
-      <div class="future-flow-card"><span>収入予定</span><strong>${yen(incomes)}</strong></div>
-      <div class="future-flow-card"><span>差引予定</span><strong>${net>=0?"+":""}${yen(net)}</strong></div>
-    </div>
-    <div class="future-flow-advice">${advice}</div>
-    <div class="future-flow-list">
-      ${flows.length?flows.map(flow=>`
-        <div class="future-flow-row ${flow.type}">
-          <div class="date">${flow.date.slice(5).replace("-","/")}</div>
-          <div>${escapeHtml(flow.title)}</div>
-          <div class="amount">${flow.type==="income"?"+":"−"}${yen(flow.amount)}</div>
-        </div>
-      `).join(""):'<div class="planned-expense-empty">金額付きの予定はありません。</div>'}
-    </div>
-  `;
 }
 
 function judgePurchase(){
@@ -3158,9 +4428,6 @@ function judgePurchase(){
 
   const p=currentStudentPlan;
   const planned=loadPlannedExpenses();
-  const calendarFlows=getUpcomingMoneyFlows(45);
-  const calendarExpenses=calendarFlows.filter(f=>f.type==="expense").reduce((s,f)=>s+f.amount,0);
-  const calendarIncomes=calendarFlows.filter(f=>f.type==="income").reduce((s,f)=>s+f.amount,0);
   const today=new Date(p.latestDate+"T00:00:00");
   const horizon=new Date(today);
   horizon.setDate(horizon.getDate()+45);
@@ -3173,7 +4440,7 @@ function judgePurchase(){
 
   const essentialPlanned=relevant
     .filter(item=>item.priority==="essential")
-    .reduce((sum,item)=>sum+item.amount,0) + calendarExpenses;
+    .reduce((sum,item)=>sum+item.amount,0);
   const importantPlanned=relevant
     .filter(item=>item.priority==="important")
     .reduce((sum,item)=>sum+item.amount,0);
@@ -3248,8 +4515,6 @@ function judgePurchase(){
     <div class="purchase-metrics">
       <span>購入後に使える額 ${yen(afterPurchase)}</span>
       <span>必須予定 ${yen(essentialPlanned)}</span>
-      <span>うちカレンダー支出 ${yen(calendarExpenses)}</span>
-      <span>予定収入 ${yen(calendarIncomes)}</span>
       <span>重要予定 ${yen(importantPlanned)}</span>
       <span>任意予定 ${yen(optionalPlanned)}</span>
       <span>予定確保後 ${yen(afterImportant)}</span>
@@ -3259,10 +4524,153 @@ function judgePurchase(){
   `;
 }
 
+const __displayedMoney=new Map();
+
+function animateMoneyValue(el,next,{goodWhenUp=true,flash=true}={}){
+  if(!el)return;
+  next=Number(next)||0;
+  const had=__displayedMoney.has(el.id);
+  const prev=had ? __displayedMoney.get(el.id) : 0;
+  __displayedMoney.set(el.id,next);
+
+  const reduce=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  const duration=had ? 480 : 650;
+
+  if(reduce || prev===next){
+    el.textContent=yen(next);
+  }else{
+    const started=performance.now();
+    el.classList.remove("motion-pop");
+    void el.offsetWidth;
+    el.classList.add("money-counting","motion-pop");
+
+    const tick=now=>{
+      const t=Math.min(1,(now-started)/duration);
+      const eased=1-Math.pow(1-t,3);
+      el.textContent=yen(prev+(next-prev)*eased);
+      if(t<1)requestAnimationFrame(tick);
+      else el.textContent=yen(next);
+    };
+    requestAnimationFrame(tick);
+
+    if(had && flash){
+      const host=el.closest(".stat,.custom-asset-tile");
+      if(host){
+        const improved=goodWhenUp ? next>prev : next<prev;
+        host.classList.remove("direct-flash-good","direct-flash-bad");
+        void host.offsetWidth;
+        host.classList.add(improved?"direct-flash-good":"direct-flash-bad");
+        setTimeout(()=>host.classList.remove("direct-flash-good","direct-flash-bad"),900);
+      }
+    }
+  }
+}
+
+function renderCustomAssetSnapshot(record){
+  const box=$("customAssetSnapshot");
+  if(!box)return;
+  const defs=loadCustomAssetDefs();
+  if(!record || !defs.length){
+    box.innerHTML="";
+    return;
+  }
+
+  box.innerHTML=defs.map(item=>`
+    <div class="custom-asset-tile" style="--custom-color:${item.color||"#61d6e8"}">
+      <span>${escapeCustomAssetText(item.name)}</span>
+      <strong id="customStat_${item.id}">${yen(+record[item.id]||0)}</strong>
+    </div>
+  `).join("");
+
+  defs.forEach(item=>{
+    const el=$(`customStat_${item.id}`);
+    __displayedMoney.set(el.id,0);
+    animateMoneyValue(el,+record[item.id]||0,{goodWhenUp:true,flash:false});
+  });
+}
+
 function renderStats(records){
-  if(!records.length){["total","liquid","protected","investStat","debtStat"].forEach(id=>$(id).textContent="¥0");return;}
-  const t=totals(records.at(-1));
-  $("total").textContent=yen(t.net);$("liquid").textContent=yen(t.liquid);$("protected").textContent=yen(t.protected);$("investStat").textContent=yen(t.investment);$("debtStat").textContent=yen(t.debt);
+  if(!records.length){
+    animateMoneyValue($("total"),0);
+    animateMoneyValue($("liquid"),0);
+    animateMoneyValue($("protected"),0);
+    animateMoneyValue($("investStat"),0);
+    animateMoneyValue($("debtStat"),0,{goodWhenUp:false});
+    renderCustomAssetSnapshot(null);
+    return;
+  }
+  const latest=records.at(-1);
+  const t=totals(latest);
+  animateMoneyValue($("total"),t.net,{goodWhenUp:true});
+  animateMoneyValue($("liquid"),t.liquid,{goodWhenUp:true});
+  animateMoneyValue($("protected"),t.protected,{goodWhenUp:true});
+  animateMoneyValue($("investStat"),t.investment,{goodWhenUp:true});
+  animateMoneyValue($("debtStat"),t.debt,{goodWhenUp:false});
+  renderCustomAssetSnapshot(latest);
+}
+
+
+function escapeCustomAssetText(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  })[ch]);
+}
+
+function renderCustomAssetInputs(record=null){
+  const holder=$("customAssetInputs");
+  if(!holder)return;
+  const defs=loadCustomAssetDefs();
+
+  holder.innerHTML=defs.map((item,index)=>`
+    <div class="custom-asset-field">
+      <label for="customInput_${item.id}">
+        <span>${escapeCustomAssetText(item.name)}</span>
+        <small>追加資産 ${String(index+1).padStart(2,"0")}</small>
+      </label>
+      <input
+        id="customInput_${item.id}"
+        data-custom-asset="${item.id}"
+        type="number"
+        min="0"
+        step="1"
+        value="${Math.max(0,+record?.[item.id]||0)}"
+      >
+    </div>
+  `).join("");
+}
+
+function addCustomAssetType(){
+  const input=$("customAssetName");
+  const name=String(input?.value||"").trim();
+  if(!name){
+    showDevToast("資産名を入力してください");
+    input?.focus();
+    return;
+  }
+
+  const defs=loadCustomAssetDefs();
+  if(defs.some(item=>item.name.toLowerCase()===name.toLowerCase())){
+    showDevToast("同じ名前の資産があります");
+    return;
+  }
+
+  const id=`custom_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,6)}`;
+  const color=CUSTOM_ASSET_COLORS[defs.length%CUSTOM_ASSET_COLORS.length];
+  defs.push({id,name,color});
+  saveCustomAssetDefs(defs);
+
+  syncCustomAssetConfig();
+  visible[id]=true;
+
+  const latest=load().sort((a,b)=>a.date.localeCompare(b.date)).at(-1)||null;
+  renderCustomAssetInputs(latest);
+  renderLegend();
+  renderCustomAssetSnapshot(latest);
+  draw(load().sort((a,b)=>a.date.localeCompare(b.date)));
+
+  input.value="";
+  $("customAssetCreator").hidden=true;
+  showDevToast(`「${name}」を資産項目に追加しました`);
 }
 
 function renderLegend(){
@@ -3313,35 +4721,54 @@ function aggregateRecords(records, period){
   });
 }
 
+let __moneyIfChartAnimationFrame=null;
+let __moneyIfChartAnimationToken=0;
+
 function draw(records){
   const plotted=aggregateRecords(records,chartPeriod);
   const c=$("chart");
   const wrap=$("canvasWrap");
   const scroll=$("chartScroll");
 
+  if(!c||!wrap||!scroll)return;
+
   const pointWidth=chartPeriod==="daily" ? 82 : chartPeriod==="weekly" ? 100 : 115;
   const minWidth=scroll.clientWidth || 600;
-  const desiredWidth=Math.max(minWidth, 130 + plotted.length*pointWidth);
+  const desiredWidth=Math.max(minWidth,130+plotted.length*pointWidth);
   wrap.style.width=desiredWidth+"px";
 
-  const ctx=c.getContext("2d");
   const rect=wrap.getBoundingClientRect();
+  if(rect.width<=1 || rect.height<=1)return;
+
   const ratio=devicePixelRatio||1;
   c.style.width=rect.width+"px";
   c.style.height=rect.height+"px";
   c.width=Math.round(rect.width*ratio);
   c.height=Math.round(rect.height*ratio);
-  ctx.setTransform(ratio,0,0,ratio,0,0);
 
-  const w=rect.width, h=rect.height;
-  ctx.clearRect(0,0,w,h);
-  if(!plotted.length)return;
+  const ctx=c.getContext("2d");
+  const w=rect.width;
+  const h=rect.height;
+
+  cancelAnimationFrame(__moneyIfChartAnimationFrame);
+  const token=++__moneyIfChartAnimationToken;
+
+  if(!plotted.length){
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.clearRect(0,0,w,h);
+    return;
+  }
 
   const keys=Object.keys(config).filter(k=>visible[k]);
-  if(!keys.length)return;
+  if(!keys.length){
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.clearRect(0,0,w,h);
+    return;
+  }
 
   const p={l:72,r:22,t:24,b:52};
-  const pw=w-p.l-p.r, ph=h-p.t-p.b;
+  const pw=w-p.l-p.r;
+  const ph=h-p.t-p.b;
 
   let max=1;
   plotted.forEach(r=>keys.forEach(k=>max=Math.max(max,+r[k]||0)));
@@ -3352,74 +4779,152 @@ function draw(records){
                 document.body.classList.contains("theme-day");
   const gridColor=isLight ? "rgba(28,47,79,.10)" : "rgba(255,255,255,.08)";
   const labelColor=isLight ? "rgba(70,86,110,.82)" : "rgba(196,213,240,.80)";
-
-  ctx.font="12px Inter, system-ui, sans-serif";
-  ctx.textBaseline="middle";
-
-  for(let i=0;i<=5;i++){
-    const y=p.t+ph*i/5;
-    const val=nice*(1-i/5);
-    ctx.strokeStyle=gridColor;
-    ctx.lineWidth=1;
-    ctx.beginPath();
-    ctx.moveTo(p.l,y);
-    ctx.lineTo(w-p.r,y);
-    ctx.stroke();
-
-    ctx.fillStyle=labelColor;
-    ctx.textAlign="right";
-    ctx.fillText(
-      val>=10000 ? Math.round(val/10000)+"万" : Math.round(val).toLocaleString("ja-JP"),
-      p.l-10,
-      y
-    );
-  }
-
   const x=i=>plotted.length===1 ? p.l+pw/2 : p.l+pw*i/(plotted.length-1);
+  const yFor=(record,key)=>p.t+ph-((+record[key]||0)/nice)*ph;
   const labelStep=Math.max(1,Math.ceil(plotted.length/12));
 
-  plotted.forEach((r,i)=>{
-    if(i%labelStep!==0 && i!==plotted.length-1)return;
-    const d=new Date(r.date+"T00:00:00");
-    let label=r.displayDate;
-    if(!label){
-      label=chartPeriod==="monthly"
-        ? `${d.getFullYear()}/${d.getMonth()+1}`
-        : `${d.getMonth()+1}/${d.getDate()}`;
-    }
-    ctx.fillStyle=labelColor;
-    ctx.textAlign="center";
-    ctx.fillText(label,x(i),h-24);
-  });
+  function drawStatic(){
+    ctx.setTransform(ratio,0,0,ratio,0,0);
+    ctx.clearRect(0,0,w,h);
+    ctx.font="12px Inter, system-ui, sans-serif";
+    ctx.textBaseline="middle";
 
-  keys.forEach(k=>{
-    const color=config[k].color;
-    ctx.strokeStyle=color;
-    ctx.lineWidth=3;
-    ctx.lineJoin="round";
-    ctx.lineCap="round";
+    for(let i=0;i<=5;i++){
+      const y=p.t+ph*i/5;
+      const val=nice*(1-i/5);
 
-    ctx.beginPath();
-    plotted.forEach((r,i)=>{
-      const y=p.t+ph-(r[k]/nice)*ph;
-      if(i===0)ctx.moveTo(x(i),y);
-      else ctx.lineTo(x(i),y);
-    });
-    ctx.stroke();
-
-    plotted.forEach((r,i)=>{
-      const y=p.t+ph-(r[k]/nice)*ph;
+      ctx.strokeStyle=gridColor;
+      ctx.lineWidth=1;
       ctx.beginPath();
-      ctx.fillStyle=color;
-      ctx.shadowColor=color;
-      ctx.shadowBlur=10;
-      ctx.arc(x(i),y,3.8,0,Math.PI*2);
-      ctx.fill();
-      ctx.shadowBlur=0;
-    });
-  });
-}
+      ctx.moveTo(p.l,y);
+      ctx.lineTo(w-p.r,y);
+      ctx.stroke();
 
+      ctx.fillStyle=labelColor;
+      ctx.textAlign="right";
+      ctx.fillText(
+        val>=10000 ? Math.round(val/10000)+"万" : Math.round(val).toLocaleString("ja-JP"),
+        p.l-10,
+        y
+      );
+    }
+
+    plotted.forEach((r,i)=>{
+      if(i%labelStep!==0 && i!==plotted.length-1)return;
+      const d=new Date(r.date+"T00:00:00");
+      let label=r.displayDate;
+      if(!label){
+        label=chartPeriod==="monthly"
+          ? `${d.getFullYear()}/${d.getMonth()+1}`
+          : `${d.getMonth()+1}/${d.getDate()}`;
+      }
+      ctx.fillStyle=labelColor;
+      ctx.textAlign="center";
+      ctx.fillText(label,x(i),h-24);
+    });
+  }
+
+  function drawSeriesProgress(progress){
+    keys.forEach(k=>{
+      const color=config[k].color;
+      ctx.strokeStyle=color;
+      ctx.lineWidth=3;
+      ctx.lineJoin="round";
+      ctx.lineCap="round";
+
+      if(plotted.length===1){
+        const px=x(0);
+        const py=yFor(plotted[0],k);
+        ctx.beginPath();
+        ctx.fillStyle=color;
+        ctx.shadowColor=color;
+        ctx.shadowBlur=10;
+        ctx.arc(px,py,3.8*progress,0,Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur=0;
+        return;
+      }
+
+      const maxSegment=plotted.length-1;
+      const position=progress*maxSegment;
+      const whole=Math.floor(position);
+      const fraction=position-whole;
+
+      ctx.beginPath();
+      ctx.moveTo(x(0),yFor(plotted[0],k));
+
+      for(let i=1;i<=whole && i<plotted.length;i++){
+        ctx.lineTo(x(i),yFor(plotted[i],k));
+      }
+
+      if(whole<maxSegment && fraction>0){
+        const i=whole;
+        const x1=x(i);
+        const y1=yFor(plotted[i],k);
+        const x2=x(i+1);
+        const y2=yFor(plotted[i+1],k);
+        ctx.lineTo(
+          x1+(x2-x1)*fraction,
+          y1+(y2-y1)*fraction
+        );
+      }
+      ctx.stroke();
+
+      const visiblePointCount=Math.min(plotted.length,whole+1);
+      for(let i=0;i<visiblePointCount;i++){
+        const py=yFor(plotted[i],k);
+        ctx.beginPath();
+        ctx.fillStyle=color;
+        ctx.shadowColor=color;
+        ctx.shadowBlur=10;
+        ctx.arc(x(i),py,3.8,0,Math.PI*2);
+        ctx.fill();
+        ctx.shadowBlur=0;
+      }
+
+      // The point currently being reached fades/scales in.
+      if(whole<maxSegment && fraction>.72){
+        const appear=(fraction-.72)/.28;
+        const py=yFor(plotted[whole+1],k);
+        ctx.beginPath();
+        ctx.fillStyle=color;
+        ctx.globalAlpha=Math.min(1,appear);
+        ctx.arc(x(whole+1),py,3.8*Math.min(1,appear),0,Math.PI*2);
+        ctx.fill();
+        ctx.globalAlpha=1;
+      }
+    });
+  }
+
+  const reduced=window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+  if(reduced){
+    drawStatic();
+    drawSeriesProgress(1);
+    return;
+  }
+
+  const started=performance.now();
+  const duration=900;
+
+  function frame(now){
+    if(token!==__moneyIfChartAnimationToken)return;
+
+    const raw=Math.min(1,(now-started)/duration);
+    const eased=1-Math.pow(1-raw,3);
+
+    drawStatic();
+    drawSeriesProgress(eased);
+
+    if(raw<1){
+      __moneyIfChartAnimationFrame=requestAnimationFrame(frame);
+    }else{
+      drawStatic();
+      drawSeriesProgress(1);
+    }
+  }
+
+  __moneyIfChartAnimationFrame=requestAnimationFrame(frame);
+}
 function renderHistory(records){
   if(!records.length){
     $("history").innerHTML='<div class="note">まだ記録がありません。</div>';
@@ -3459,8 +4964,9 @@ function renderHistory(records){
       $("investment").value=record.investment;
       $("debt").value=record.debt||record.debtTotal||0;
       $("salaryDay").checked=record.salaryDay===true;
+      renderCustomAssetInputs(record);
 
-      document.querySelector(".sticky").scrollIntoView({
+      document.querySelector(".record-dock").scrollIntoView({
         behavior:"smooth",
         block:"start"
       });
@@ -3475,6 +4981,268 @@ function renderHistory(records){
       render();
     };
   });
+}
+
+
+function buildAiAnalysisPayload(){
+  const records=load().sort((a,b)=>a.date.localeCompare(b.date));
+  if(!records.length)return null;
+
+  const latest=records.at(-1);
+  const previous=records.length>=2?records.at(-2):null;
+  const latestTotals=totals(latest);
+  const planned=loadPlannedExpenses();
+
+  const compactRecord=r=>{
+    const t=totals(r);
+    return {
+      date:r.date,
+      cash:r.cash,
+      cardBalance:r.card,
+      savingsCash:r.savingsCash,
+      savingsBank:r.savingsBank,
+      investment:r.investment,
+      debt:r.debt,
+      salaryDay:r.salaryDay===true,
+      grossAssets:t.gross,
+      netWorth:t.net,
+      dynamicMoney:r.cash+r.card,
+      savingsTotal:r.savingsCash+r.savingsBank,
+      customAssets:Object.fromEntries(
+        loadCustomAssetDefs().map(item=>[item.name,+r[item.id]||0])
+      )
+    };
+  };
+
+  const recentHistory=records.slice(-12).map(compactRecord);
+  const first=records[0];
+  const firstTotals=totals(first);
+
+  const latestChange=previous ? {
+    previousDate:previous.date,
+    latestDate:latest.date,
+    daysBetween:Math.max(1,Math.round(
+      (new Date(latest.date+"T00:00:00")-new Date(previous.date+"T00:00:00"))/86400000
+    )),
+    grossAssetsChange:latestTotals.gross-totals(previous).gross,
+    netWorthChange:latestTotals.net-totals(previous).net,
+    dynamicMoneyChange:(latest.cash+latest.card)-(previous.cash+previous.card),
+    savingsChange:(latest.savingsCash+latest.savingsBank)-(previous.savingsCash+previous.savingsBank),
+    investmentChange:latest.investment-previous.investment,
+    debtChange:latest.debt-previous.debt
+  } : null;
+
+  const salaryRecords=records
+    .filter(r=>r.salaryDay===true)
+    .slice(-4)
+    .map(compactRecord);
+
+  return {
+    app:"Money IF",
+    dataMeaning:{
+      cash:"手元の現金。資産。",
+      cardBalance:"カードに残っている利用可能残高。カード利用額・カード債務ではなく資産。",
+      savingsCash:"貯金として分けている現金。資産。",
+      savingsBank:"貯金として分けている銀行残高。資産。",
+      investment:"現在記録している投資資産額。",
+      debt:"借金総額。負債。",
+      grossAssets:"cash + cardBalance + savingsCash + savingsBank + investment。",
+      netWorth:"grossAssets - debt。",
+      dynamicMoney:"cash + cardBalance。普段動かしやすい資金。",
+      plannedExpenses:"今後予定している支出。priorityはessential=必須、important=できれば守る、optional=削ってもよい。",
+      customAssets:"ユーザーが追加した資産項目。すべて資産としてgrossAssetsとnetWorthに含まれる。"
+    },
+    current:compactRecord(latest),
+    latestChange,
+    recentHistory,
+    salaryRecords,
+    longTerm:{
+      recordCount:records.length,
+      firstDate:first.date,
+      latestDate:latest.date,
+      grossAssetsChangeSinceFirst:latestTotals.gross-firstTotals.gross,
+      netWorthChangeSinceFirst:latestTotals.net-firstTotals.net,
+      debtChangeSinceFirst:latest.debt-first.debt,
+      savingsChangeSinceFirst:
+        (latest.savingsCash+latest.savingsBank)-
+        (first.savingsCash+first.savingsBank),
+      investmentChangeSinceFirst:latest.investment-first.investment
+    },
+    plannedExpenses:planned.map(item=>({
+      name:item.name,
+      amount:+item.amount||0,
+      date:item.date||null,
+      priority:item.priority
+    })),
+    analysisRules:{
+      doNotInventMissingLivingCosts:true,
+      doNotTreatCardBalanceAsSpendingOrDebt:true,
+      doNotCreateArbitrarySafetyReserve:true,
+      evaluateImpactOnPlannedExpenses:true,
+      distinguishGrossAssetsAndNetWorth:true,
+      distinguishSnapshotFromTrend:true,
+      doNotRecommendSpecificFinancialProducts:true
+    }
+  };
+}
+
+function escapeAiHtml(value){
+  return String(value??"").replace(/[&<>"']/g,ch=>({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[ch]);
+}
+
+function formatAiAnalysis(text){
+  const safe=escapeAiHtml(text)
+    .replace(/\r\n/g,"\n")
+    .replace(/\r/g,"\n");
+
+  const lines=safe.split("\n");
+  let html="";
+  let inList=false;
+
+  const closeList=()=>{
+    if(inList){
+      html+="</ol>";
+      inList=false;
+    }
+  };
+
+  for(const raw of lines){
+    const line=raw.trim();
+
+    if(!line){
+      closeList();
+      continue;
+    }
+
+    const heading=line.match(/^#{1,4}\s+(.+)$/);
+    if(heading){
+      closeList();
+      html+=`<h3>${heading[1]}</h3>`;
+      continue;
+    }
+
+    const plainHeading=line.match(/^(現在の状態|最近の変化|良い点|気になる点|予定支出への影響|貯金と借金|今後1〜2か月|今後支障が出そうな部分|具体的にやること|次にやること)：?$/);
+    if(plainHeading){
+      closeList();
+      html+=`<h3>${plainHeading[1]}</h3>`;
+      continue;
+    }
+
+    const numbered=line.match(/^(\d+)[\.\．]\s*(.+)$/);
+    if(numbered){
+      if(!inList){
+        html+="<ol>";
+        inList=true;
+      }
+      html+=`<li>${numbered[2]}</li>`;
+      continue;
+    }
+
+    closeList();
+    html+=`<p>${line}</p>`;
+  }
+
+  closeList();
+  return html || "<p>分析結果を表示できませんでした。</p>";
+}
+
+function looksTruncatedAnalysis(text,finishReason){
+  const value=String(text||"").trim();
+  if(!value)return true;
+
+  const normalized=String(finishReason||"").toUpperCase();
+  if(normalized && !["STOP","STOPPED","COMPLETE","COMPLETED"].includes(normalized)){
+    return true;
+  }
+
+  if(/[、・（(：:]$/.test(value))return true;
+  if(/[^。！？!?」』）)\d]$/.test(value) && value.length>80)return true;
+
+  const expected=["現在の状態","最近の変化","気になる点"];
+  const hitCount=expected.filter(label=>value.includes(label)).length;
+  return value.length<180 || hitCount<2;
+}
+
+async function requestAiAnalysis(){
+  const button=$("aiAnalyzeButton");
+  const result=$("aiAnalysisResult");
+  const meta=$("aiAnalysisMeta");
+  const payload=buildAiAnalysisPayload();
+
+  if(!payload){
+    result.className="ai-analysis-result error";
+    result.textContent="資産記録がまだありません。先に残高を記録してください。";
+    meta.textContent="";
+    return;
+  }
+
+  button.disabled=true;
+  button.textContent="Geminiが分析中…";
+  window.moneyIfAiStart?.();
+  result.className="ai-analysis-result loading";
+  result.textContent="資産履歴・予定支出・最近の変化を読み込んでいます…";
+  meta.textContent=`送信対象：直近${payload.recentHistory.length}件 / 予定支出${payload.plannedExpenses.length}件`;
+
+  const started=performance.now();
+
+  try{
+    const response=await fetch(AI_WORKER_URL,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+
+    let data;
+    try{
+      data=await response.json();
+    }catch{
+      throw new Error(`AIサーバーから読み取れない応答が返りました（HTTP ${response.status}）`);
+    }
+
+    if(!response.ok){
+      throw new Error(data?.detail||data?.error||`HTTP ${response.status}`);
+    }
+
+    const analysis=String(data?.analysis||"").trim();
+    if(!analysis){
+      throw new Error("Geminiから分析本文が返りませんでした。");
+    }
+
+    const elapsed=((performance.now()-started)/1000).toFixed(1);
+    const finishReason=data?.finishReason ?? data?.finish_reason ?? null;
+    const outputLength=data?.outputLength ?? analysis.length;
+    const truncated=looksTruncatedAnalysis(analysis,finishReason);
+
+    result.className="ai-analysis-result";
+    result.innerHTML=formatAiAnalysis(analysis);
+    window.moneyIfAiEnd?.(true);
+
+    if(truncated){
+      const warning=document.createElement("div");
+      warning.className="ai-analysis-warning";
+      warning.textContent="この回答は途中で終了した可能性があります。Gemini側の出力上限や終了理由を確認してください。";
+      result.appendChild(warning);
+    }
+
+    const finishLabel=finishReason?` / 終了理由 ${finishReason}`:"";
+    meta.textContent=
+      `Gemini API・直近${payload.recentHistory.length}件＋予定支出${payload.plannedExpenses.length}件・`+
+      `${outputLength}文字・${elapsed}秒${finishLabel}`;
+  }catch(error){
+    window.moneyIfAiEnd?.(false);
+    result.className="ai-analysis-result error";
+    result.textContent=`AI分析に失敗しました。\n${error.message||String(error)}`;
+    meta.textContent="通常の自動分析と保存データには影響ありません。";
+  }finally{
+    button.disabled=false;
+    button.textContent="AIで詳しく分析する";
+  }
 }
 
 function render(){
@@ -3497,6 +5265,9 @@ $("form").onsubmit=e=>{
     debt:+$("debt").value,
     salaryDay:$("salaryDay").checked
   };
+  loadCustomAssetDefs().forEach(item=>{
+    r[item.id]=+document.querySelector(`[data-custom-asset="${item.id}"]`)?.value||0;
+  });
   let all=load();
   const i=all.findIndex(x=>x.date===r.date);
   if(i>=0) all[i]=r;
@@ -3511,11 +5282,26 @@ $("form").onsubmit=e=>{
 $("savingsUseMode").addEventListener("change",()=>{
   $("savingsLimitWrap").style.display=$("savingsUseMode").value==="custom"?"grid":"none";
 });
-window.addEventListener("storage",event=>{
-  if(event.key===PLANNED_EXPENSES_KEY)renderPlannedExpenses();
-});
 $("plannedAdd").addEventListener("click",addPlannedExpense);
 renderPlannedExpenses();
+renderCustomAssetInputs(load().sort((a,b)=>a.date.localeCompare(b.date)).at(-1)||null);
+
+$("openCustomAssetCreator")?.addEventListener("click",()=>{
+  $("customAssetCreator").hidden=false;
+  $("customAssetName").focus();
+});
+$("cancelCustomAsset")?.addEventListener("click",()=>{
+  $("customAssetCreator").hidden=true;
+  $("customAssetName").value="";
+});
+$("saveCustomAsset")?.addEventListener("click",addCustomAssetType);
+$("customAssetName")?.addEventListener("keydown",event=>{
+  if(event.key==="Enter"){
+    event.preventDefault();
+    addCustomAssetType();
+  }
+});
+
 $("purchaseJudge").addEventListener("click",judgePurchase);
 $("purchasePrice").addEventListener("keydown",event=>{
   if(event.key==="Enter"){
@@ -3523,6 +5309,8 @@ $("purchasePrice").addEventListener("keydown",event=>{
     judgePurchase();
   }
 });
+
+$("aiAnalyzeButton").addEventListener("click",requestAiAnalysis);
 
 const DEV_SAMPLE_SETS=[
   {
@@ -3785,5 +5573,678 @@ window.onresize=()=>{
   window.__resizeTimer=setTimeout(render,100);
 };
 </script>
+<script>
+(() => {
+  const openBtn = document.getElementById("menuButton");
+  const closeBtn = document.getElementById("menuClose");
+  const backdrop = document.getElementById("menuBackdrop");
+  const menu = document.getElementById("sideMenu");
+
+  function setMenu(open){
+    document.body.classList.toggle("menu-open", open);
+    openBtn?.setAttribute("aria-expanded", String(open));
+    menu?.setAttribute("aria-hidden", String(!open));
+  }
+
+  openBtn?.addEventListener("click", () => setMenu(true));
+  closeBtn?.addEventListener("click", () => setMenu(false));
+  backdrop?.addEventListener("click", () => setMenu(false));
+
+  menu?.querySelectorAll("a").forEach(a => {
+    a.addEventListener("click", () => setMenu(false));
+  });
+
+  document.addEventListener("keydown", e => {
+    if(e.key === "Escape") setMenu(false);
+  });
+})();
+</script>
+<script>
+(() => {
+  const buttons = [...document.querySelectorAll(".file-tab-button")];
+  const panels = [...document.querySelectorAll("[data-file-view]")];
+
+  function activateFile(id, updateHash = true){
+    const target = document.querySelector(`[data-file-view="${id}"]`);
+    if(!target) return;
+
+    panels.forEach(panel => {
+      panel.classList.toggle("file-active", panel === target);
+    });
+
+    buttons.forEach(btn => {
+      const active = btn.dataset.target === id;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-selected", String(active));
+      
+    });
+
+    if(updateHash){
+      history.replaceState(null, "", `#${id}`);
+    }
+
+    // Chart canvases often need a redraw after becoming visible.
+    if(id === "chart-section" && typeof render === "function"){
+      requestAnimationFrame(() => {
+        try{ render(); }catch(e){}
+      });
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => activateFile(btn.dataset.target));
+  });
+
+  // Hamburger links also switch the actual file instead of just scrolling.
+  document.querySelectorAll("#sideMenu a[href^='#']").forEach(link => {
+    link.addEventListener("click", e => {
+      const id = link.getAttribute("href").slice(1);
+      if(document.querySelector(`[data-file-view="${id}"]`)){
+        e.preventDefault();
+        activateFile(id);
+        document.querySelector(".file-workspace")?.scrollIntoView({
+          behavior:"smooth",
+          block:"start"
+        });
+      }
+    });
+  });
+
+  const initial = location.hash.slice(1);
+  activateFile(
+    panels.some(p => p.dataset.fileView === initial) ? initial : "chart-section",
+    false
+  );
+})();
+</script><div aria-hidden="true" class="celebration-layer" id="celebrationLayer"></div>
+<script>
+(() => {
+  const reduceMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+
+  // -------------------------------
+  // Animated numeric values + flash
+  // -------------------------------
+  const watchedIds = ["gross","net","usable","protected","investStat","debtStat"];
+  const lastNumbers = new Map();
+
+  function parseDisplayedNumber(text){
+    const cleaned = String(text ?? "").replace(/[^\d.-]/g,"");
+    const value = Number(cleaned);
+    return Number.isFinite(value) ? value : null;
+  }
+
+  function formatLikeOriginal(el, value){
+    const current = el.dataset.motionOriginal || el.textContent || "";
+    if(current.includes("¥") || current.includes("￥")){
+      return new Intl.NumberFormat("ja-JP",{
+        style:"currency",
+        currency:"JPY",
+        maximumFractionDigits:0
+      }).format(Math.round(value));
+    }
+    return new Intl.NumberFormat("ja-JP",{maximumFractionDigits:0}).format(Math.round(value));
+  }
+
+  function animateNumber(el, from, to){
+    if(reduceMotion || from === null || to === null || from === to){
+      el.textContent = formatLikeOriginal(el,to);
+      return;
+    }
+
+    const duration = 480;
+    const start = performance.now();
+    el.classList.add("motion-number","number-bump");
+
+    function frame(now){
+      const t = Math.min(1,(now-start)/duration);
+      const eased = 1-Math.pow(1-t,3);
+      const value = from + (to-from)*eased;
+      el.textContent = formatLikeOriginal(el,value);
+
+      if(t < 1){
+        requestAnimationFrame(frame);
+      }else{
+        el.textContent = formatLikeOriginal(el,to);
+        setTimeout(()=>el.classList.remove("number-bump"),120);
+      }
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function processNumberChanges(){
+    watchedIds.forEach(id=>{
+      const el=document.getElementById(id);
+      if(!el)return;
+
+      const next=parseDisplayedNumber(el.textContent);
+      if(next===null)return;
+
+      const prev=lastNumbers.has(id) ? lastNumbers.get(id) : next;
+      lastNumbers.set(id,next);
+      el.dataset.motionOriginal=el.textContent;
+
+      if(prev!==next){
+        animateNumber(el,prev,next);
+
+        const box=el.closest(".stat");
+        if(box){
+          box.classList.remove("value-up","value-down");
+          void box.offsetWidth;
+          box.classList.add(next>prev ? "value-up":"value-down");
+          setTimeout(()=>box.classList.remove("value-up","value-down"),900);
+        }
+      }
+    });
+  }
+
+  // Let the existing render finish, then animate changed values.
+  const originalRender = window.render;
+  if(typeof originalRender === "function"){
+    window.render = function(...args){
+      const result=originalRender.apply(this,args);
+      requestAnimationFrame(processNumberChanges);
+      return result;
+    };
+  }
+  requestAnimationFrame(processNumberChanges);
+
+  // --------------------------------
+  // File switching transition upgrade
+  // --------------------------------
+  const tabs=[...document.querySelectorAll(".file-tab-button")];
+  const filePanels=[...document.querySelectorAll("[data-file-view]")];
+
+  tabs.forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const targetId=btn.dataset.target;
+      const target=document.querySelector(`[data-file-view="${targetId}"]`);
+      if(!target)return;
+      requestAnimationFrame(()=>{
+        void target.offsetWidth;
+      });
+
+      if(targetId==="chart-section"){
+        const chartPanel=document.getElementById("chart-section");
+        chartPanel?.classList.add("chart-opening");
+        document.querySelectorAll("#chart-section canvas").forEach(c=>{
+          c.classList.remove("chart-drawing");
+          void c.offsetWidth;
+          c.classList.add("chart-drawing");
+        });
+        setTimeout(()=>chartPanel?.classList.remove("chart-opening"),800);
+      }
+    });
+  });
+
+  // -------------------------------
+  // AI generation staged animation
+  // -------------------------------
+  const aiButton=document.getElementById("aiAnalyzeButton");
+  const aiMotion=document.getElementById("aiMotionStatus");
+  const aiStep=document.getElementById("aiProgressStep");
+  const aiResult=document.getElementById("aiAnalysisResult");
+
+  let aiTimer=null;
+  const aiSteps=[
+    "資産履歴を読み込んでいます",
+    "最近の増減を照合しています",
+    "予定支出との影響を確認しています",
+    "資産バランスを整理しています",
+    "Geminiがレポートを作成しています"
+  ];
+
+  function beginAiMotion(){
+    if(!aiMotion || !aiStep)return;
+    clearInterval(aiTimer);
+    aiMotion.classList.add("active");
+    let index=0;
+    aiStep.textContent=aiSteps[index];
+    aiTimer=setInterval(()=>{
+      index=Math.min(aiSteps.length-1,index+1);
+      aiStep.textContent=aiSteps[index];
+    },900);
+  }
+
+  function endAiMotion(){
+    clearInterval(aiTimer);
+    aiTimer=null;
+    aiMotion?.classList.remove("active");
+    if(aiResult){
+      aiResult.classList.remove("ai-report-reveal");
+      void aiResult.offsetWidth;
+      aiResult.classList.add("ai-report-reveal");
+      setTimeout(()=>aiResult.classList.remove("ai-report-reveal"),750);
+    }
+  }
+
+  if(aiButton){
+    aiButton.addEventListener("click",()=>{
+      beginAiMotion();
+
+      // Observe result/meta because requestAiAnalysis owns the network call.
+      const observer=new MutationObserver(()=>{
+        const txt=(aiResult?.textContent||"").trim();
+        const meta=(document.getElementById("aiAnalysisMeta")?.textContent||"").trim();
+
+        if(
+          txt &&
+          !txt.includes("読み込んでいます") &&
+          !txt.includes("まだAI分析は実行していません") &&
+          !aiButton.disabled
+        ){
+          observer.disconnect();
+          endAiMotion();
+
+          // AI praise/celebration only for clearly positive completed reports.
+          const positiveSignals=[
+            "非常に良い",
+            "良い傾向",
+            "着実に資産",
+            "安定している",
+            "財務基盤は比較的安定",
+            "順調",
+            "健全"
+          ];
+          const negativeSignals=[
+            "危険",
+            "深刻",
+            "大きく悪化",
+            "継続的な減少",
+            "返済が困難",
+            "不足"
+          ];
+
+          const positive=positiveSignals.some(s=>txt.includes(s));
+          const negative=negativeSignals.some(s=>txt.includes(s));
+
+          if(positive && !negative && /終了理由\s*STOP/i.test(meta)){
+            celebrate("いい流れです","AI分析でも資産状態にポジティブな傾向が確認できました。");
+          }
+        }
+      });
+      observer.observe(aiResult,{childList:true,subtree:true,characterData:true});
+      setTimeout(()=>{
+        if(aiButton.disabled===false){
+          observer.disconnect();
+          endAiMotion();
+        }
+      },30000);
+    });
+  }
+
+  // -------------------------------
+  // Celebration animation
+  // -------------------------------
+  let celebrationCooldown=0;
+
+  function celebrate(title,subtitle){
+    const now=Date.now();
+    if(now-celebrationCooldown<5000)return;
+    celebrationCooldown=now;
+
+    const layer=document.getElementById("celebrationLayer");
+    if(!layer)return;
+    layer.innerHTML="";
+
+    const toast=document.createElement("div");
+    toast.className="celebration-toast";
+    toast.innerHTML=`<strong>${escapeCelebration(title)}</strong><span>${escapeCelebration(subtitle)}</span>`;
+    layer.appendChild(toast);
+
+    if(!reduceMotion){
+      const colors=[
+        "var(--mi-blue)",
+        "var(--mi-violet)",
+        "var(--mi-green)",
+        "var(--mi-amber)",
+        "var(--mi-coral)",
+        "var(--mi-cyan)"
+      ];
+
+      for(let i=0;i<30;i++){
+        const piece=document.createElement("i");
+        piece.className="confetti-piece";
+        piece.style.left=`${Math.random()*100}%`;
+        piece.style.setProperty("--piece-color",colors[i%colors.length]);
+        piece.style.setProperty("--drift",`${(Math.random()-.5)*180}px`);
+        piece.style.setProperty("--fall-duration",`${1300+Math.random()*900}ms`);
+        piece.style.animationDelay=`${Math.random()*240}ms`;
+        piece.style.transform=`rotate(${Math.random()*180}deg)`;
+        layer.appendChild(piece);
+      }
+    }
+    setTimeout(()=>{layer.innerHTML=""},3300);
+  }
+
+  function escapeCelebration(value){
+    return String(value).replace(/[&<>"']/g,ch=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    })[ch]);
+  }
+
+  // Detect a genuinely improved saved record:
+  // net worth must rise from the previous record, not merely any field.
+  const form=document.getElementById("form");
+  if(form){
+    form.addEventListener("submit",()=>{
+      try{
+        const records=JSON.parse(localStorage.getItem("money-if-auto-records-v2")||"[]")
+          .slice()
+          .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
+
+        if(records.length<2)return;
+        const latest=records.at(-1);
+        const previous=records.at(-2);
+        const net=r=>
+          (+r.cash||0)+(+r.card||0)+(+r.savingsCash||0)+(+r.savingsBank||0)+(+r.investment||0)-(+r.debt||0);
+
+        const delta=net(latest)-net(previous);
+        if(delta>0){
+          setTimeout(()=>celebrate(
+            "おめでとう",
+            `前回記録より純資産が ${new Intl.NumberFormat("ja-JP").format(Math.round(delta))}円 増えています。`
+          ),550);
+        }
+      }catch(e){}
+    });
+  }
+
+  // Expose for future app features / manual testing.
+  window.moneyIfCelebrate=celebrate;
+})();
+</script>
+<script>
+(() => {
+  document.querySelectorAll('#sideMenu a[href="#entry"]').forEach(link=>{
+    link.addEventListener("click", e=>{
+      e.preventDefault();
+      document.getElementById("entry")?.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+    });
+  });
+})();
+</script>
+<script>
+(() => {
+  const aiStatus=document.getElementById("aiMotionStatus");
+  const aiStep=document.getElementById("aiProgressStep");
+  const aiResult=document.getElementById("aiAnalysisResult");
+  let aiInterval=null;
+
+  const steps=[
+    "資産履歴を読み込んでいます",
+    "直近の増減を比較しています",
+    "予定支出との干渉を確認しています",
+    "資産配分を整理しています",
+    "Geminiがレポートを書いています"
+  ];
+
+  window.moneyIfAiStart=()=>{
+    if(!aiStatus||!aiStep)return;
+    clearInterval(aiInterval);
+    aiStatus.classList.add("active");
+    let i=0;
+    aiStep.textContent=steps[0];
+    aiInterval=setInterval(()=>{
+      i=(i+1)%steps.length;
+      aiStep.textContent=steps[i];
+    },900);
+  };
+
+  window.moneyIfAiEnd=(success=true)=>{
+    clearInterval(aiInterval);
+    aiInterval=null;
+    aiStatus?.classList.remove("active");
+    if(success&&aiResult){
+      aiResult.classList.remove("direct-ai-reveal");
+      void aiResult.offsetWidth;
+      aiResult.classList.add("direct-ai-reveal");
+      setTimeout(()=>aiResult.classList.remove("direct-ai-reveal"),700);
+    }
+  };
+
+  // Guaranteed chart animation on CHART tab.
+  document.querySelectorAll('.file-tab-button[data-target="chart-section"]').forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const panel=document.getElementById("chart-section");
+      if(!panel)return;
+      requestAnimationFrame(()=>{
+        panel.classList.remove("direct-chart-reveal");
+        void panel.offsetWidth;
+        panel.classList.add("direct-chart-reveal");
+        setTimeout(()=>panel.classList.remove("direct-chart-reveal"),850);
+      });
+    });
+  });
+
+  // Also animate the initially-open chart once.
+  requestAnimationFrame(()=>{
+    const panel=document.getElementById("chart-section");
+    if(panel?.classList.contains("file-active")){
+      panel.classList.add("direct-chart-reveal");
+      setTimeout(()=>panel.classList.remove("direct-chart-reveal"),850);
+    }
+  });
+})();
+</script>
+
+
+<script>
+(() => {
+  /* Number fields must change only by deliberate typing.
+     If the user scrolls while one is focused, remove focus first
+     so the page scrolls instead of changing the numeric value. */
+  document.addEventListener("wheel", event => {
+    const el = document.activeElement;
+    if(el && el.matches && el.matches('input[type="number"]')){
+      el.blur();
+    }
+  }, {passive:true});
+})();
+</script>
+
+
+<script>
+(() => {
+  if(window.__moneyIfAlwaysAnimationInstalled)return;
+  window.__moneyIfAlwaysAnimationInstalled=true;
+
+  const reduceMotion =
+    window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches === true;
+
+  const moneyIds=[
+    "total",
+    "liquid",
+    "protected",
+    "investStat",
+    "debtStat",
+    "gross",
+    "net",
+    "usable"
+  ];
+
+  function parseMoney(text){
+    const normalized=String(text??"")
+      .replace(/,/g,"")
+      .replace(/[^\d.-]/g,"");
+    const value=Number(normalized);
+    return Number.isFinite(value)?value:null;
+  }
+
+  function yen(value){
+    return new Intl.NumberFormat("ja-JP",{
+      style:"currency",
+      currency:"JPY",
+      maximumFractionDigits:0
+    }).format(Math.round(value));
+  }
+
+  function animateElementFromZero(el){
+    if(!el)return;
+
+    const target=parseMoney(el.textContent);
+    if(target===null)return;
+
+    el.classList.add("money-if-counting");
+    el.classList.remove("counting-now");
+    void el.offsetWidth;
+    el.classList.add("counting-now");
+
+    if(reduceMotion){
+      el.textContent=yen(target);
+      return;
+    }
+
+    const start=performance.now();
+    const duration=760;
+
+    function tick(now){
+      const progress=Math.min(1,(now-start)/duration);
+      const eased=1-Math.pow(1-progress,4);
+      el.textContent=yen(target*eased);
+
+      if(progress<1){
+        requestAnimationFrame(tick);
+      }else{
+        el.textContent=yen(target);
+        setTimeout(()=>el.classList.remove("counting-now"),100);
+      }
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  function runAssetCountUp(){
+    // Wait until the app's normal render has finished writing current values.
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        const seen=new Set();
+
+        moneyIds.forEach(id=>{
+          const el=document.getElementById(id);
+          if(el && !seen.has(el)){
+            seen.add(el);
+            animateElementFromZero(el);
+          }
+        });
+
+        // User-created assets.
+        document
+          .querySelectorAll("#customAssetSnapshot strong, .custom-asset-tile strong")
+          .forEach(el=>{
+            if(!seen.has(el)){
+              seen.add(el);
+              animateElementFromZero(el);
+            }
+          });
+      });
+    });
+  }
+
+  function ensureChartCurtain(){
+    const chart=document.getElementById("chart-section");
+    if(!chart)return null;
+
+    const host=
+      chart.querySelector(".canvas-wrap") ||
+      chart.querySelector(".chart-scroll");
+
+    if(!host)return null;
+
+    let curtain=host.querySelector(":scope > .money-if-chart-curtain");
+    if(!curtain){
+      curtain=document.createElement("div");
+      curtain.className="money-if-chart-curtain";
+      host.appendChild(curtain);
+    }
+    return curtain;
+  }
+
+  function runChartReveal(){
+    try{
+      if(typeof window.render==="function"){
+        window.render();
+      }else if(typeof window.draw==="function"){
+        const records=typeof window.load==="function"
+          ? window.load().sort((a,b)=>String(a.date).localeCompare(String(b.date)))
+          : [];
+        window.draw(records);
+      }
+    }catch(e){}
+  }
+
+  function onViewActivated(id){
+    if(id==="snapshot")runAssetCountUp();
+    if(id==="chart-section")runChartReveal();
+  }
+
+  // Works for direct tabs.
+  document.addEventListener("click",event=>{
+    const tab=event.target.closest?.(".file-tab-button[data-target]");
+    if(tab){
+      const id=tab.dataset.target;
+      setTimeout(()=>onViewActivated(id),40);
+    }
+
+    // Works for hamburger menu navigation too.
+    const link=event.target.closest?.('#sideMenu a[href^="#"]');
+    if(link){
+      const id=link.getAttribute("href")?.slice(1);
+      if(id)setTimeout(()=>onViewActivated(id),80);
+    }
+  });
+
+  // Most reliable fallback:
+  // watch the panels themselves. Any code that makes ASSETS/CHART active
+  // automatically triggers its animation, regardless of which control did it.
+  ["snapshot","chart-section"].forEach(id=>{
+    const panel=document.getElementById(id);
+    if(!panel)return;
+
+    let wasActive=panel.classList.contains("file-active");
+
+    const observer=new MutationObserver(()=>{
+      const active=panel.classList.contains("file-active");
+      if(active && !wasActive){
+        onViewActivated(id);
+      }
+      wasActive=active;
+    });
+
+    observer.observe(panel,{
+      attributes:true,
+      attributeFilter:["class"]
+    });
+  });
+
+  // Initial visible view.
+  requestAnimationFrame(()=>{
+    if(document.getElementById("snapshot")?.classList.contains("file-active")){
+      runAssetCountUp();
+    }
+    if(document.getElementById("chart-section")?.classList.contains("file-active")){
+      runChartReveal();
+    }
+  });
+
+  // After saving a record, replay count-up if ASSETS is currently open.
+  document.getElementById("form")?.addEventListener("submit",()=>{
+    setTimeout(()=>{
+      if(document.getElementById("snapshot")?.classList.contains("file-active")){
+        runAssetCountUp();
+      }
+      if(document.getElementById("chart-section")?.classList.contains("file-active")){
+        runChartReveal();
+      }
+    },120);
+  });
+
+  window.moneyIfRunAssetCountUp=runAssetCountUp;
+  window.moneyIfRunChartReveal=runChartReveal;
+})();
+</script>
+
 </body>
 </html>

@@ -3089,6 +3089,844 @@ body.theme-day .money-if-chart-curtain{
   font-size:.67rem;
 }
 
+
+/* =========================================================
+   MONEY IF GAME LAYER
+   Catchy on top, serious underneath.
+   ========================================================= */
+.daily-loop{
+  position:relative;
+  margin:18px 0 34px;
+  border:1px solid rgba(255,255,255,.10);
+  border-top:3px solid var(--mi-violet);
+  background:
+    radial-gradient(circle at 87% 0%,rgba(167,139,250,.15),transparent 26rem),
+    radial-gradient(circle at 5% 100%,rgba(97,214,232,.09),transparent 24rem),
+    var(--mi-surface);
+  overflow:hidden;
+}
+.daily-loop::before{
+  content:"";
+  position:absolute;
+  right:-34px;
+  top:-54px;
+  width:180px;height:180px;
+  border-radius:50%;
+  border:22px solid rgba(255,255,255,.025);
+  pointer-events:none;
+}
+.daily-loop-main{
+  display:grid;
+  grid-template-columns:minmax(0,1.45fr) minmax(280px,.75fr);
+  gap:24px;
+  padding:25px 26px 22px;
+}
+.daily-loop-copy{align-self:center}
+.daily-kicker{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:10px;
+  color:var(--mi-violet);
+  font-size:.64rem;
+  letter-spacing:.17em;
+  font-weight:900;
+}
+.daily-pulse{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--mi-violet);
+  box-shadow:0 0 0 0 rgba(167,139,250,.35);
+  animation:moneyIfDailyPulse 1.8s ease-out infinite;
+}
+@keyframes moneyIfDailyPulse{
+  0%{box-shadow:0 0 0 0 rgba(167,139,250,.35)}
+  70%{box-shadow:0 0 0 9px rgba(167,139,250,0)}
+  100%{box-shadow:0 0 0 0 rgba(167,139,250,0)}
+}
+.daily-loop h2{
+  margin:0;
+  max-width:760px;
+  font-size:clamp(1.45rem,3.1vw,2.45rem);
+  line-height:1.08;
+  letter-spacing:-.045em;
+}
+.daily-loop-copy p{
+  margin:10px 0 0;
+  color:var(--mi-muted);
+  font-size:.82rem;
+  line-height:1.7;
+}
+.daily-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:18px;
+}
+.daily-primary,.daily-secondary{
+  width:auto !important;
+  min-height:42px;
+  margin:0 !important;
+  padding:9px 14px !important;
+  border-radius:3px !important;
+  font-weight:850 !important;
+  cursor:pointer;
+}
+.daily-primary{
+  border:0 !important;
+  background:linear-gradient(90deg,var(--mi-cyan),#7f8cff) !important;
+  color:#06101b !important;
+}
+.daily-secondary{
+  border:1px solid var(--mi-line) !important;
+  background:transparent !important;
+  color:var(--mi-text) !important;
+}
+.player-card{
+  align-self:stretch;
+  padding:18px;
+  background:rgba(7,11,18,.50);
+  border:1px solid rgba(255,255,255,.085);
+  box-shadow:inset 0 1px rgba(255,255,255,.025);
+}
+.player-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+}
+.player-top>div:first-child{display:grid}
+.player-top small{
+  color:var(--mi-muted);
+  font-size:.56rem;
+  letter-spacing:.15em;
+}
+.player-top>div:first-child strong{
+  margin-top:3px;
+  font-size:2.7rem;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+}
+.streak-chip{
+  display:flex;
+  align-items:baseline;
+  gap:5px;
+  padding:7px 9px;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.025);
+}
+.streak-chip span{font-size:1rem}
+.streak-chip strong{font-size:1.05rem}
+.streak-chip small{font-size:.48rem}
+.xp-row{
+  display:flex;
+  justify-content:space-between;
+  margin-top:17px;
+  color:var(--mi-muted);
+  font-size:.6rem;
+  font-weight:800;
+  letter-spacing:.08em;
+}
+.xp-track{
+  height:8px;
+  margin-top:7px;
+  overflow:hidden;
+  background:rgba(255,255,255,.07);
+}
+.xp-track i{
+  display:block;
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg,var(--mi-violet),var(--mi-cyan));
+  transition:width 520ms cubic-bezier(.2,.8,.2,1);
+}
+.player-foot{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:13px;
+}
+.player-foot>span{
+  color:var(--mi-muted);
+  font-size:.62rem;
+}
+.player-foot button{
+  width:auto !important;
+  margin:0 !important;
+  padding:6px 8px !important;
+  min-height:30px !important;
+  border-radius:2px !important;
+  border:1px solid rgba(255,255,255,.10) !important;
+  background:transparent !important;
+  color:var(--mi-text) !important;
+  font-size:.62rem !important;
+}
+.player-foot button b{
+  display:inline-grid;
+  place-items:center;
+  min-width:19px;height:19px;
+  margin-left:4px;
+  border-radius:50%;
+  background:rgba(167,139,250,.16);
+  color:#c7b4ff;
+}
+.goal-strip{
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:16px 26px 20px;
+}
+.goal-strip-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:11px;
+}
+.goal-strip-head>div{display:grid}
+.goal-strip-head small{
+  color:var(--mi-muted);
+  font-size:.52rem;
+  letter-spacing:.15em;
+}
+.goal-strip-head strong{margin-top:3px;font-size:.83rem}
+.goal-strip-head>span{color:var(--mi-muted);font-size:.65rem}
+.goal-cards{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:8px;
+}
+.goal-card{
+  min-width:0;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.075);
+  background:rgba(255,255,255,.022);
+}
+.goal-card.empty{
+  display:grid;
+  place-items:center;
+  min-height:82px;
+  color:var(--mi-muted);
+  font-size:.67rem;
+  border-style:dashed;
+}
+.goal-card-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:8px;
+}
+.goal-card-head strong{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:.76rem;
+}
+.goal-card-head button{
+  width:24px !important;height:24px !important;
+  min-height:0 !important;margin:0 !important;padding:0 !important;
+  border:0 !important;background:transparent !important;color:var(--mi-muted) !important;
+}
+.goal-progress-meta{
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  margin:9px 0 5px;
+  color:var(--mi-muted);
+  font-size:.57rem;
+}
+.goal-progress{
+  height:5px;
+  overflow:hidden;
+  background:rgba(255,255,255,.07);
+}
+.goal-progress i{
+  display:block;height:100%;
+  background:linear-gradient(90deg,var(--mi-cyan),var(--mi-violet));
+}
+.goal-card.complete{
+  border-color:rgba(101,212,154,.28);
+}
+.goal-card.complete .goal-progress i{
+  background:#65d49a;
+}
+.goal-card.custom small{
+  display:block;
+  margin-top:8px;
+  color:var(--mi-muted);
+  font-size:.6rem;
+  line-height:1.55;
+}
+
+.game-modal{
+  position:fixed;inset:0;z-index:5000;display:none;
+}
+.game-modal.open{display:block}
+.game-modal-backdrop{
+  position:absolute;inset:0;
+  background:rgba(0,0,0,.62);
+  backdrop-filter:blur(8px);
+}
+.game-dialog{
+  position:absolute;
+  left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:min(470px,calc(100vw - 28px));
+  max-height:min(80vh,720px);
+  overflow:auto;
+  padding:24px;
+  background:#111722;
+  color:#f4f7fb;
+  border:1px solid rgba(255,255,255,.11);
+  border-top:3px solid #a78bfa;
+  box-shadow:0 30px 100px rgba(0,0,0,.45);
+}
+.game-dialog-head{
+  display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:18px;
+}
+.game-dialog-head small{
+  color:#a78bfa;font-size:.55rem;letter-spacing:.16em;
+}
+.game-dialog-head h2{margin:4px 0 0;font-size:1.45rem}
+.game-close{
+  width:36px!important;height:36px!important;min-height:0!important;
+  margin:0!important;padding:0!important;
+  border:1px solid rgba(255,255,255,.1)!important;
+  background:transparent!important;color:#9aa7b8!important;
+  font-size:1.25rem!important;
+}
+.goal-form{display:grid;gap:12px}
+.goal-form label{display:grid;gap:6px;color:#aab4c3;font-size:.68rem}
+.goal-form input,.goal-form select{
+  width:100%;min-height:43px;
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:2px;
+  background:#0b1018;
+  color:#fff;
+}
+.achievement-dialog{width:min(700px,calc(100vw - 28px))}
+.achievement-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+}
+.achievement-item{
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:10px;
+  align-items:center;
+  padding:12px;
+  border:1px solid rgba(255,255,255,.075);
+  background:rgba(255,255,255,.02);
+}
+.achievement-item.locked{opacity:.34;filter:saturate(.3)}
+.achievement-icon{
+  width:38px;height:38px;display:grid;place-items:center;
+  border-radius:50%;
+  background:rgba(167,139,250,.13);
+  border:1px solid rgba(167,139,250,.25);
+  font-weight:900;
+}
+.achievement-item strong{display:block;font-size:.72rem}
+.achievement-item small{display:block;margin-top:4px;color:#8490a2;font-size:.6rem;line-height:1.45}
+
+.achievement-toast{
+  position:fixed;
+  left:50%;
+  top:82px;
+  z-index:7000;
+  width:min(370px,calc(100vw - 28px));
+  padding:13px 16px;
+  transform:translate(-50%,-16px);
+  opacity:0;
+  pointer-events:none;
+  background:#101722;
+  border:1px solid rgba(255,255,255,.12);
+  border-left:4px solid #a78bfa;
+  box-shadow:0 18px 55px rgba(0,0,0,.35);
+  transition:opacity 220ms ease,transform 220ms ease;
+}
+.achievement-toast.show{opacity:1;transform:translate(-50%,0)}
+.achievement-toast span{
+  display:block;color:#a78bfa;font-size:.5rem;font-weight:900;letter-spacing:.18em;
+}
+.achievement-toast strong{display:block;margin-top:4px;font-size:.86rem}
+.achievement-toast small{display:block;margin-top:3px;color:#8d99aa;font-size:.62rem}
+
+body.theme-morning .daily-loop,
+body.theme-day .daily-loop{
+  background:
+    radial-gradient(circle at 87% 0%,rgba(115,102,255,.10),transparent 26rem),
+    radial-gradient(circle at 5% 100%,rgba(49,177,199,.08),transparent 24rem),
+    #fff;
+  border-color:rgba(20,39,64,.11);
+  border-top-color:#7766ff;
+}
+body.theme-morning .player-card,
+body.theme-day .player-card{
+  background:#f6f8fc;
+  border-color:rgba(20,39,64,.09);
+}
+body.theme-morning .goal-card,
+body.theme-day .goal-card{
+  background:#f8faff;
+  border-color:rgba(20,39,64,.08);
+}
+body.theme-morning .daily-secondary,
+body.theme-day .daily-secondary{color:#172033!important}
+body.theme-morning .game-dialog,
+body.theme-day .game-dialog{background:#fff;color:#172033}
+body.theme-morning .goal-form input,
+body.theme-morning .goal-form select,
+body.theme-day .goal-form input,
+body.theme-day .goal-form select{
+  background:#f8faff;color:#172033;border-color:rgba(20,39,64,.12);
+}
+
+@media(max-width:900px){
+  .daily-loop-main{grid-template-columns:1fr}
+  .goal-cards{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  .daily-loop-main{padding:20px 16px 17px}
+  .goal-strip{padding:14px 16px 17px}
+  .achievement-grid{grid-template-columns:1fr}
+  .daily-actions{display:grid;grid-template-columns:1fr 1fr}
+  .daily-primary,.daily-secondary{width:100%!important}
+}
+@media(prefers-reduced-motion:reduce){
+  .daily-pulse{animation:none}
+  .xp-track i,.achievement-toast{transition:none}
+}
+
+
+/* =========================================================
+   MONEY IF — GAME HOME V3
+   Record dock stays. Goal editing is hidden from the home.
+   ========================================================= */
+
+.wrap{max-width:1500px!important}
+
+/* More playful hero */
+.hero{
+  position:relative!important;
+  min-height:300px!important;
+  margin-bottom:16px!important;
+  border:0!important;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 84% 12%,rgba(167,139,250,.18),transparent 26rem),
+    radial-gradient(circle at 10% 95%,rgba(97,214,232,.11),transparent 27rem),
+    linear-gradient(145deg,rgba(255,255,255,.02),rgba(255,255,255,0))!important;
+}
+.hero h1{
+  font-size:clamp(3.4rem,8vw,7.1rem)!important;
+  line-height:.87!important;
+  letter-spacing:-.075em!important;
+}
+.hero p{
+  max-width:720px!important;
+  font-size:.92rem!important;
+}
+.hero::after{
+  content:"PLAY YOUR MONEY";
+  position:absolute;
+  right:24px;
+  bottom:7px;
+  font-size:clamp(2.5rem,7vw,6.8rem);
+  font-weight:950;
+  letter-spacing:-.065em;
+  line-height:1;
+  white-space:nowrap;
+  color:rgba(255,255,255,.026);
+  pointer-events:none;
+}
+
+/* Daily hub */
+.daily-loop{
+  margin:0 0 28px!important;
+  border:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+.daily-loop::before{display:none!important}
+
+.daily-loop-main{
+  grid-template-columns:minmax(0,1.18fr) minmax(320px,.82fr)!important;
+  gap:12px!important;
+  padding:0!important;
+}
+
+.daily-loop-copy{
+  min-height:300px;
+  padding:30px!important;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:18px;
+  background:
+    linear-gradient(180deg,transparent 0%,rgba(4,8,15,.55) 100%),
+    radial-gradient(circle at 75% 6%,rgba(97,214,232,.25),transparent 22rem),
+    radial-gradient(circle at 0% 0%,rgba(167,139,250,.22),transparent 20rem),
+    #111824;
+}
+.daily-loop-copy::after{
+  content:"DAILY";
+  position:absolute;
+  top:16px;
+  right:20px;
+  font-size:4.5rem;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-.055em;
+  color:rgba(255,255,255,.035);
+}
+.daily-loop h2{
+  max-width:800px!important;
+  font-size:clamp(2.05rem,4.2vw,3.8rem)!important;
+  line-height:.98!important;
+  letter-spacing:-.055em!important;
+}
+.daily-primary{
+  border-radius:999px!important;
+}
+.daily-secondary{
+  display:none!important;
+}
+
+.player-card{
+  min-height:300px;
+  padding:24px!important;
+  border:0!important;
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(255,190,72,.18),transparent 21rem),
+    radial-gradient(circle at 0% 100%,rgba(167,139,250,.10),transparent 18rem),
+    #0d131d!important;
+}
+.player-top>div:first-child strong{
+  font-size:5.2rem!important;
+  letter-spacing:-.08em!important;
+}
+.streak-chip{
+  border-radius:999px!important;
+  background:rgba(255,187,70,.08)!important;
+  border-color:rgba(255,187,70,.16)!important;
+}
+.xp-track{
+  height:12px!important;
+  border-radius:999px!important;
+}
+.xp-track i{border-radius:999px!important}
+.player-foot button{
+  border-radius:999px!important;
+  padding:7px 11px!important;
+}
+
+/* Goals are display-only on the home */
+.goal-strip{
+  margin-top:12px!important;
+  padding:0!important;
+  border:0!important;
+}
+.goal-strip-head{padding:0 4px!important}
+.goal-strip-head strong::after{
+  content:" · 編集はメニューから";
+  color:var(--mi-muted);
+  font-size:.58rem;
+  font-weight:600;
+}
+.goal-cards{gap:10px!important}
+.goal-card{
+  position:relative;
+  min-height:126px;
+  padding:16px!important;
+  overflow:hidden;
+  border-radius:16px!important;
+  cursor:default!important;
+}
+.goal-card:nth-child(3n+1){
+  background:linear-gradient(145deg,rgba(97,214,232,.11),rgba(255,255,255,.018))!important;
+}
+.goal-card:nth-child(3n+2){
+  background:linear-gradient(145deg,rgba(167,139,250,.12),rgba(255,255,255,.018))!important;
+}
+.goal-card:nth-child(3n+3){
+  background:linear-gradient(145deg,rgba(255,188,74,.10),rgba(255,255,255,.018))!important;
+}
+.goal-card::after{
+  content:"";
+  position:absolute;
+  right:-22px;
+  bottom:-22px;
+  width:76px;height:76px;
+  border:14px solid rgba(255,255,255,.028);
+  border-radius:50%;
+}
+.goal-card-head button{
+  display:none!important;
+}
+.goal-card.empty{
+  pointer-events:none!important;
+}
+.goal-progress{
+  height:8px!important;
+  border-radius:999px!important;
+}
+.goal-progress i{border-radius:999px!important}
+
+/* Compact game-menu pills, but keep the record dock */
+.file-tab-bar{
+  position:sticky!important;
+  top:68px!important;
+  z-index:95!important;
+  padding:8px!important;
+  gap:6px!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  border-radius:999px!important;
+  background:rgba(8,12,19,.78)!important;
+  backdrop-filter:blur(18px);
+}
+.file-tab-button{
+  height:42px!important;
+  padding:7px 13px!important;
+  border-radius:999px!important;
+  border:1px solid transparent!important;
+}
+.file-tab-button.active{
+  background:var(--tab-color)!important;
+  color:#07101b!important;
+  border-color:transparent!important;
+  box-shadow:0 8px 24px rgba(0,0,0,.18)!important;
+}
+
+/* Less paper-office feeling */
+.dashboard-content > .file-sheet{
+  border-radius:15px!important;
+  box-shadow:none!important;
+}
+.dashboard-content > .file-sheet::before,
+.dashboard-content > .file-sheet::after{
+  display:none!important;
+}
+
+/* Goal editor action in hamburger menu */
+.side-menu .menu-goal-action{
+  width:100%!important;
+  min-height:48px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  padding:12px 16px!important;
+  margin:0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;
+  border-radius:0!important;
+  background:rgba(167,139,250,.06)!important;
+  color:inherit!important;
+  text-align:left!important;
+  font:inherit!important;
+}
+.side-menu .menu-goal-action span{
+  min-width:25px;
+  color:var(--mi-violet);
+  font-size:.65rem;
+}
+
+/* Goal editor supports editing existing goals */
+.goal-editor-list{
+  display:grid;
+  gap:8px;
+  margin:0 0 16px;
+}
+.goal-editor-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 11px;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(255,255,255,.025);
+}
+.goal-editor-item>div{
+  min-width:0;
+  display:grid;
+}
+.goal-editor-item strong{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:.72rem;
+}
+.goal-editor-item small{
+  margin-top:4px;
+  color:#8490a2;
+  font-size:.58rem;
+}
+.goal-editor-actions{
+  display:flex;
+  gap:5px;
+}
+.goal-editor-actions button{
+  width:auto!important;
+  min-height:30px!important;
+  margin:0!important;
+  padding:6px 8px!important;
+  border-radius:2px!important;
+  border:1px solid rgba(255,255,255,.1)!important;
+  background:transparent!important;
+  color:#aeb8c6!important;
+  font-size:.58rem!important;
+}
+
+/* Day themes */
+body.theme-morning .daily-loop-copy,
+body.theme-day .daily-loop-copy{
+  background:
+    linear-gradient(180deg,transparent 0%,rgba(255,255,255,.35) 100%),
+    radial-gradient(circle at 75% 6%,rgba(49,177,199,.18),transparent 22rem),
+    radial-gradient(circle at 0% 0%,rgba(119,102,255,.15),transparent 20rem),
+    #f6f9ff!important;
+  border-color:rgba(20,39,64,.09)!important;
+}
+body.theme-morning .player-card,
+body.theme-day .player-card{
+  background:
+    radial-gradient(circle at 100% 0%,rgba(255,190,72,.18),transparent 21rem),
+    #f7f9fd!important;
+}
+body.theme-morning .file-tab-bar,
+body.theme-day .file-tab-bar{
+  background:rgba(255,255,255,.84)!important;
+  border-color:rgba(20,39,64,.09)!important;
+}
+
+@media(max-width:920px){
+  .daily-loop-main{grid-template-columns:1fr!important}
+  .goal-cards{grid-template-columns:1fr!important}
+}
+@media(max-width:650px){
+  .hero{min-height:245px!important}
+  .hero h1{font-size:clamp(3rem,15vw,5.1rem)!important}
+  .daily-loop-copy,.player-card{min-height:250px}
+  .daily-loop-copy{padding:22px!important}
+  .file-tab-bar{top:58px!important;border-radius:14px!important}
+}
+
+
+/* =========================================================
+   EXPENSE GAME LAYER
+   Lightweight manual expense logging, not full bookkeeping.
+   ========================================================= */
+.expense-quick-button{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+}
+.side-menu .menu-expense-action{
+  width:100%!important;
+  min-height:48px!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:14px!important;
+  padding:12px 16px!important;
+  margin:0!important;
+  border:0!important;
+  border-bottom:1px solid rgba(255,255,255,.06)!important;
+  border-radius:0!important;
+  background:rgba(255,190,72,.055)!important;
+  color:inherit!important;
+  text-align:left!important;
+  font:inherit!important;
+}
+.side-menu .menu-expense-action span{
+  min-width:25px;
+  color:#ffbe48;
+  font-size:.7rem;
+}
+.expense-summary-box{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:15px;
+  padding:14px;
+  margin-bottom:14px;
+  border:1px solid rgba(255,255,255,.09);
+  background:linear-gradient(135deg,rgba(255,190,72,.09),rgba(255,255,255,.02));
+}
+.expense-summary-box>div{display:grid}
+.expense-summary-box small{
+  color:#8e99aa;
+  font-size:.52rem;
+  letter-spacing:.14em;
+}
+.expense-summary-box strong{
+  margin-top:4px;
+  font-size:1.8rem;
+  letter-spacing:-.05em;
+}
+.expense-summary-box>span{
+  color:#aab4c3;
+  font-size:.62rem;
+}
+.expense-log-list{
+  display:grid;
+  gap:6px;
+  margin-top:16px;
+}
+.expense-log-row{
+  display:grid;
+  grid-template-columns:74px 1fr auto auto;
+  gap:9px;
+  align-items:center;
+  padding:9px 10px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(255,255,255,.02);
+}
+.expense-log-row .date{
+  color:#8793a5;
+  font-size:.58rem;
+}
+.expense-log-row .memo{
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  font-size:.66rem;
+}
+.expense-log-row .amount{
+  font-size:.69rem;
+  font-weight:850;
+  font-variant-numeric:tabular-nums;
+}
+.expense-log-row button{
+  width:26px!important;
+  height:26px!important;
+  min-height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:1px solid rgba(255,255,255,.08)!important;
+  background:transparent!important;
+  color:#8e99aa!important;
+}
+.goal-card.expense-goal{
+  background:linear-gradient(145deg,rgba(255,190,72,.13),rgba(255,255,255,.018))!important;
+}
+.goal-card.expense-goal .goal-progress i{
+  background:linear-gradient(90deg,#ffbe48,#ff7b66)!important;
+}
+@media(max-width:600px){
+  .expense-log-row{
+    grid-template-columns:68px 1fr auto;
+  }
+  .expense-log-row button{grid-column:3}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -3117,6 +3955,8 @@ body.theme-day .money-if-chart-curtain{
 </div>
 <button aria-label="メニューを閉じる" class="menu-close" id="menuClose" type="button">×</button>
 </div><a href="#chart-section"><span>01</span> 資産推移</a><a href="#snapshot"><span>02</span>資産</a><a href="#ai"><span>03</span> AI分析</a><a href="#plans"><span>04</span> 予定支出</a><a href="#purchase"><span>05</span> 購入判定</a><a href="#rules"><span>06</span>ルール</a><a href="#history-section"><span>07</span> 履歴</a><a href="#entry"><span>R</span> 記録する</a>
+<button type="button" class="menu-expense-action" id="menuExpenseButton"><span>¥</span> 支出を記録</button>
+<button type="button" class="menu-goal-action" id="menuGoalButton"><span>G</span> 目標を編集</button>
 <div class="side-menu-foot">
 <a href="index.html" class="dashboard-back-link"><span>←</span> ダッシュボードへ戻る</a>
 <div class="cloud-sync-status" id="cloudSyncStatus">
@@ -3134,11 +3974,11 @@ body.theme-day .money-if-chart-curtain{
 <section class="hero" id="overview">
 <div class="hero-grid">
 <div>
-<div class="eyebrow">PERSONAL MONEY ARCHIVE</div>
+<div class="eyebrow">PERSONAL MONEY GAME · SERIOUS DATA</div>
 <h1 aria-label="Money IF Auto" id="devTrigger">Money IF Auto</h1>
 <p class="lead">
-          残高を記録すると、直近3件・直近8件・全履歴・月次推移を組み合わせ、資金移動や資産悪化まで自動で読み取る、
-          自分専用のお金ダッシュボード。
+          毎日の残高記録を、少しだけゲームにする。記録・目標・実績を積み上げながら、
+          AIが「自分が決めた目標」に沿ってお金の状態を読み取る。
         </p>
 <div class="theme-indicator" id="themeIndicator">時間帯テーマを読み込み中</div>
 </div>
@@ -3156,6 +3996,158 @@ body.theme-day .money-if-chart-curtain{
 </div>
 </div>
 </section>
+
+<section class="daily-loop" id="dailyLoop">
+  <div class="daily-loop-main">
+    <div class="daily-loop-copy">
+      <div class="daily-kicker"><span class="daily-pulse"></span> TODAY'S MONEY IF</div>
+      <h2 id="dailyTitle">今日は、残高を記録すればクリア。</h2>
+      <p id="dailySubtitle">20秒くらいで終わります。細かい支出入力は不要です。</p>
+      <div class="daily-actions">
+        <button class="daily-primary" id="dailyRecordButton" type="button">今日の記録をする</button>
+<button class="daily-secondary expense-quick-button" id="openExpenseButton" type="button">＋ 支出を記録</button>
+        <button class="daily-secondary" id="openGoalButton" type="button">＋ 目標を設定</button>
+      </div>
+    </div>
+
+    <div class="player-card">
+      <div class="player-top">
+        <div>
+          <small>MANAGER LEVEL</small>
+          <strong id="managerLevel">1</strong>
+        </div>
+        <div class="streak-chip" title="今日までの連続記録">
+          <span>🔥</span>
+          <strong id="streakValue">0</strong>
+          <small>DAY</small>
+        </div>
+      </div>
+      <div class="xp-row">
+        <span id="xpLabel">0 XP</span>
+        <span id="xpNextLabel">NEXT 100</span>
+      </div>
+      <div class="xp-track"><i id="xpProgress"></i></div>
+      <div class="player-foot">
+        <span id="todayReward">今日の記録で +25 XP</span>
+        <button id="openAchievementsButton" type="button">実績 <b id="achievementCount">0</b></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="goal-strip">
+    <div class="goal-strip-head">
+      <div>
+        <small>ACTIVE GOALS</small>
+        <strong>自分で決めた目標</strong>
+      </div>
+      <span id="goalSummary">目標なし</span>
+    </div>
+    <div class="goal-cards" id="goalCards"></div>
+  </div>
+</section>
+
+<div class="game-modal" id="goalModal" aria-hidden="true">
+  <div class="game-modal-backdrop" data-game-close="goal"></div>
+  <section class="game-dialog" role="dialog" aria-modal="true" aria-labelledby="goalModalTitle">
+    <div class="game-dialog-head">
+      <div>
+        <small>PERSONAL TARGET</small>
+        <h2 id="goalModalTitle">目標を編集</h2>
+      </div>
+      <button type="button" class="game-close" data-game-close="goal">×</button>
+    </div>
+    <div class="goal-editor-list" id="goalEditorList"></div>
+<div class="goal-form">
+      <label>目標名<input id="goalName" type="text" placeholder="例：9月末までに貯金15万円"></label>
+      <label>指標
+        <select id="goalMetric">
+          <option value="netWorth">純資産を増やす</option>
+          <option value="savings">貯金合計を増やす</option>
+          <option value="liquid">使えるお金を確保する</option>
+          <option value="investment">投資額を増やす</option>
+          <option value="debt">借金を減らす</option>
+<option value="expenseMonthly">今月の支出を抑える</option>
+<option value="expenseFood">今月の食費を抑える</option>
+<option value="expenseEntertainment">今月の娯楽費を抑える</option>
+<option value="expenseShopping">今月の買い物を抑える</option>
+          <option value="streak">連続記録を伸ばす</option>
+          <option value="custom">自由目標（AIの指針のみ）</option>
+        </select>
+      </label>
+      <label id="goalTargetWrap">目標値<input id="goalTarget" type="number" min="0" step="100" placeholder="150000"></label>
+      <label>期限<input id="goalDeadline" type="date"></label>
+      <button class="daily-primary" id="saveGoalButton" type="button">目標を追加</button>
+    </div>
+  </section>
+</div>
+
+
+<div class="game-modal" id="expenseModal" aria-hidden="true">
+  <div class="game-modal-backdrop" data-game-close="expense"></div>
+  <section class="game-dialog" role="dialog" aria-modal="true" aria-labelledby="expenseModalTitle">
+    <div class="game-dialog-head">
+      <div>
+        <small>EXPENSE LOG</small>
+        <h2 id="expenseModalTitle">支出を記録</h2>
+      </div>
+      <button type="button" class="game-close" data-game-close="expense">×</button>
+    </div>
+
+    <div class="expense-summary-box">
+      <div>
+        <small>THIS MONTH</small>
+        <strong id="expenseMonthTotal">¥0</strong>
+      </div>
+      <span id="expenseBudgetStatus">支出目標なし</span>
+    </div>
+
+    <div class="goal-form">
+      <label>金額
+        <input id="expenseAmount" type="number" min="0" step="1" placeholder="1200">
+      </label>
+      <label>カテゴリ
+        <select id="expenseCategory">
+          <option value="food">食費</option>
+          <option value="transport">交通</option>
+          <option value="entertainment">娯楽</option>
+          <option value="shopping">買い物</option>
+          <option value="fixed">固定費</option>
+          <option value="other">その他</option>
+        </select>
+      </label>
+      <label>メモ
+        <input id="expenseMemo" type="text" placeholder="例：ラーメン">
+      </label>
+      <label>日付
+        <input id="expenseDate" type="date">
+      </label>
+      <button class="daily-primary" id="saveExpenseButton" type="button">支出を追加</button>
+    </div>
+
+    <div class="expense-log-list" id="expenseLogList"></div>
+  </section>
+</div>
+
+<div class="game-modal" id="achievementModal" aria-hidden="true">
+  <div class="game-modal-backdrop" data-game-close="achievement"></div>
+  <section class="game-dialog achievement-dialog" role="dialog" aria-modal="true" aria-labelledby="achievementTitle">
+    <div class="game-dialog-head">
+      <div>
+        <small>ACHIEVEMENTS</small>
+        <h2 id="achievementTitle">実績</h2>
+      </div>
+      <button type="button" class="game-close" data-game-close="achievement">×</button>
+    </div>
+    <div class="achievement-grid" id="achievementGrid"></div>
+  </section>
+</div>
+
+<div class="achievement-toast" id="achievementToast" aria-live="polite">
+  <span>ACHIEVEMENT UNLOCKED</span>
+  <strong id="achievementToastTitle">FIRST STEP</strong>
+  <small id="achievementToastText">初めて資産を記録した</small>
+</div>
+
 <section class="layout app-shell file-workspace">
 <div class="main-file-column"><nav aria-label="Money IF セクション切り替え" class="file-tab-switcher"><button aria-selected="true" class="file-tab-button active" data-target="chart-section" title="推移" type="button"><small>01</small><strong>CHART</strong></button><button aria-selected="false" class="file-tab-button" data-target="snapshot" title="資産" type="button"><small>02</small><strong>ASSETS</strong></button><button aria-selected="false" class="file-tab-button" data-target="ai" title="AI分析" type="button"><small>03</small><strong>AI</strong></button><button aria-selected="false" class="file-tab-button" data-target="plans" title="予定" type="button"><small>04</small><strong>PLANS</strong></button><button aria-selected="false" class="file-tab-button" data-target="purchase" title="購入判定" type="button"><small>05</small><strong>DECISION</strong></button><button aria-selected="false" class="file-tab-button" data-target="rules" title="ルール" type="button"><small>06</small><strong>RULES</strong></button><button aria-selected="false" class="file-tab-button" data-target="history-section" title="履歴" type="button"><small>07</small><strong>ARCHIVE</strong></button></nav><div class="dashboard-content">
 <section class="panel chart-panel file-sheet file-active" data-file-view="chart-section" data-tab="CHART" id="chart-section">
@@ -3227,7 +4219,7 @@ body.theme-day .money-if-chart-curtain{
 <span class="badge">Gemini API</span>
 </div>
 <p class="ai-analysis-note">
-              記録した資産履歴・予定支出・直近の変化をGeminiへ送り、数値の読み上げではなく生活への影響まで分析します。
+              記録した資産履歴・予定支出・設定した目標・直近の変化をGeminiへ送り、数値の読み上げではなく「自分の目標に対して今どうか」まで分析します。
               AIはボタンを押した時だけ実行します。
             </p>
 <div class="ai-analysis-actions">
@@ -5129,11 +6121,26 @@ function buildAiAnalysisPayload(){
       date:item.date||null,
       priority:item.priority
     })),
+    userGoals:(window.moneyIfGetGoals?.()||[]).map(goal=>({
+      name:goal.name,
+      metric:goal.metric,
+      target:goal.target ?? null,
+      deadline:goal.deadline || null,
+      status:window.moneyIfDescribeGoalForAi?.(goal) || null
+    })),
+    recentExpenses:(window.moneyIfGetExpenses?.()||[]).slice(-30).map(expense=>({
+      date:expense.date,
+      amount:+expense.amount||0,
+      category:expense.category,
+      memo:expense.memo||""
+    })),
     analysisRules:{
       doNotInventMissingLivingCosts:true,
       doNotTreatCardBalanceAsSpendingOrDebt:true,
       doNotCreateArbitrarySafetyReserve:true,
       evaluateImpactOnPlannedExpenses:true,
+      evaluateAgainstUserGoals:true,
+      treatUserGoalsAsGuidanceNotAbsoluteRules:true,
       distinguishGrossAssetsAndNetWorth:true,
       distinguishSnapshotFromTrend:true,
       doNotRecommendSpecificFinancialProducts:true
@@ -5867,6 +6874,7 @@ async function moneyIfInitializeCloud(){
         renderCustomAssetInputs(load().sort((a,b)=>a.date.localeCompare(b.date)).at(-1)||null);
         renderLegend();
         render();
+        window.moneyIfUpdateGameLayer?.();
       }else{
         moneyIfCloudReady=false;
         moneyIfSetCloudStatus("端末保存のみ");
@@ -5881,6 +6889,7 @@ async function moneyIfInitializeCloud(){
       renderCustomAssetInputs(cloudRecords.at(-1)||null);
       renderLegend();
       render();
+      window.moneyIfUpdateGameLayer?.();
       moneyIfSetCloudStatus("同期済み","online");
     }
   }catch(error){
@@ -6563,6 +7572,675 @@ moneyIfInitializeCloud();
 
   window.moneyIfRunAssetCountUp=runAssetCountUp;
   window.moneyIfRunChartReveal=runChartReveal;
+})();
+</script>
+
+
+<script>
+(() => {
+  const GAME_KEY="money-if-gamification-v1";
+  const GOALS_KEY="money-if-goals-v1";
+  const EXPENSE_KEY="money-if-expenses-v1";
+
+  const ACHIEVEMENTS=[
+    {id:"first_record",icon:"01",title:"FIRST STEP",text:"初めて資産を記録した"},
+    {id:"three_records",icon:"03",title:"DATA TAKES SHAPE",text:"資産記録を3件残した"},
+    {id:"ten_records",icon:"10",title:"OBSERVER",text:"資産記録を10件残した"},
+    {id:"streak3",icon:"🔥",title:"THREE DAYS",text:"3日連続で記録した"},
+    {id:"streak7",icon:"🔥",title:"WEEK KEEPER",text:"7日連続で記録した"},
+    {id:"new_high",icon:"↑",title:"NEW HIGH",text:"純資産の自己最高値を更新した"},
+    {id:"first_goal",icon:"◎",title:"TARGET LOCKED",text:"初めて自分の目標を設定した"},
+    {id:"goal_complete",icon:"✓",title:"GOAL!",text:"設定した目標を達成した"},
+    {id:"ai_first",icon:"AI",title:"SECOND OPINION",text:"AI分析を初めて使った"},
+    {id:"return_after_gap",icon:"↻",title:"BACK AGAIN",text:"3日以上空いたあと記録を再開した"},
+    {id:"first_expense",icon:"¥",title:"FIRST EXPENSE",text:"初めて支出を記録した"},
+    {id:"expense_goal",icon:"◎",title:"BUDGET SET",text:"支出目標を初めて設定した"},
+    {id:"expense_under",icon:"✓",title:"UNDER CONTROL",text:"支出目標の範囲内で月を進めている"}
+  ];
+
+  const $g=id=>document.getElementById(id);
+  const today=()=>{
+    const d=new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  };
+  const parseDate=s=>new Date(`${s}T12:00:00`);
+  const dayDiff=(a,b)=>Math.round((parseDate(a)-parseDate(b))/86400000);
+
+  function loadGame(){
+    try{
+      const v=JSON.parse(localStorage.getItem(GAME_KEY)||"{}");
+      return {
+        xp:+v.xp||0,
+        rewardedDates:Array.isArray(v.rewardedDates)?v.rewardedDates:[],
+        streak:+v.streak||0,
+        lastTodayRecord:v.lastTodayRecord||null,
+        unlocked:Array.isArray(v.unlocked)?v.unlocked:[],
+        aiRewarded:!!v.aiRewarded
+      };
+    }catch{
+      return {xp:0,rewardedDates:[],streak:0,lastTodayRecord:null,unlocked:[],aiRewarded:false};
+    }
+  }
+  function saveGame(game){localStorage.setItem(GAME_KEY,JSON.stringify(game))}
+
+  function loadGoals(){
+    try{
+      const rows=JSON.parse(localStorage.getItem(GOALS_KEY)||"[]");
+      return Array.isArray(rows)?rows:[];
+    }catch{return []}
+  }
+  function saveGoals(rows){
+    localStorage.setItem(GOALS_KEY,JSON.stringify(rows));
+  }
+
+  function loadExpenses(){
+    try{
+      const rows=JSON.parse(localStorage.getItem(EXPENSE_KEY)||"[]");
+      return Array.isArray(rows)?rows:[];
+    }catch{return []}
+  }
+  function saveExpenses(rows){
+    localStorage.setItem(EXPENSE_KEY,JSON.stringify(rows));
+  }
+  function monthKey(dateString=today()){
+    return String(dateString||"").slice(0,7);
+  }
+  function expenseCategoryLabel(key){
+    return ({
+      food:"食費",
+      transport:"交通",
+      entertainment:"娯楽",
+      shopping:"買い物",
+      fixed:"固定費",
+      other:"その他"
+    })[key]||"その他";
+  }
+  function monthlyExpenseTotal(category=null){
+    const mk=monthKey();
+    return loadExpenses()
+      .filter(row=>monthKey(row.date)===mk && (!category||row.category===category))
+      .reduce((sum,row)=>sum+(+row.amount||0),0);
+  }
+
+  function currentMetric(metric){
+    const rows=typeof load==="function"
+      ? load().slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)))
+      : [];
+    const latest=rows.at(-1);
+    if(metric==="streak")return loadGame().streak;
+    if(!latest)return 0;
+    const t=typeof totals==="function"?totals(latest):{net:0};
+    if(metric==="netWorth")return +t.net||0;
+    if(metric==="savings")return (+latest.savingsCash||0)+(+latest.savingsBank||0);
+    if(metric==="liquid")return (+latest.cash||0)+(+latest.card||0);
+    if(metric==="investment")return +latest.investment||0;
+    if(metric==="debt")return +latest.debt||0;
+    if(metric==="expenseMonthly")return monthlyExpenseTotal();
+    if(metric==="expenseFood")return monthlyExpenseTotal("food");
+    if(metric==="expenseEntertainment")return monthlyExpenseTotal("entertainment");
+    if(metric==="expenseShopping")return monthlyExpenseTotal("shopping");
+    return 0;
+  }
+
+  function goalProgress(goal){
+    if(goal.metric==="custom")return {percent:0,current:null,complete:false};
+    const current=currentMetric(goal.metric);
+    const target=Math.max(0,+goal.target||0);
+    if(goal.metric==="debt"){
+      if(target===0){
+        return {percent:current<=0?100:0,current,complete:current<=0};
+      }
+      const baseline=Math.max(target,+goal.startValue||current||target);
+      const denom=Math.max(1,baseline-target);
+      const pct=Math.max(0,Math.min(100,(baseline-current)/denom*100));
+      return {percent:pct,current,complete:current<=target};
+    }
+    if(String(goal.metric).startsWith("expense")){
+      const pct=target<=0 ? (current<=0?100:0) : Math.max(0,Math.min(100,current/target*100));
+      return {percent:pct,current,complete:current<=target,expense:true};
+    }
+    const start=+goal.startValue||0;
+    const denom=Math.max(1,target-start);
+    const pct=Math.max(0,Math.min(100,(current-start)/denom*100));
+    return {percent:pct,current,complete:current>=target};
+  }
+
+  function formatGoalValue(goal,value){
+    if(value==null)return "AI指針";
+    if(goal.metric==="streak")return `${Math.round(value)}日`;
+    return `¥${Math.round(value).toLocaleString("ja-JP")}`;
+  }
+
+  function describeGoalForAi(goal){
+    const p=goalProgress(goal);
+    return {
+      current:p.current,
+      progressPercent:Math.round(p.percent),
+      complete:p.complete,
+      currentLabel:formatGoalValue(goal,p.current)
+    };
+  }
+
+  window.moneyIfGetGoals=loadGoals;
+  window.moneyIfGetExpenses=loadExpenses;
+  window.moneyIfDescribeGoalForAi=describeGoalForAi;
+
+  function levelInfo(xp){
+    // Gentle progression: first levels arrive quickly, then require slightly more.
+    let level=1;
+    let remaining=xp;
+    let needed=100;
+    while(remaining>=needed && level<100){
+      remaining-=needed;
+      level++;
+      needed=100+(level-1)*25;
+    }
+    return {level,into:remaining,needed,percent:Math.min(100,remaining/needed*100)};
+  }
+
+  function showAchievementToast(item){
+    if(!$g("achievementToast"))return;
+    $g("achievementToastTitle").textContent=item.title;
+    $g("achievementToastText").textContent=item.text;
+    $g("achievementToast").classList.add("show");
+    clearTimeout(window.__moneyIfAchievementToast);
+    window.__moneyIfAchievementToast=setTimeout(
+      ()=>$g("achievementToast").classList.remove("show"),
+      3200
+    );
+  }
+
+  function unlock(id,{silent=false,xp=35}={}){
+    const game=loadGame();
+    if(game.unlocked.includes(id))return false;
+    const item=ACHIEVEMENTS.find(x=>x.id===id);
+    if(!item)return false;
+    game.unlocked.push(id);
+    game.xp+=xp;
+    saveGame(game);
+    if(!silent)showAchievementToast(item);
+    return true;
+  }
+
+  function evaluateAchievements({silent=false}={}){
+    const records=typeof load==="function"
+      ? load().slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)))
+      : [];
+    const game=loadGame();
+
+    if(records.length>=1)unlock("first_record",{silent});
+    if(records.length>=3)unlock("three_records",{silent});
+    if(records.length>=10)unlock("ten_records",{silent});
+    if(game.streak>=3)unlock("streak3",{silent});
+    if(game.streak>=7)unlock("streak7",{silent});
+    if(loadGoals().length>=1)unlock("first_goal",{silent});
+    if(loadExpenses().length>=1)unlock("first_expense",{silent});
+    if(loadGoals().some(g=>String(g.metric).startsWith("expense")))unlock("expense_goal",{silent});
+    const expenseGoals=loadGoals().filter(g=>String(g.metric).startsWith("expense"));
+    if(expenseGoals.length && expenseGoals.every(g=>goalProgress(g).complete))unlock("expense_under",{silent});
+
+    const anyComplete=loadGoals().some(g=>goalProgress(g).complete);
+    if(anyComplete)unlock("goal_complete",{silent});
+
+    if(records.length>=2){
+      const values=records.map(r=>typeof totals==="function"?totals(r).net:0);
+      const latest=values.at(-1);
+      const previousMax=Math.max(...values.slice(0,-1));
+      if(latest>previousMax)unlock("new_high",{silent});
+    }
+  }
+
+  function updateDailyState(){
+    const game=loadGame();
+    const records=typeof load==="function"
+      ? load().slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)))
+      : [];
+    const hasToday=records.some(r=>r.date===today());
+    const li=levelInfo(game.xp);
+
+    if($g("managerLevel"))$g("managerLevel").textContent=li.level;
+    if($g("streakValue"))$g("streakValue").textContent=game.streak;
+    if($g("xpLabel"))$g("xpLabel").textContent=`${game.xp.toLocaleString("ja-JP")} XP`;
+    if($g("xpNextLabel"))$g("xpNextLabel").textContent=`NEXT ${li.needed-li.into}`;
+    if($g("xpProgress"))$g("xpProgress").style.width=`${li.percent}%`;
+
+    if(hasToday){
+      $g("dailyTitle").textContent="今日のMoney IF、クリア。";
+      $g("dailySubtitle").textContent="今日はもう記録済み。必要ならAI分析や目標だけ確認して終わってOK。";
+      $g("dailyRecordButton").textContent="今日の記録を見直す";
+      $g("todayReward").textContent="TODAY COMPLETE";
+    }else{
+      $g("dailyTitle").textContent=game.streak>0
+        ? `${game.streak+1}日目をつなげよう。`
+        : "今日は、残高を記録すればクリア。";
+      $g("dailySubtitle").textContent="細かい支出入力は不要。いまの残高だけで大丈夫。";
+      $g("dailyRecordButton").textContent="今日の記録をする";
+      $g("todayReward").textContent="今日の記録で +25 XP";
+    }
+
+    const unlocked=ACHIEVEMENTS.filter(a=>game.unlocked.includes(a.id)).length;
+    if($g("achievementCount"))$g("achievementCount").textContent=unlocked;
+
+    renderGoals();
+    renderAchievements();
+  }
+
+  function renderGoals(){
+    const root=$g("goalCards");
+    if(!root)return;
+    const goals=loadGoals();
+    $g("goalSummary").textContent=goals.length?`${goals.length}件アクティブ`:"目標なし";
+    root.innerHTML="";
+
+    if(!goals.length){
+      const empty=document.createElement("div");
+      empty.className="goal-card empty";
+      empty.textContent="＋ 目標を作ると、AIの評価基準にも使われます";
+      root.appendChild(empty);
+      return;
+    }
+
+    goals.slice(0,3).forEach(goal=>{
+      const p=goalProgress(goal);
+      const card=document.createElement("div");
+      card.className="goal-card"+(p.complete?" complete":"")+(goal.metric==="custom"?" custom":"")+(String(goal.metric).startsWith("expense")?" expense-goal":"");
+      if(goal.metric==="custom"){
+        card.innerHTML=`
+          <div class="goal-card-head">
+            <strong>${escapeHtml(goal.name)}</strong>
+            <button type="button" data-delete-goal="${goal.id}" aria-label="目標を削除">×</button>
+          </div>
+          <small>${goal.deadline?`期限 ${goal.deadline} · `:""}AI分析の指針として使用</small>
+        `;
+      }else{
+        card.innerHTML=`
+          <div class="goal-card-head">
+            <strong>${escapeHtml(goal.name)}</strong>
+            <button type="button" data-delete-goal="${goal.id}" aria-label="目標を削除">×</button>
+          </div>
+          <div class="goal-progress-meta">
+            <span>${formatGoalValue(goal,p.current)}</span>
+            <span>${String(goal.metric).startsWith("expense")
+              ? `${Math.round(p.percent)}% 使用`
+              : (p.complete?"達成":`${Math.round(p.percent)}%`)}</span>
+          </div>
+          <div class="goal-progress"><i style="width:${p.percent}%"></i></div>
+        `;
+      }
+      root.appendChild(card);
+    });
+
+  }
+
+
+  function renderGoalEditor(){
+    const root=$g("goalEditorList");
+    if(!root)return;
+    const goals=loadGoals();
+
+    if(!goals.length){
+      root.innerHTML='<div class="goal-card empty">まだ目標はありません。下から追加できます。</div>';
+      return;
+    }
+
+    root.innerHTML=goals.map(goal=>{
+      const p=goalProgress(goal);
+      const status=goal.metric==="custom"
+        ?"AI分析の指針"
+        :(p.complete?"達成済み":`${Math.round(p.percent)}%`);
+      return `
+        <div class="goal-editor-item">
+          <div>
+            <strong>${escapeHtml(goal.name)}</strong>
+            <small>${status}${goal.deadline?` · ${goal.deadline}まで`:""}</small>
+          </div>
+          <div class="goal-editor-actions">
+            <button type="button" data-edit-goal="${goal.id}">編集</button>
+            <button type="button" data-delete-goal-editor="${goal.id}">削除</button>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    root.querySelectorAll("[data-delete-goal-editor]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const id=btn.dataset.deleteGoalEditor;
+        saveGoals(loadGoals().filter(g=>g.id!==id));
+        renderGoalEditor();
+        updateDailyState();
+      });
+    });
+
+    root.querySelectorAll("[data-edit-goal]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const goal=loadGoals().find(g=>g.id===btn.dataset.editGoal);
+        if(!goal)return;
+
+        $g("goalName").value=goal.name||"";
+        $g("goalMetric").value=goal.metric||"custom";
+        $g("goalTarget").value=goal.target??"";
+        $g("goalDeadline").value=goal.deadline||"";
+        $g("goalTargetWrap").style.display=goal.metric==="custom"?"none":"grid";
+
+        $g("saveGoalButton").dataset.editingId=goal.id;
+        $g("saveGoalButton").textContent="変更を保存";
+      });
+    });
+  }
+
+
+  function renderExpenseLog(){
+    const root=$g("expenseLogList");
+    if(!root)return;
+    const rows=loadExpenses()
+      .slice()
+      .sort((a,b)=>String(b.date).localeCompare(String(a.date)))
+      .slice(0,20);
+
+    const total=monthlyExpenseTotal();
+    $g("expenseMonthTotal").textContent=`¥${Math.round(total).toLocaleString("ja-JP")}`;
+
+    const budgetGoals=loadGoals().filter(g=>g.metric==="expenseMonthly");
+    if(budgetGoals.length){
+      const goal=budgetGoals[0];
+      const target=+goal.target||0;
+      const left=target-total;
+      $g("expenseBudgetStatus").textContent=left>=0
+        ? `あと ¥${Math.round(left).toLocaleString("ja-JP")}`
+        : `¥${Math.abs(Math.round(left)).toLocaleString("ja-JP")} 超過`;
+    }else{
+      $g("expenseBudgetStatus").textContent="支出目標なし";
+    }
+
+    if(!rows.length){
+      root.innerHTML='<div class="goal-card empty">まだ支出記録はありません。</div>';
+      return;
+    }
+
+    root.innerHTML=rows.map(row=>`
+      <div class="expense-log-row">
+        <span class="date">${escapeHtml(row.date)}</span>
+        <span class="memo">${escapeHtml(row.memo||expenseCategoryLabel(row.category))}</span>
+        <strong class="amount">¥${Math.round(+row.amount||0).toLocaleString("ja-JP")}</strong>
+        <button type="button" data-delete-expense="${row.id}" aria-label="削除">×</button>
+      </div>
+    `).join("");
+
+    root.querySelectorAll("[data-delete-expense]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        saveExpenses(loadExpenses().filter(row=>row.id!==btn.dataset.deleteExpense));
+        renderExpenseLog();
+        updateDailyState();
+      });
+    });
+  }
+
+  function saveExpenseFromForm(){
+    const amount=+$g("expenseAmount").value;
+    if(!Number.isFinite(amount)||amount<=0){
+      $g("expenseAmount").focus();
+      return;
+    }
+
+    const row={
+      id:`exp_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,6)}`,
+      amount,
+      category:$g("expenseCategory").value||"other",
+      memo:$g("expenseMemo").value.trim(),
+      date:$g("expenseDate").value||today(),
+      createdAt:new Date().toISOString()
+    };
+
+    const rows=loadExpenses();
+    rows.push(row);
+    saveExpenses(rows);
+
+    const game=loadGame();
+    game.xp+=8;
+    saveGame(game);
+
+    unlock("first_expense");
+
+    $g("expenseAmount").value="";
+    $g("expenseMemo").value="";
+    $g("expenseDate").value=today();
+
+    renderExpenseLog();
+    evaluateAchievements();
+    updateDailyState();
+  }
+
+  function renderAchievements(){
+    const root=$g("achievementGrid");
+    if(!root)return;
+    const game=loadGame();
+    root.innerHTML=ACHIEVEMENTS.map(item=>`
+      <div class="achievement-item ${game.unlocked.includes(item.id)?"":"locked"}">
+        <div class="achievement-icon">${item.icon}</div>
+        <div>
+          <strong>${item.title}</strong>
+          <small>${item.text}</small>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function escapeHtml(v){
+    return String(v??"").replace(/[&<>"']/g,ch=>({
+      "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+    })[ch]);
+  }
+
+  function openGameModal(which){
+    if(which==="goal")renderGoalEditor();
+    if(which==="expense")renderExpenseLog();
+    const el=which==="goal"
+      ? $g("goalModal")
+      : (which==="expense"?$g("expenseModal"):$g("achievementModal"));
+    if(!el)return;
+    el.classList.add("open");
+    el.setAttribute("aria-hidden","false");
+  }
+  function closeGameModal(which){
+    const el=which==="goal"
+      ? $g("goalModal")
+      : (which==="expense"?$g("expenseModal"):$g("achievementModal"));
+    if(!el)return;
+    el.classList.remove("open");
+    el.setAttribute("aria-hidden","true");
+  }
+
+  function rewardTodayRecord(){
+    const game=loadGame();
+    const t=today();
+    const records=typeof load==="function"
+      ? load().slice().sort((a,b)=>String(a.date).localeCompare(String(b.date)))
+      : [];
+    if(!records.some(r=>r.date===t))return;
+    if(game.rewardedDates.includes(t))return;
+
+    if(game.lastTodayRecord){
+      const gap=dayDiff(t,game.lastTodayRecord);
+      if(gap===1){
+        game.streak=Math.max(1,game.streak)+1;
+      }else if(gap>1){
+        if(gap>=3)unlock("return_after_gap");
+        game.streak=1;
+      }
+    }else{
+      game.streak=1;
+    }
+
+    game.lastTodayRecord=t;
+    game.rewardedDates.push(t);
+    game.rewardedDates=game.rewardedDates.slice(-180);
+    game.xp+=25;
+    saveGame(game);
+
+    showAchievementToast({
+      title:"+25 XP",
+      text:`今日の記録完了 · ${game.streak}日連続`
+    });
+
+    evaluateAchievements();
+    updateDailyState();
+  }
+
+  function rewardAiUse(){
+    const game=loadGame();
+    if(game.aiRewarded)return;
+    game.aiRewarded=true;
+    game.xp+=20;
+    saveGame(game);
+    unlock("ai_first",{xp:35});
+    updateDailyState();
+  }
+
+  $g("dailyRecordButton")?.addEventListener("click",()=>{
+    const input=$g("date");
+    if(input)input.value=today();
+    $g("entry")?.scrollIntoView({behavior:"smooth",block:"start"});
+    setTimeout(()=>input?.focus(),450);
+  });
+
+  $g("openGoalButton")?.addEventListener("click",()=>openGameModal("goal"));
+  $g("openExpenseButton")?.addEventListener("click",()=>openGameModal("expense"));
+  $g("menuExpenseButton")?.addEventListener("click",()=>{
+    openGameModal("expense");
+    document.getElementById("menuClose")?.click();
+  });
+  $g("saveExpenseButton")?.addEventListener("click",saveExpenseFromForm);
+  if($g("expenseDate"))$g("expenseDate").value=today();
+  $g("menuGoalButton")?.addEventListener("click",()=>{
+    openGameModal("goal");
+    document.getElementById("menuClose")?.click();
+  });
+  $g("openAchievementsButton")?.addEventListener("click",()=>openGameModal("achievement"));
+
+  document.querySelectorAll("[data-game-close]").forEach(el=>{
+    el.addEventListener("click",()=>closeGameModal(el.dataset.gameClose));
+  });
+
+  $g("goalMetric")?.addEventListener("change",()=>{
+    $g("goalTargetWrap").style.display=$g("goalMetric").value==="custom"?"none":"grid";
+  });
+
+  $g("saveGoalButton")?.addEventListener("click",()=>{
+    const metric=$g("goalMetric").value;
+    const name=$g("goalName").value.trim();
+    const target=metric==="custom"?null:+$g("goalTarget").value;
+    const editingId=$g("saveGoalButton").dataset.editingId||"";
+
+    if(!name){
+      $g("goalName").focus();
+      return;
+    }
+    if(metric!=="custom" && (!Number.isFinite(target)||target<0)){
+      $g("goalTarget").focus();
+      return;
+    }
+
+    const goals=loadGoals();
+
+    if(editingId){
+      const idx=goals.findIndex(g=>g.id===editingId);
+      if(idx>=0){
+        const old=goals[idx];
+        goals[idx]={
+          ...old,
+          name,
+          metric,
+          target,
+          deadline:$g("goalDeadline").value||null,
+          startValue:old.metric===metric
+            ? old.startValue
+            : (metric==="custom"?null:currentMetric(metric))
+        };
+      }
+    }else{
+      goals.push({
+        id:`goal_${Date.now().toString(36)}_${Math.random().toString(36).slice(2,6)}`,
+        name,
+        metric,
+        target,
+        deadline:$g("goalDeadline").value||null,
+        startValue:metric==="custom"?null:currentMetric(metric),
+        createdAt:new Date().toISOString()
+      });
+      unlock("first_goal");
+    }
+
+    saveGoals(goals);
+
+    $g("goalName").value="";
+    $g("goalTarget").value="";
+    $g("goalDeadline").value="";
+    $g("goalMetric").value="netWorth";
+    $g("goalTargetWrap").style.display="grid";
+    delete $g("saveGoalButton").dataset.editingId;
+    $g("saveGoalButton").textContent="目標を追加";
+
+    renderGoalEditor();
+    updateDailyState();
+  });
+
+  // Reward only a genuine "today" record, once per calendar day.
+  $g("form")?.addEventListener("submit",()=>{
+    setTimeout(rewardTodayRecord,180);
+    setTimeout(()=>{evaluateAchievements();updateDailyState()},260);
+  });
+
+  // AI use is rewarded once ever; repeated clicking is not farmable.
+  $g("aiAnalyzeButton")?.addEventListener("click",()=>{
+    setTimeout(rewardAiUse,200);
+  });
+
+  // Initial achievements are granted silently so old data is respected.
+  evaluateAchievements({silent:true});
+  updateDailyState();
+
+  // Keep goal progress fresh when the main app re-renders / cloud load finishes.
+  const originalRender=window.render;
+  if(typeof originalRender==="function"){
+    // Global function declarations are not always exposed in every browser mode,
+    // so this is only a harmless optional hook.
+  }
+
+  window.moneyIfUpdateGameLayer=updateDailyState;
+})();
+</script>
+
+
+<script>
+(() => {
+  const SESSION_KEY="money-if-goal-editor-login-v1";
+
+  async function openGoalEditorAfterLogin(){
+    if(sessionStorage.getItem(SESSION_KEY)==="1")return;
+    if(!window.supabase?.createClient)return;
+
+    try{
+      const client=window.supabase.createClient(
+        "https://ftjcamvzhmqcxqehpdwd.supabase.co",
+        "sb_publishable_wrWwHdFjgQQ3fHhIo9Vtaw_wSjSSJXW",
+        {auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}}
+      );
+      const {data}=await client.auth.getSession();
+
+      if(data?.session?.user){
+        sessionStorage.setItem(SESSION_KEY,"1");
+        setTimeout(()=>{
+          const modal=document.getElementById("goalModal");
+          if(!modal)return;
+          document.getElementById("menuGoalButton")?.click();
+        },750);
+      }
+    }catch(error){
+      console.warn("Goal editor login check skipped:",error);
+    }
+  }
+
+  setTimeout(openGoalEditorAfterLogin,950);
 })();
 </script>
 

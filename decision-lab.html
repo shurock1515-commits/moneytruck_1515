@@ -21,15 +21,54 @@
 .secondary-action{padding:11px 12px;border-radius:14px;background:rgba(255,255,255,.035);font-size:.78rem;line-height:1.6}
 
 
-.question-toolbar{display:flex;justify-content:flex-start;margin-bottom:15px}
-.back-question{min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--line);color:var(--text);background:rgba(255,255,255,.05);font-weight:800}
-.back-question:disabled{opacity:.3;cursor:not-allowed}
+.ai-question-state{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-left:auto;
+  font-size:.68rem;
+  letter-spacing:.08em;
+  opacity:.62;
+}
+.ai-question-state::before{
+  content:"";
+  width:6px;height:6px;border-radius:50%;
+  background:currentColor;
+}
+.ai-question-state.thinking{
+  opacity:1;
+}
+.ai-question-state.thinking::before{
+  animation:dlAiPulse .9s ease-in-out infinite alternate;
+}
+.ai-question-state.live{
+  color:#73d6bd;
+  opacity:.9;
+}
+.ai-question-state.fallback{
+  color:#d7b270;
+  opacity:.9;
+}
+.question-card.ai-thinking .question{
+  opacity:.55;
+}
+.question-card.ai-thinking .answer-row{
+  pointer-events:none;
+  opacity:.42;
+}
+@keyframes dlAiPulse{
+  from{transform:scale(.72);opacity:.35}
+  to{transform:scale(1.28);opacity:1}
+}
+@media(prefers-reduced-motion:reduce){
+  .ai-question-state.thinking::before{animation:none}
+}
 
 </style></head>
-<body><a class="home" href="index.html"><i></i><span>HOME</span></a><main class="shell"><header class="hero"><div><div class="eyebrow">Adaptive problem solving</div><h1>Decision Lab</h1></div><p>問題文を読まずに、状況と答え方から「次に何をするか」を組み立てる。質問は一問ずつ、必要なものだけ。</p></header><section class="panel">
+<body><a class="home" href="index.html"><i></i><span>HOME</span></a><main class="shell"><header class="hero"><div><div class="eyebrow">Adaptive problem solving · AI HYBRID</div><h1>Decision Lab</h1></div><p>最初の構造化された入口はそのまま。以降はAIが前の回答を読み、次に聞くべき一問を組み立てます。AIが使えない時は従来の質問エンジンへ自動で戻ります。</p></header><section class="panel">
 <div id="setupScreen" class="screen active inner"><div class="step-title"><div><h2>最初に、問題の地形だけ教えて</h2><p>文章は使わない。選択肢だけで質問の入口を決めます。</p></div><span class="badge">STEP 1</span></div><div id="setupGroups"></div><div class="footer-actions"><button id="startBtn" class="primary" disabled>診断をはじめる</button></div></div>
-<div id="questionScreen" class="screen"><div class="question-wrap"><div class="question-card"><div class="question-toolbar"><button id="backQuestion" class="back-question" type="button">← 1問戻る</button></div><div class="progress-line"><span id="progressBar"></span></div><div id="questionKicker" class="question-kicker"></div><div id="questionText" class="question"></div><div class="answer-row"><button class="answer" data-answer="yes">YES</button><button class="answer" data-answer="no">NO</button><button class="answer" data-answer="unknown">わからない</button><button class="answer" data-answer="na">該当しない</button></div><div class="question-meta"><span id="questionCount"></span><span id="branchHint"></span></div></div></div></div>
-<div id="resultScreen" class="screen inner"><div class="step-title"><div><h2>いまの仮結論</h2><p>必要なら、追加質問で精度を上げられます。</p></div><span class="badge">RESULT</span></div><div id="resultContent"></div><div class="footer-actions"><button id="backFromResult" class="ghost">← 前の質問へ</button><button id="moreBtn" class="ghost">もう少し絞る</button><button id="restartBtn" class="primary">最初から</button></div></div>
+<div id="questionScreen" class="screen"><div class="question-wrap"><div class="question-card"><div class="progress-line"><span id="progressBar"></span></div><div id="questionKicker" class="question-kicker"></div><div id="questionText" class="question"></div><div class="answer-row"><button class="answer" data-answer="yes">YES</button><button class="answer" data-answer="no">NO</button><button class="answer" data-answer="unknown">わからない</button><button class="answer" data-answer="na">該当しない</button></div><div class="question-meta"><span id="questionCount"></span><span id="branchHint"></span><span id="aiQuestionState" class="ai-question-state">AI待機</span></div></div></div></div>
+<div id="resultScreen" class="screen inner"><div class="step-title"><div><h2>いまの仮結論</h2><p>必要なら、追加質問で精度を上げられます。</p></div><span class="badge">RESULT</span></div><div id="resultContent"></div><div class="footer-actions"><button id="moreBtn" class="ghost">もう少し絞る</button><button id="restartBtn" class="primary">最初から</button></div></div>
 </section></main>
 <script>
 const setupConfig=[
@@ -316,7 +355,7 @@ const results=[
 {need:['learning','feedback'],title:'理解より、短い練習と即確認を回す',summary:'知識不足だけでなく、試した結果が返ってくる速度が遅い状態です。',actions:[['一問・一操作まで小さくする','長い学習単位をやめる。'],['すぐ答え合わせする','間違いを溜めずその場で原因を分類する。'],['次の一回だけ修正する','全体計画より直近の失敗を一つ改善する。']],warn:'理解してから練習するのではなく練習で理解を作ります。',methods:['フィードバック学習','意図的練習','反復改善']},
 {need:['creative','options'],title:'評価を止めて、案を増やす',summary:'良い案がないというより、案を出す段階で評価が入りすぎています。',actions:[['10分だけ量を出す','良し悪しを決めず数を優先する。'],['制約を一つ置く','時間、予算、形式のどれかを固定する。'],['一番雑な案を試作する','完成度ではなく反応を見るために形にする。']],warn:'最初の案を完成させようとすると発想の幅が狭くなります。',methods:['デザイン思考','発散と収束','プロトタイピング']}
 ];
-const state={setup:{},scores:{},asked:[],askedTexts:new Set(),answers:{},lastGroups:[],lastStages:[],lastTags:[],history:[],questionNo:0,maxQuestions:20};vars.forEach(v=>state.scores[v]=0);const $=id=>document.getElementById(id);
+const state={setup:{},scores:{},asked:[],askedTexts:new Set(),answers:{},lastGroups:[],lastStages:[],lastTags:[],questionNo:0,maxQuestions:20,aiHistory:[],aiUsed:0,aiFallbacks:0};vars.forEach(v=>state.scores[v]=0);const $=id=>document.getElementById(id);
 function renderSetup(){const root=$('setupGroups');root.innerHTML=setupConfig.map(g=>`<div class="group" data-group="${g.id}"><h3>${g.title}</h3><div class="choice-grid">${g.options.map(([v,l])=>`<button class="choice" data-value="${v}">${l}</button>`).join('')}</div></div>`).join('');document.querySelectorAll('.group').forEach(group=>{const cfg=setupConfig.find(x=>x.id===group.dataset.group);group.querySelectorAll('.choice').forEach(btn=>btn.onclick=()=>{if(cfg.multi){btn.classList.toggle('selected');let a=[...group.querySelectorAll('.choice.selected')].map(x=>x.dataset.value);if(cfg.max&&a.length>cfg.max){btn.classList.remove('selected');a=a.filter(x=>x!==btn.dataset.value)}state.setup[cfg.id]=a}else{group.querySelectorAll('.choice').forEach(x=>x.classList.remove('selected'));btn.classList.add('selected');state.setup[cfg.id]=btn.dataset.value}validate()})})}
 function validate(){$('startBtn').disabled=!setupConfig.every(g=>g.multi?(state.setup[g.id]||[]).length:state.setup[g.id])}
 function bump(k,n){state.scores[k]=(state.scores[k]||0)+n}function seed(){const s=state.setup;if(s.stage.includes('unclear')){bump('clarity',4);bump('scope',2)}if(s.stage.includes('cause'))bump('clarity',2);if(s.stage.includes('info')){bump('information',4);bump('evidence',2)}if(s.stage.includes('ideas')){bump('options',4);bump('creative',2)}if(s.stage.includes('choice')){bump('decision',4);bump('priority',2)}if(s.stage.includes('agreement')){bump('conflict',3);bump('coordination',3)}if(s.stage.includes('action')){bump('action',4);bump('friction',2)}if(s.stage.includes('stuck')){bump('feedback',3);bump('system',2)}if(s.stage.includes('repeat')){bump('repeat',4);bump('system',3)}if(s.stage.includes('emotion')){bump('emotion',4);bump('energy',1)}s.domains.forEach(d=>bump(d,3));if(['one','group','org'].includes(s.people)){bump('stakeholder',2);bump('communication',2)}if(s.control==='high')bump('control',2);if(['low','authority'].includes(s.control)){bump('dependency',2);bump('permission',2)}if(s.reversibility==='unknown')bump('uncertainty',2);if(s.reversibility==='hard')bump('risk',3);if(s.reversibility==='irreversible'){bump('risk',5);bump('reversibility',5)}if(s.time==='today')bump('urgency',4);if(s.time==='unknown')bump('uncertainty',2);if(s.mindset.includes('fear'))bump('fear',3);if(s.mindset.includes('avoid'))bump('friction',2)}
@@ -368,60 +407,217 @@ function pick(){
   pool.sort((a,b)=>qscore(b)-qscore(a));
   return pool[0]
 }
-function makeSnapshot(){
+
+const DECISION_AI_WORKER_URL="https://money-if-ai.shurock1515.workers.dev/";
+
+function setAiQuestionState(label,kind=""){
+  const el=$("aiQuestionState");
+  if(!el)return;
+  el.textContent=label;
+  el.className="ai-question-state"+(kind?` ${kind}`:"");
+}
+
+function setQuestionThinking(on){
+  const card=document.querySelector(".question-card");
+  card?.classList.toggle("ai-thinking",!!on);
+  document.querySelectorAll(".answer").forEach(btn=>btn.disabled=!!on);
+}
+
+function safeAiWeights(raw){
+  const out={yes:{},no:{},unknown:{},na:{}};
+  const allowed=new Set(vars);
+  for(const branch of Object.keys(out)){
+    const obj=raw?.[branch];
+    if(!obj||typeof obj!=="object")continue;
+    for(const [k,v] of Object.entries(obj)){
+      if(!allowed.has(k))continue;
+      const n=Number(v);
+      if(Number.isFinite(n))out[branch][k]=Math.max(-5,Math.min(5,n));
+    }
+  }
+  return out;
+}
+
+function extractJsonObject(text){
+  const value=String(text||"").trim();
+  if(!value)return null;
+  try{return JSON.parse(value)}catch{}
+  const fenced=value.match(/```(?:json)?\s*([\s\S]*?)```/i);
+  if(fenced){
+    try{return JSON.parse(fenced[1])}catch{}
+  }
+  const start=value.indexOf("{"),end=value.lastIndexOf("}");
+  if(start>=0&&end>start){
+    try{return JSON.parse(value.slice(start,end+1))}catch{}
+  }
+  return null;
+}
+
+function setupForAi(){
+  return Object.fromEntries(setupConfig.map(cfg=>{
+    const current=state.setup[cfg.id];
+    const values=Array.isArray(current)?current:[current];
+    const labelsSelected=values.filter(Boolean).map(v=>{
+      const item=cfg.options.find(x=>x[0]===v);
+      return item?item[1]:v;
+    });
+    return [cfg.title,labelsSelected];
+  }));
+}
+
+function aiTranscriptForRequest(){
+  return state.aiHistory.slice(-10).map(item=>({
+    question:item.question,
+    answer:item.answerLabel,
+    source:item.source
+  }));
+}
+
+function topSignalsForAi(){
+  return Object.entries(state.scores)
+    .filter(([,v])=>Math.abs(v)>=1)
+    .sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]))
+    .slice(0,12)
+    .map(([key,value])=>({key,label:labels[key]||key,value}));
+}
+
+function buildDecisionAiPayload(){
   return {
-    scores:{...state.scores},
-    asked:[...state.asked],
-    askedTexts:[...state.askedTexts],
-    answers:{...state.answers},
-    lastGroups:[...state.lastGroups],
-    lastStages:[...state.lastStages],
-    lastTags:[...state.lastTags],
-    questionNo:state.questionNo,
-    currentId:state.current?.id||null
+    mode:"decision_lab_next_question",
+    app:"Decision Lab",
+    questionNumber:state.questionNo+1,
+    maxQuestions:state.maxQuestions,
+    setup:setupForAi(),
+    history:aiTranscriptForRequest(),
+    topSignals:topSignalsForAi(),
+    allowedAnswers:["yes","no","unknown","na"],
+    allowedSignalKeys:vars,
+    instructions:[
+      "日本語で、次に最も情報価値が高い質問を一問だけ作る。",
+      "過去に聞いた内容を言い換えて繰り返さない。",
+      "YES / NO / わからない / 該当しない の4択で自然に答えられる質問にする。",
+      "質問は具体的で短く、原則45文字以内。",
+      "悩みのジャンルに合わせ、固定質問より文脈を優先する。",
+      "回答ごとに既存の内部signal keyへ-5〜5の重みを少数だけ付ける。",
+      "JSONのみを返す。"
+    ],
+    responseSchema:{
+      kicker:"短い分類ラベル",
+      question:"質問文",
+      group:"clarity|information|decision|action|relation|system|risk|other",
+      stage:"explore|narrow|verify|act|review",
+      tags:["短いタグ"],
+      weights:{
+        yes:{"signalKey":2},
+        no:{"signalKey":-1},
+        unknown:{"signalKey":1},
+        na:{}
+      }
+    }
   };
 }
-function restoreSnapshot(snapshot){
-  state.scores={...snapshot.scores};
-  state.asked=[...snapshot.asked];
-  state.askedTexts=new Set(snapshot.askedTexts);
-  state.answers={...snapshot.answers};
-  state.lastGroups=[...snapshot.lastGroups];
-  state.lastStages=[...snapshot.lastStages];
-  state.lastTags=[...snapshot.lastTags];
-  state.questionNo=snapshot.questionNo;
-  state.current=Q.find(q=>q.id===snapshot.currentId)||null;
+
+async function requestAiQuestion(){
+  const response=await fetch(DECISION_AI_WORKER_URL,{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify(buildDecisionAiPayload())
+  });
+
+  let data;
+  try{data=await response.json()}
+  catch{throw new Error(`AI応答を読み取れません（HTTP ${response.status}）`)}
+
+  if(!response.ok)throw new Error(data?.detail||data?.error||`HTTP ${response.status}`);
+
+  // Worker may return either {question...} directly or Gemini text in analysis.
+  let parsed=null;
+  if(data && typeof data==="object" && typeof data.question==="string")parsed=data;
+  if(!parsed)parsed=extractJsonObject(data?.analysis||data?.text||data?.output||"");
+  if(!parsed||typeof parsed.question!=="string")throw new Error("質問JSONが返りませんでした");
+
+  const question=parsed.question.trim();
+  if(question.length<4||question.length>100)throw new Error("質問文の形式が不正です");
+
+  const normalized=normalizeText(question);
+  if(state.askedTexts.has(normalized))throw new Error("重複質問");
+
+  return {
+    id:`ai_${Date.now()}_${Math.random().toString(36).slice(2,7)}`,
+    text:question,
+    textKey:normalized,
+    kicker:String(parsed.kicker||"AI ADAPTIVE").slice(0,32),
+    group:String(parsed.group||"other"),
+    stage:String(parsed.stage||"explore"),
+    tags:Array.isArray(parsed.tags)?parsed.tags.slice(0,6).map(String):["ai"],
+    w:safeAiWeights(parsed.weights),
+    source:"ai"
+  };
 }
-function updateBackButton(){
-  const button=$('backQuestion');
-  if(button)button.disabled=state.history.length===0;
+
+function fallbackQuestion(){
+  const q=pick();
+  if(!q)return null;
+  return {...q,source:"engine"};
 }
-function goBackQuestion(){
-  const snapshot=state.history.pop();
-  if(!snapshot)return;
-  restoreSnapshot(snapshot);
-  if(state.current){
-    $('questionKicker').textContent=state.current.kicker;
-    $('questionText').textContent=state.current.text;
-    $('questionCount').textContent=`${state.questionNo+1}問目くらい`;
-    $('branchHint').textContent=state.questionNo<4?'問題の地形を確認中':'前の答えから分岐中';
-    $('progressBar').style.width=`${Math.min(94,12+(state.questionNo/state.maxQuestions)*82)}%`;
-    show('questionScreen');
-    updateBackButton();
-  }else{
-    showQuestion();
+
+async function showQuestion(){
+  if(state.questionNo>=state.maxQuestions)return showResult();
+
+  show("questionScreen");
+  $("questionCount").textContent=`${state.questionNo+1}問目くらい`;
+  $("branchHint").textContent=state.questionNo<4?"問題の地形を確認中":"前の答えから分岐中";
+  $("progressBar").style.width=`${Math.min(94,12+(state.questionNo/state.maxQuestions)*82)}%`;
+  $("questionKicker").textContent="AI ADAPTIVE";
+  $("questionText").textContent="次に聞くべきことを組み立てています…";
+  setAiQuestionState("AI思考中","thinking");
+  setQuestionThinking(true);
+
+  let q;
+  try{
+    q=await requestAiQuestion();
+    state.aiUsed++;
+    setAiQuestionState("AI生成","live");
+  }catch(error){
+    console.warn("Decision Lab AI fallback:",error);
+    q=fallbackQuestion();
+    state.aiFallbacks++;
+    setAiQuestionState("従来エンジン","fallback");
+  }finally{
+    setQuestionThinking(false);
   }
+
+  if(!q)return showResult();
+
+  state.current=q;
+  $("questionKicker").textContent=q.kicker||"ADAPTIVE QUESTION";
+  $("questionText").textContent=q.text;
 }
-function showQuestion(){const q=pick();if(!q)return showResult();state.current=q;$('questionKicker').textContent=q.kicker;$('questionText').textContent=q.text;$('questionCount').textContent=`${state.questionNo+1}問目くらい`;$('branchHint').textContent=state.questionNo<4?'問題の地形を確認中':'前の答えから分岐中';$('progressBar').style.width=`${Math.min(94,12+(state.questionNo/state.maxQuestions)*82)}%`;show('questionScreen');updateBackButton()}
-function answer(a){
+
+async function answer(a){
+  if(!state.current)return;
   const q=state.current;
-  state.history.push(makeSnapshot());
-  state.asked.push(q.id);state.askedTexts.add(q.textKey);state.answers[q.id]=a;state.questionNo++;
-  Object.entries(q.w[a]||{}).forEach(([k,v])=>bump(k,v));
-  state.lastGroups=[...state.lastGroups.slice(-2),q.group];
-  state.lastStages=[...state.lastStages.slice(-2),q.stage];
+  const answerLabels={yes:"YES",no:"NO",unknown:"わからない",na:"該当しない"};
+
+  state.asked.push(q.id);
+  state.askedTexts.add(q.textKey||normalizeText(q.text));
+  state.answers[q.id]=a;
+  state.questionNo++;
+
+  Object.entries(q.w?.[a]||{}).forEach(([k,v])=>bump(k,v));
+  state.lastGroups=[...state.lastGroups.slice(-2),q.group||"other"];
+  state.lastStages=[...state.lastStages.slice(-2),q.stage||"explore"];
   state.lastTags=[...state.lastTags.slice(-5),...(q.tags||[])];
-  state.questionNo>=state.maxQuestions?showResult():showQuestion()
+
+  state.aiHistory.push({
+    question:q.text,
+    answer:a,
+    answerLabel:answerLabels[a]||a,
+    source:q.source||"engine"
+  });
+
+  state.current=null;
+  state.questionNo>=state.maxQuestions?showResult():await showQuestion();
 }
 function chooseResult(){return results.map(r=>[r,r.need.reduce((s,k)=>s+(state.scores[k]||0),0)]).sort((a,b)=>b[1]-a[1])[0][0]}
 function scoreOf(k){return state.scores[k]||0}
@@ -497,9 +693,9 @@ function showResult(){
       <div class="secondary-action">実行後に、何が変わったか一つだけ記録する。</div>
       <div class="secondary-action">結果が悪ければ、失敗ではなく質問の前提を一つ修正する。</div>
     </div></div>
-    <div class="history">${state.questionNo}問で仮結論。自由文は診断に使用していません。質問バンク ${Q.length}件、内部変数 ${vars.length}個。</div>
+    <div class="history">${state.questionNo}問で仮結論。AI生成 ${state.aiUsed}問 / 従来エンジン ${state.aiFallbacks}問。既存の質問バンク ${Q.length}件と内部変数 ${vars.length}個は、AI障害時のフォールバックと結果判定に残しています。</div>
   </aside></div>`;show('resultScreen')
 }
-function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id))}function reset(){state.setup={};state.scores={};vars.forEach(v=>state.scores[v]=0);state.asked=[];state.askedTexts=new Set();state.answers={};state.lastGroups=[];state.lastStages=[];state.lastTags=[];state.history=[];state.questionNo=0;state.maxQuestions=20;renderSetup();show('setupScreen')}
-$('startBtn').onclick=()=>{seed();state.history=[];showQuestion()};document.querySelectorAll('.answer').forEach(b=>b.onclick=()=>answer(b.dataset.answer));$('backQuestion').onclick=goBackQuestion;$('backFromResult').onclick=goBackQuestion;$('moreBtn').onclick=()=>{state.maxQuestions=state.questionNo+8;showQuestion()};$('restartBtn').onclick=reset;renderSetup();
+function show(id){document.querySelectorAll('.screen').forEach(x=>x.classList.toggle('active',x.id===id))}function reset(){state.setup={};state.scores={};vars.forEach(v=>state.scores[v]=0);state.asked=[];state.askedTexts=new Set();state.answers={};state.lastGroups=[];state.lastStages=[];state.lastTags=[];state.questionNo=0;state.maxQuestions=20;state.aiHistory=[];state.aiUsed=0;state.aiFallbacks=0;state.current=null;renderSetup();show('setupScreen')}
+$('startBtn').onclick=()=>{seed();void showQuestion()};document.querySelectorAll('.answer').forEach(b=>b.onclick=()=>void answer(b.dataset.answer));$('moreBtn').onclick=()=>{state.maxQuestions=state.questionNo+8;void showQuestion()};$('restartBtn').onclick=reset;renderSetup();
 </script></body></html>

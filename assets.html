@@ -3927,6 +3927,328 @@ body.theme-day .file-tab-bar{
   .expense-log-row button{grid-column:3}
 }
 
+
+/* =========================================================
+   LEVEL UP WINDOW
+   ========================================================= */
+.level-up-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9000;
+  display:none;
+  place-items:center;
+}
+.level-up-overlay.show{
+  display:grid;
+}
+.level-up-backdrop{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 50% 42%,rgba(115,104,255,.22),transparent 28rem),
+    rgba(3,6,12,.78);
+  backdrop-filter:blur(9px);
+  animation:levelBackdropIn 240ms ease both;
+}
+.level-up-window{
+  position:relative;
+  width:min(500px,calc(100vw - 30px));
+  min-height:390px;
+  overflow:hidden;
+  padding:38px 34px 30px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:22px;
+  background:
+    radial-gradient(circle at 50% 10%,rgba(167,139,250,.26),transparent 19rem),
+    radial-gradient(circle at 0% 100%,rgba(97,214,232,.13),transparent 19rem),
+    #101722;
+  box-shadow:0 35px 120px rgba(0,0,0,.55);
+  animation:levelWindowIn 520ms cubic-bezier(.18,.88,.22,1.18) both;
+}
+.level-up-window::before{
+  content:"";
+  position:absolute;
+  left:50%;
+  top:52%;
+  width:260px;
+  height:260px;
+  transform:translate(-50%,-50%);
+  border-radius:50%;
+  border:1px solid rgba(167,139,250,.2);
+  box-shadow:
+    0 0 0 30px rgba(167,139,250,.035),
+    0 0 0 62px rgba(97,214,232,.018);
+  animation:levelRing 900ms cubic-bezier(.2,.8,.2,1) both;
+  pointer-events:none;
+}
+.level-up-kicker{
+  position:relative;
+  z-index:2;
+  color:#a78bfa;
+  font-size:.6rem;
+  font-weight:900;
+  letter-spacing:.21em;
+}
+.level-up-window h2{
+  position:relative;
+  z-index:2;
+  margin:7px 0 4px;
+  font-size:clamp(2.4rem,8vw,4.5rem);
+  line-height:.9;
+  letter-spacing:-.065em;
+}
+.level-up-number-wrap{
+  position:relative;
+  z-index:2;
+  display:flex;
+  align-items:baseline;
+  justify-content:center;
+  gap:16px;
+  margin:27px 0 15px;
+  font-variant-numeric:tabular-nums;
+}
+.level-up-old{
+  color:#778296;
+  font-size:1.6rem;
+  font-weight:850;
+}
+.level-up-arrow{
+  color:#697488;
+  font-size:1.2rem;
+}
+.level-up-new{
+  display:inline-block;
+  font-size:5.5rem;
+  line-height:.78;
+  letter-spacing:-.09em;
+  background:linear-gradient(145deg,#ffffff 10%,#b7a5ff 55%,#61d6e8 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  filter:drop-shadow(0 8px 20px rgba(167,139,250,.2));
+  animation:levelNumberPop 720ms 210ms cubic-bezier(.2,.9,.2,1.25) both;
+}
+.level-up-window p{
+  position:relative;
+  z-index:2;
+  margin:0;
+  color:#9ba6b7;
+  font-size:.72rem;
+}
+.level-up-xp{
+  position:relative;
+  z-index:2;
+  margin:25px auto 0;
+  max-width:320px;
+}
+.level-up-xp-head{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:7px;
+  color:#8793a6;
+  font-size:.56rem;
+  font-weight:850;
+  letter-spacing:.08em;
+}
+.level-up-xp-track{
+  height:9px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.08);
+}
+.level-up-xp-track i{
+  display:block;
+  width:0;
+  height:100%;
+  border-radius:999px;
+  background:linear-gradient(90deg,#a78bfa,#61d6e8);
+  transition:width 850ms 520ms cubic-bezier(.2,.8,.2,1);
+}
+.level-up-close{
+  position:relative;
+  z-index:2;
+  width:auto!important;
+  min-width:160px;
+  min-height:42px!important;
+  margin:25px 0 0!important;
+  padding:9px 18px!important;
+  border:0!important;
+  border-radius:999px!important;
+  background:linear-gradient(90deg,#a78bfa,#61d6e8)!important;
+  color:#06101a!important;
+  font-size:.64rem!important;
+  font-weight:950!important;
+  letter-spacing:.08em;
+}
+.level-up-burst{
+  position:absolute;
+  left:50%;
+  top:48%;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#fff;
+  pointer-events:none;
+}
+.level-up-burst::before,
+.level-up-burst::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  background:inherit;
+}
+.level-up-burst.burst-a{
+  animation:levelSparkA 900ms 160ms ease-out both;
+}
+.level-up-burst.burst-a::before{
+  animation:levelSparkB 900ms 160ms ease-out both;
+}
+.level-up-burst.burst-a::after{
+  animation:levelSparkC 900ms 160ms ease-out both;
+}
+.level-up-burst.burst-b{
+  animation:levelSparkD 900ms 220ms ease-out both;
+}
+.level-up-burst.burst-b::before{
+  animation:levelSparkE 900ms 220ms ease-out both;
+}
+.level-up-burst.burst-b::after{
+  animation:levelSparkF 900ms 220ms ease-out both;
+}
+
+@keyframes levelBackdropIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes levelWindowIn{
+  0%{opacity:0;transform:translateY(22px) scale(.88)}
+  62%{opacity:1;transform:translateY(-3px) scale(1.025)}
+  100%{opacity:1;transform:none}
+}
+@keyframes levelNumberPop{
+  0%{opacity:0;transform:scale(.35) rotate(-5deg)}
+  60%{opacity:1;transform:scale(1.16) rotate(1deg)}
+  100%{opacity:1;transform:none}
+}
+@keyframes levelRing{
+  from{opacity:0;transform:translate(-50%,-50%) scale(.25)}
+  50%{opacity:1}
+  to{opacity:.7;transform:translate(-50%,-50%) scale(1)}
+}
+@keyframes levelSparkA{
+  from{opacity:1;transform:translate(0,0) scale(1)}
+  to{opacity:0;transform:translate(125px,-85px) scale(.1)}
+}
+@keyframes levelSparkB{
+  from{opacity:1;transform:translate(0,0) scale(1)}
+  to{opacity:0;transform:translate(-130px,-65px) scale(.1)}
+}
+@keyframes levelSparkC{
+  from{opacity:1;transform:translate(0,0) scale(1)}
+  to{opacity:0;transform:translate(145px,60px) scale(.1)}
+}
+@keyframes levelSparkD{
+  from{opacity:1;transform:translate(0,0) scale(1)}
+  to{opacity:0;transform:translate(-145px,75px) scale(.1)}
+}
+@keyframes levelSparkE{
+  from{opacity:1;transform:translate(0,0) scale(1)}
+  to{opacity:0;transform:translate(30px,-135px) scale(.1)}
+}
+@keyframes levelSparkF{
+  from{opacity:1;transform:translate(0,0) scale(1)}
+  to{opacity:0;transform:translate(-25px,135px) scale(.1)}
+}
+
+body.theme-morning .level-up-window,
+body.theme-day .level-up-window{
+  background:
+    radial-gradient(circle at 50% 10%,rgba(119,102,255,.17),transparent 19rem),
+    radial-gradient(circle at 0% 100%,rgba(49,177,199,.11),transparent 19rem),
+    #fff;
+  color:#172033;
+}
+body.theme-morning .level-up-window p,
+body.theme-day .level-up-window p{
+  color:#68758a;
+}
+
+@media(prefers-reduced-motion:reduce){
+  .level-up-backdrop,
+  .level-up-window,
+  .level-up-new,
+  .level-up-window::before,
+  .level-up-burst,
+  .level-up-burst::before,
+  .level-up-burst::after{
+    animation:none!important;
+  }
+  .level-up-xp-track i{transition:none!important}
+}
+
+
+/* =========================================================
+   SECRET LEVEL CHEAT
+   Hidden: tap level 7 times or use the Konami code.
+   ========================================================= */
+#managerLevel{
+  cursor:default;
+  user-select:none;
+}
+.cheat-flash{
+  position:fixed;
+  left:50%;
+  top:50%;
+  z-index:9800;
+  width:min(330px,calc(100vw - 30px));
+  padding:18px 20px;
+  transform:translate(-50%,-50%) scale(.84);
+  opacity:0;
+  pointer-events:none;
+  text-align:center;
+  border:1px solid rgba(97,214,232,.28);
+  border-radius:14px;
+  background:
+    radial-gradient(circle at 50% 0%,rgba(97,214,232,.20),transparent 16rem),
+    #09131a;
+  box-shadow:
+    0 0 0 1px rgba(167,139,250,.08),
+    0 25px 90px rgba(0,0,0,.5);
+}
+.cheat-flash.show{
+  animation:cheatFlashIn 920ms cubic-bezier(.2,.8,.2,1) both;
+}
+.cheat-flash span{
+  display:block;
+  color:#61d6e8;
+  font-size:.52rem;
+  font-weight:950;
+  letter-spacing:.2em;
+}
+.cheat-flash strong{
+  display:block;
+  margin-top:5px;
+  font-size:1.25rem;
+  letter-spacing:-.03em;
+}
+.cheat-flash small{
+  display:block;
+  margin-top:6px;
+  color:#8d9baa;
+  font-size:.62rem;
+}
+@keyframes cheatFlashIn{
+  0%{opacity:0;transform:translate(-50%,-50%) scale(.72)}
+  20%{opacity:1;transform:translate(-50%,-50%) scale(1.04)}
+  72%{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  100%{opacity:0;transform:translate(-50%,-56%) scale(.98)}
+}
+@media(prefers-reduced-motion:reduce){
+  .cheat-flash.show{animation:none!important;opacity:1}
+}
+
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -4139,6 +4461,45 @@ body.theme-day .file-tab-bar{
       <button type="button" class="game-close" data-game-close="achievement">×</button>
     </div>
     <div class="achievement-grid" id="achievementGrid"></div>
+  </section>
+</div>
+
+
+
+<div class="cheat-flash" id="cheatFlash" aria-live="polite">
+  <span>SECRET COMMAND</span>
+  <strong>CHEAT ACTIVATED</strong>
+  <small id="cheatFlashText">NEXT LEVEL +</small>
+</div>
+
+<div class="level-up-overlay" id="levelUpOverlay" aria-hidden="true">
+  <div class="level-up-backdrop"></div>
+  <section class="level-up-window" role="dialog" aria-modal="true" aria-labelledby="levelUpTitle">
+    <div class="level-up-burst burst-a"></div>
+    <div class="level-up-burst burst-b"></div>
+
+    <div class="level-up-kicker">MANAGER LEVEL</div>
+    <h2 id="levelUpTitle">LEVEL UP</h2>
+
+    <div class="level-up-number-wrap">
+      <span class="level-up-old" id="levelUpOld">1</span>
+      <span class="level-up-arrow">→</span>
+      <strong class="level-up-new" id="levelUpNew">2</strong>
+    </div>
+
+    <p id="levelUpMessage">資産管理スキルが上がった。</p>
+
+    <div class="level-up-xp">
+      <div class="level-up-xp-head">
+        <span id="levelUpXpLabel">0 XP</span>
+        <span id="levelUpNextLabel">NEXT 125</span>
+      </div>
+      <div class="level-up-xp-track">
+        <i id="levelUpXpProgress"></i>
+      </div>
+    </div>
+
+    <button type="button" class="level-up-close" id="levelUpCloseButton">CONTINUE</button>
   </section>
 </div>
 
@@ -7738,6 +8099,151 @@ moneyIfInitializeCloud();
     return {level,into:remaining,needed,percent:Math.min(100,remaining/needed*100)};
   }
 
+  let levelUpQueue=[];
+  let levelUpShowing=false;
+
+  function showLevelUpWindow(oldLevel,newLevel,xp){
+    if(newLevel<=oldLevel)return;
+    levelUpQueue.push({oldLevel,newLevel,xp});
+    if(levelUpShowing)return;
+    playNextLevelUp();
+  }
+
+  function playNextLevelUp(){
+    const item=levelUpQueue.shift();
+    if(!item){
+      levelUpShowing=false;
+      return;
+    }
+    levelUpShowing=true;
+
+    const overlay=$g("levelUpOverlay");
+    if(!overlay){
+      levelUpShowing=false;
+      playNextLevelUp();
+      return;
+    }
+
+    const info=levelInfo(item.xp);
+    $g("levelUpOld").textContent=item.oldLevel;
+    $g("levelUpNew").textContent=item.newLevel;
+    $g("levelUpMessage").textContent=
+      item.newLevel%10===0
+        ?"節目のレベルに到達。かなり育ってきた。"
+        :(item.newLevel%5===0
+          ?"新しい節目。管理習慣が定着してきた。"
+          :"資産管理スキルが上がった。");
+    $g("levelUpXpLabel").textContent=`${item.xp.toLocaleString("ja-JP")} XP`;
+    $g("levelUpNextLabel").textContent=`NEXT ${Math.max(0,info.needed-info.into)}`;
+
+    const bar=$g("levelUpXpProgress");
+    if(bar){
+      bar.style.transition="none";
+      bar.style.width="0%";
+    }
+
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden","false");
+    document.documentElement.style.overflow="hidden";
+
+    requestAnimationFrame(()=>{
+      requestAnimationFrame(()=>{
+        if(bar){
+          bar.style.transition="";
+          bar.style.width=`${info.percent}%`;
+        }
+      });
+    });
+  }
+
+  function closeLevelUpWindow(){
+    const overlay=$g("levelUpOverlay");
+    if(!overlay)return;
+    overlay.classList.remove("show");
+    overlay.setAttribute("aria-hidden","true");
+    document.documentElement.style.overflow="";
+    levelUpShowing=false;
+    setTimeout(playNextLevelUp,120);
+  }
+
+  function awardXp(amount,{reason=""}={}){
+    const game=loadGame();
+    const before=levelInfo(game.xp).level;
+    game.xp+=Math.max(0,+amount||0);
+    const after=levelInfo(game.xp).level;
+    saveGame(game);
+
+    if(after>before){
+      showLevelUpWindow(before,after,game.xp);
+    }
+    return game;
+  }
+
+  function activateLevelCheat(){
+    const game=loadGame();
+    const info=levelInfo(game.xp);
+    const needed=Math.max(1,info.needed-info.into);
+    const bonus=needed+1;
+
+    const flash=$g("cheatFlash");
+    if($g("cheatFlashText")){
+      $g("cheatFlashText").textContent=`+${bonus.toLocaleString("ja-JP")} XP`;
+    }
+
+    if(flash){
+      flash.classList.remove("show");
+      void flash.offsetWidth;
+      flash.classList.add("show");
+      clearTimeout(window.__moneyIfCheatFlash);
+      window.__moneyIfCheatFlash=setTimeout(()=>flash.classList.remove("show"),1000);
+    }
+
+    awardXp(bonus,{reason:"secret_cheat"});
+    setTimeout(updateDailyState,40);
+  }
+
+  /* Secret 1: tap/click the level number 7 times quickly. */
+  let cheatTapCount=0;
+  let cheatTapTimer=null;
+  $g("managerLevel")?.addEventListener("click",()=>{
+    cheatTapCount++;
+    clearTimeout(cheatTapTimer);
+
+    if(cheatTapCount>=7){
+      cheatTapCount=0;
+      activateLevelCheat();
+      return;
+    }
+
+    cheatTapTimer=setTimeout(()=>cheatTapCount=0,1800);
+  });
+
+  /* Secret 2: classic Konami code. */
+  const konamiSequence=[
+    "ArrowUp","ArrowUp","ArrowDown","ArrowDown",
+    "ArrowLeft","ArrowRight","ArrowLeft","ArrowRight",
+    "b","a"
+  ];
+  let konamiIndex=0;
+
+  document.addEventListener("keydown",event=>{
+    const key=event.key.length===1 ? event.key.toLowerCase() : event.key;
+    const expected=konamiSequence[konamiIndex];
+
+    if(key===expected){
+      konamiIndex++;
+      if(konamiIndex===konamiSequence.length){
+        konamiIndex=0;
+        activateLevelCheat();
+      }
+    }else{
+      konamiIndex=key===konamiSequence[0]?1:0;
+    }
+  });
+
+  $g("levelUpCloseButton")?.addEventListener("click",closeLevelUpWindow);
+  $g("levelUpOverlay")?.querySelector(".level-up-backdrop")?.addEventListener("click",closeLevelUpWindow);
+
   function showAchievementToast(item){
     if(!$g("achievementToast"))return;
     $g("achievementToastTitle").textContent=item.title;
@@ -7755,9 +8261,11 @@ moneyIfInitializeCloud();
     if(game.unlocked.includes(id))return false;
     const item=ACHIEVEMENTS.find(x=>x.id===id);
     if(!item)return false;
+
     game.unlocked.push(id);
-    game.xp+=xp;
     saveGame(game);
+
+    if(xp>0)awardXp(xp,{reason:`achievement:${id}`});
     if(!silent)showAchievementToast(item);
     return true;
   }
@@ -7995,10 +8503,7 @@ moneyIfInitializeCloud();
     rows.push(row);
     saveExpenses(rows);
 
-    const game=loadGame();
-    game.xp+=8;
-    saveGame(game);
-
+    awardXp(8,{reason:"expense_log"});
     unlock("first_expense");
 
     $g("expenseAmount").value="";
@@ -8074,8 +8579,8 @@ moneyIfInitializeCloud();
     game.lastTodayRecord=t;
     game.rewardedDates.push(t);
     game.rewardedDates=game.rewardedDates.slice(-180);
-    game.xp+=25;
     saveGame(game);
+    awardXp(25,{reason:"daily_record"});
 
     showAchievementToast({
       title:"+25 XP",
@@ -8090,8 +8595,8 @@ moneyIfInitializeCloud();
     const game=loadGame();
     if(game.aiRewarded)return;
     game.aiRewarded=true;
-    game.xp+=20;
     saveGame(game);
+    awardXp(20,{reason:"ai_first_use"});
     unlock("ai_first",{xp:35});
     updateDailyState();
   }
